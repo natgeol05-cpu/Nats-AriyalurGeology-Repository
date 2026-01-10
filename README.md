@@ -3,5 +3,8 @@ For Geology Students the details of Geology in Ariyalur area with contents and i
 <p>
        In Fossil Gallery browes through to view various fossils with geological details.
 <p>
-<a href="index1.html">
+<!-- <a href="index1.html">
+       <button> Click Here To Go to Home Page</button></a>  -->
+
+<a href="AriyalurGeologyPage.html">
        <button> Click Here To Go to Home Page</button></a> 
