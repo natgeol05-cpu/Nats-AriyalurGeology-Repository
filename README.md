@@ -6,5 +6,5 @@ For Geology Students the details of Geology in Ariyalur area with contents and i
 <!-- <a href="index1.html">
        <button> Click Here To Go to Home Page</button></a>  -->
 
-<a href="AriyalurGeologyPage.html">
+<a href="Index1.html">
        <button> Click Here To Go to Home Page</button></a> 
