@@ -1,0 +1,104 @@
+Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetdb Created on 2May25.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form-Google Sheets</title>
+        <style>
+            form {
+                max-width: 600px;
+                background-color: bisque;
+                align-self:"center";
+                justify-content:"center";
+                padding: 10px 20px;
+                margin: auto;
+                border: 1px solid rgb(22, 20, 20);
+                border-radius: 10px;
+            }
+            input[type="text"],
+            input[type="email"],
+            input[type="number"], 
+            input[type="feedback"],
+                               
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin: 5px 0 15px 0;
+                border: 4px rgb(29, 31, 32);
+                border-radius: 5px;
+                overflow-wrap: break-word;
+                background-color: rgb(250, 250, 127);
+            }
+            input[type="submit"] {
+                background-color: gray;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 20px;
+                margin: 0;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover{
+                background-color: rgb(230, 142, 48);                
+            }
+
+            .button-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+
+            h1 {
+                 color: blue;
+            }
+
+        </style>
+</head>
+<body>
+    <h1 align="center">Feedback Form</h1>
+
+   <div class="center-container">   
+        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post">
+            <label for="fullname">Your Full Name :</label>
+            <input type="text" name="data[NAME]" id="uname" placeholder="name">
+
+            <label for="email">Your Email :</label>
+            <input type="text" name="data[EMAIL]" id="uemail" placeholder="email">
+
+            <label for="phone">Your Phone Number :</label>
+            <input type="number" name="data[PHONE]" id="uphone" placeholder="phone number">
+
+            <!-- <label for="message"> Your Feedback:</label>
+            <input type="text" name="data[MESSAGE]" id="umsg" placeholder="your feedback.."> -->
+
+            <label for="message"> Your Feedback:</label>
+            <textarea type="text" name="data[FEEDBACK]"  id="ufeedback" placeholder="your feedback"></textarea> 
+
+            <div class="button-container">
+                <input  type="submit" value="Submit Feedback">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        var form = document.getElementById('sheetdb-form');
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            fetch(form.action, {
+                method: "post",
+                body: new FormData(document.getElementById("sheetdb-form")),
+            }).then(
+                response => response.json()
+            ).then((html) => {
+                alert('Submitted !! Thank you ' + document.getElementById('uname').value)
+                window.location.href = '';
+                location.reload();
+            });
+        });        
+    </script>
+</body>
+</html>
+
+
