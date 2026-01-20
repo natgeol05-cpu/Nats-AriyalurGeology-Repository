@@ -60,7 +60,10 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
     <h1 align="center">Feedback Form</h1>
 
    <div class="center-container">   
-        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post">
+        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post" onsubmit='setTimestamp()'>
+            <!-- Hidden input for the Timestamp -->
+            <input type="hidden" name="data[DATE]" id="timestamp-field">
+
             <label for="fullname">Your Full Name :</label>
             <input type="text" name="data[NAME]" id="uname" placeholder="name">
 
@@ -83,6 +86,25 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
     </div>
 
     <script>
+        function setTimestamp() {
+            const timestampInput = document.getElementById('timestamp-field');            
+            const currentDate = new Date();     
+
+            // Format the date as Date-Time (database/System Specific) Like This '20/1/2026, 12:21:49 pm'
+            timestampInput.value = currentDate.toLocaleString();     //  .toISOString();
+
+            //Format the date with the full month name
+           // const options = { year: 'numeric', month: 'long', day: 'numeric', hours: '2-digit', minute: '2-digit'};
+            const formattedDateTime = now.toLocaleString(undefined, options); // Using default locale
+
+            //Set the value of the hidden timestamp field
+            document.getElementById('timestamp-field').value =  timestampInput;     //  formattedDateTime;
+
+            // The form will now submit with the added Timestamp field to SheetDB
+        }
+    </script>
+
+    <script>
         var form = document.getElementById('sheetdb-form');
         form.addEventListener("submit", e => {
             e.preventDefault();
@@ -98,7 +120,9 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
             });
         });        
     </script>
+    
 </body>
 </html>
+
 
 
