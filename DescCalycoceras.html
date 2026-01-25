@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Description for Fossil Calycoceras</title>
 <style>
         .grid {
             display: grid;
@@ -17,7 +17,7 @@
             align-items: center;         
             border: 1px;
             margin: auto;  
-            column-gap: 20px;           
+            column-gap: 10px;           
         } 
 
         .fixed-div{
@@ -40,8 +40,9 @@
 
         .item {                      
             border: solid brown;  border-radius: 20px;
-            margin: 10px; padding: 5px;
-            text-align: center; background-color: rgb(238, 238, 153);        
+            /* padding: 5px; */
+            text-align: center; background-color: rgb(238, 238, 153);  
+            /* height: 40px;       */
         }
 
         button {
@@ -57,10 +58,27 @@
             font-size: 20px;
         }
 
+        .button-container {
+            display: inline-flex;
+            gap: 60px;
+            align-self: center;
+            justify-content: center;
+        }
+
+        browse-button {
+            color: solid black;
+            height: 60px; width: 300px;
+            border-radius: 20px;
+            display: inline-block;  
+         }
+
+        #browse-button:hover {
+             background-color: goldenrod;
+             color: white;
+        }
+
         h2 {
             color: chocolate;
-            margin-top: 0;
-            margin-bottom: 0;
         }
 
         h3 {
@@ -75,8 +93,9 @@
             text-align: center;
         }
 
-        #box1 {
+        .box1 {
            background-color:blanchedalmond;
+           /* row-gap: 10px; */
         }
 
         #box2 {
@@ -103,7 +122,7 @@
         }
 
         img:hover {
-            transform: scale(1.8);
+            transform: scale(2);
             transition-duration: 2s;
             }
 
@@ -114,13 +133,14 @@
     
     </style>
 </head>
+
 <body>
     <div class="grid">
 
          <div class="title-container" style="display: flex;" >
 
     <input type="image" src= "Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-
+    
     <a href="DescTrigonoarca abrupta.html">
        <button id="button"> Click here To Go Back to Previous Specimen</button></a> 
 
@@ -129,7 +149,7 @@
     <a href="DescAmmonitesSuture.html">
        <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
 
-       <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px" >    
+       <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px" >           
     </div>
 
         <div class="item" id="box1">
@@ -143,36 +163,37 @@
             <img height="200" src="Calycoceras asiaticum Watermarked.jpg">
             <img height="200" src="Calycoceras Sceintiffic Classification.jpg"> 
             <img height="200px" src="Calycoceras from Madagascar.jpg">
-            <img height="200px" src="/Calycoceras from Field Guide.jpg"> 
+            <img height="200px" src="Calycoceras from Field Guide.jpg"> 
         </div>
 
-        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 20px;">
+            <h3>Description</h3>
             <article>               
             Name: Calycoceras asiaticum <br>
     Formation: Uttatur Group in Karai Formation <br>
-    Locality: Kunnum dry reverbed   <br>
+    Locality: Kunnum dry riverbed   <br>
     Classification: Mollusca - Cephalopada -Ammonitida - Genus: Calycoceras<br>
     Age: Temporal Range: 100 to 94 million years ago  <p>    
         
                 Calycoceras is an extinct genus of cephalopods belonging to the subclass Ammonoidea<br> and family Acanthoceratidae that lived during the Cenomanian stage of<br> the Late Cretaceous, 100-94 Mya. Their shells had ornate ribs. <p>    
 
-                Shells of Calycoceras asiaticum may reach a diameter of about 20 centimetres (7.9 in).<br> The larger phragmocones may reach 59–72 millimetres (2.3–2.8 in) in diameter.<br> Coiling is moderately involute. All ribs show strong subspinose tubercles.<br> C. asiaticum asiaticum and C. asiaticum spinosum are very similar,<br> the latter has much more robust tuberculation.<p>
+                Shells of Calycoceras asiaticum may reach a diameter of about 20 centimetres (7.9 in).<br> The larger phragmocones may reach 59–72 millimetres (2.3–2.8 in) in diameter.<br> Coiling is plainspiral. All ribs show strong subspinose tubercles.<br> C. asiaticum asiaticum and C. asiaticum spinosum are very similar,<br> the latter has much more robust tuberculation.<p>
 
 One of the well-documented geological units in the southern Indian Cretaceous is <br>the Calycoceras newboldi Zone, which is found in the Ariyalur region.<br> This suggests that other species of the genus Calycoceras, including C. aisatum,<br> might also be present in the Ariyalur area, as the genus is known to have lived<br> during the time represented by the sediments found there. <p>
 
 View the video at the end of this page, where this specimen is identified by Dr Ayyasami.<p>
 For detailed information read the references given below, especially for UPSC exams.     
 <p>
-Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<br>
+Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<p>
 Ref: 02 https://en.wikipedia.org/wiki/Calycoceras<br>
-Ref: 03 https://www.ias.ac.in/article/fulltext/jess/132/0116 (Dr Ayyasami's name repeatedly mentioned)
+Ref: 02 https://www.ias.ac.in/article/fulltext/jess/132/0116 (Dr Ayyasami's name repeatedly mentioned)
             </article>
         </div>       
                 
     <!-- <video width="630" height="315" controls>
         <source src="04 ProjVideoes/Tamiya Tank in action.mp4">
     </video> -->
-    <!-- <h4> For Enlarged View place cursor over the images</h4> -->
+    <h4> For Enlarged View place cursor over the images</h4>
 
     <div class="video-div"  id="box6" style="text-align: center;"> 
         
@@ -185,27 +206,37 @@ Ref: 03 https://www.ias.ac.in/article/fulltext/jess/132/0116 (Dr Ayyasami's name
     </video>  
     </div>
 
-    <h4> For Enlarged View place cursor over the images</h4>
+    <!-- <h4> For Enlarged View place cursor over the images</h4> -->
 
     <div class="item" id="box7" style="font-size: 19; color: blue;">
         The world's largest ammonite, a Parapuzosia seppenradensis, was discovered in Seppenrade, Germany, in 1895.<br>
-        The Museum of Natural History in Münster, Germany, is home to the world’s largest known ammonite fossil —<br>a colossal specimen of Parapuzosia seppenradensis measuring an astonishing 5.9 feet (1.8 meters) in diameter.<p>
+        The Museum of Natural History in Münster, Germany, is home to the world’s largest known ammonite fossil 
+        —<br>a colossal specimen of Parapuzosia seppenradensis measuring an astonishing 5.9 feet (1.8 meters) in diameter.<p>
             •	Species: It belongs to the species Parapuzosia seppenradensis. 
         </p> 
-    <img height="385" src="Worlds Largest Ammonites in German Museum.jpg">
+        <img height="385" src="Worlds Largest Ammonites in German Museum.JPG">
 
-   <a href="Brief on World's Largest Ammonites in Germany.htm">
-       <button id="button"> Click Here for more information about largest Ammonites</button></a> 
+        <a href="Ammonites Brief Largest in the World.htm">
+            <button id="button"> Click for more information about largest Ammonites</button></a> 
     </div>        
   
-        <div class="item" id="box4">For more information refer to links given above </div>
+    <div class="item" id="box4">For more information refer to links given above </div>
+    <!-- <h4> For Enlarged View place cursor over the images</h4> -->
 
-        <div class="item" id="box5">
-            <a href="AriyalurFossilsGallery.html">
-            <button id="button"> Click Here To Go Back to Gallery Page </button></a> 
-        </div>
+    <div class="button-container">
+        <a href="FeedBackGoogleSheetData.html">
+            <button id="browse-button">Give Your Feedback</a></button> 
+
+        <a href="AriyalurFossilsGallery.html">
+            <button id="browse-button"> Click Here To Go Back to Gallery Page </button></a> 
+            
+        <a href="AriyalurGeologyPage.html">  
+            <button id="browse-button" >Back to Main  Menu</button></a>         
+    </div>
     </div>   
 
 </body>
 </html>
+
+
 
