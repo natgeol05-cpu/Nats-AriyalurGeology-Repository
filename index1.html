@@ -20,7 +20,7 @@
         .header {
             background-color: #333;
             color: white;
-            padding: 20px 0;
+            padding: 0px 0;
             text-align: center;
             position: sticky;
             top: 0;
@@ -30,6 +30,16 @@
         .header h1 {
             margin: 0;
             font-size: 32px;
+        }
+
+        h1 {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        h2 {
+            margin-top: 0px;
+            margin-bottom: 0px;
         }
 
         .nav {
@@ -52,13 +62,13 @@
 
         /* Sections */
         .section {
-            padding: 50px 20px;
+            padding: 20px 20px;
             margin: 0 auto;
             max-width: 1500px;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            border-radius: 8px;
+            margin-bottom: 5px;
+            border-radius: 2px;
         }
 
         .section h2 {
@@ -106,7 +116,7 @@
 
         /* Skills Section */
         .skills {
-            display: flex;
+            display: ;
             /* flex-wrap: wrap; */
             justify-content: space-between;
         }
@@ -118,8 +128,9 @@
 
         /* Projects Section */
         .projects {
-            display: flex;
-            flex-wrap: wrap;
+            /* display: flex; */
+            /* flex-wrap: wrap; */
+            display: -space-;
             justify-content: space-between;
         }
 
@@ -208,7 +219,7 @@
             .skills .article,
             .projects .article {
                 width: 1500%;
-                margin-bottom: 20px;
+                margin-bottom: 5px;
             }
 
             .nav a {
@@ -250,28 +261,25 @@
                 font-size: 14px;
             }
 
-             .box {
-                 background-color: lightyellow;
-                 border: 2px solid blue;
-                 margim-bottom: 10px;
-                 margin-top:0;
-                 text-align: center;
-            }
-
             .box {
                 background-color: lightyellow;
                 border: 2px soloid blue;
-                /* padding:20px; */
                 margin-bottom: 10px;
                 margin-top: 0;
-                text-align: center;  
-               /* padding-left: 40px;             */
+                /* text-align: center; 
+                align-items: center;                 */
             } 
 
         }
 
         button {
             border-radius: 20px;
+        }
+        .container {
+            display: inline-flex;
+            justify-content: center;
+            margin-left: 50px;
+            gap: 60px;
         }
        
     </style>
@@ -294,7 +302,6 @@
         <p style="color: blue;">Welcome to my Home Page. I am a web developer with a passion for creating Contents and 
             Images in websites for Geology Students. <br>
             My Websites are at the end of this page
-        </p>
     </div>
 
     <div class="section" id="experience">
@@ -345,29 +352,30 @@ mobile-first design principles.</p>
         </div>
     </div>                             
 
-    <div class= "projects>                    
+    <div class= "projects">                        
         <h2>My Projects </h2>
-        <div class="article">
-            <div class="box">
+        <div class="container">
+            <div class="box" >
                 <h3 style="margin-bottom: 0;">Project 1</h3>
                 <img style="margin-bottom: 0;" src="Geologist's Field Tools.jpg" alt="Project 1"><br>
-                <button><a style="margin-top: 0;" href="AriyalurGeologyPage.html">Click for AriyalurGeologyPage</a></button>                
-            </div><p>
+                    <button><a style="margin-top: 0;" href="AriyalurGeologyPage.html">Click for AriyalurGeologyPage</a></button>                
+            </div>
 
             <div class="box">
                 <h3 style="margin-bottom: 0;">Project 2</h3>
-                <img src="Fossils Gallery.jpg" alt="Project 2"> <br>             
-                    <button><a href="AriyalurFossilsGallery.html">Click for Fossils Gallery</a></button>                
-            </div><p>
-
-            <div class="box">
-                <h3>Project 3</h3>                
+                <img height="170px" width="310px" src="Fossils Gallery.jpg" alt="Project 2"> <br>             
+                   <button><a href="AriyalurFossilsGallery.html">Click for Ariyalur Fossils Gallery</a></button>                
             </div>
 
             <div class="box">
-                <h3 style="margin-bottom: 0;" font-color="blue">Your Feedback</h3>
-                <button><a href="FeedBackGoogleSheetData.html">Click for Your Feedback</a></button>                
+                <!-- <h3 style="margin-bottom: 0;">Project 3</h3>    -->
+                 <h3 style="margin-bottom: 0;" font-color="blue">Your Feedback</h3>
+                <img  height="170px" width="220px" src="Feedback Form.JPG" alt="Feedbak Form"> <br>                   
+                  <button><a href="FeedBackGoogleSheetData.html">Click for Your Feedback</a></button>      
+            
             </div>
+        </div>
+    </div>   
     
 </body>
 </html>
