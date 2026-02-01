@@ -1,3 +1,5 @@
+Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetdb Created on 2May25.
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
     <title>Form-Google Sheets</title>
         <style>
             form {
-                max-width: 500px;
+                max-width: 600px;
                 background-color: bisque;
                 align-self:"center";
                 justify-content:"center";
@@ -48,22 +50,6 @@
                 width: 100%;
             }
 
-            .exit-container {
-                display: inline-flex;
-                gap: 60px;
-                align-self: center;
-                justify-content: center;
-                margin-left: 410px;
-            }
-
-            .exit-button {
-                
-                border-radius: 20px;
-                background-color: lightblue;
-                padding: 15px;
-                align-items: flex-end;
-            }
-
             h1 {
                  color: blue;
             }
@@ -74,15 +60,12 @@
     <h1 align="center">Feedback Form</h1>
 
    <div class="center-container">   
-        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post" onsubmit='setTimestamp()'>
-            <!-- Hidden input for the Timestamp -->
-            <input type="hidden" name="data[DATE]" id="timestamp-field">
-
+        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post">
             <label for="fullname">Your Full Name :</label>
             <input type="text" name="data[NAME]" id="uname" placeholder="name">
 
             <label for="email">Your Email :</label>
-            <input type="text" name="data[EMAIL]" id="uemail" placeholder="Must Enter Valid email" required>
+            <input type="text" name="data[EMAIL]" id="uemail" placeholder="email">
 
             <label for="phone">Your Phone Number :</label>
             <input type="number" name="data[PHONE]" id="uphone" placeholder="phone number">
@@ -100,25 +83,6 @@
     </div>
 
     <script>
-        function setTimestamp() {
-            const timestampInput = document.getElementById('timestamp-field');            
-            const currentDate = new Date();     
-
-            // Format the date as Date-Time (database/System Specific) Like This '20/1/2026, 12:21:49 pm'
-            timestampInput.value = currentDate.toLocaleString();     //  .toISOString();
-
-            //Format the date with the full month name
-           // const options = { year: 'numeric', month: 'long', day: 'numeric', hours: '2-digit', minute: '2-digit'};
-            const formattedDateTime = now.toLocaleString(undefined, options); // Using default locale
-
-            //Set the value of the hidden timestamp field
-            document.getElementById('timestamp-field').value =  timestampInput;     //  formattedDateTime;
-
-            // The form will now submit with the added Timestamp field to SheetDB
-        }
-    </script>
-
-    <script>
         var form = document.getElementById('sheetdb-form');
         form.addEventListener("submit", e => {
             e.preventDefault();
@@ -134,33 +98,7 @@
             });
         });        
     </script>
-
-    <p>
-    <div class="exit-container">
-        <!-- <h3 style="margin-bottom: 0;" font-color="blue">Back to Home Page</h3> -->
-         <a href="AriyalurGeologyPage.html">
-            <button class="exit-button" style= "color: blue; font-weight: bold; font-size: 25px;">
-                Click Here to Home Page</button></a>                
-        
-        <!-- <h3 style="margin-bottom: 0;" font-color="blue">Back to Fossils Gallery</h3> -->        
-        <a href="AriyalurFossilsGallery.html">
-            <button class="exit-button" style= "color: blue; font-weight: bold; font-size: 25px;"> 
-                Back to Fossil Gallery</button></a>
-    </div>
-    
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
