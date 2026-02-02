@@ -1,5 +1,3 @@
-Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetdb Created on 2May25.
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +48,21 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
                 width: 100%;
             }
 
+            .exit-container {
+                display: inline-flex;
+                gap: 60px;
+                align-self: center;
+                justify-content: center;
+                margin-left: 400px;
+            }
+
+            .exit-button {
+                border-radius: 20px;
+                background-color: lightblue;
+                padding: 15px;
+                align-items: flex-end;
+            }
+
             h1 {
                  color: blue;
             }
@@ -60,13 +73,16 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
     <h1 align="center">Feedback Form</h1>
 
    <div class="center-container">   
-        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post">
+        <form id="sheetdb-form" action="https://sheetdb.io/api/v1/kqqzvr8yr4uy3" method="post"  onsubmit="return handleSubmit(event)">
+            <!-- Hidden input for the Timestamp -->
+            <input type="hidden" name="data[DATE]" id="timestamp-field">
+
             <label for="fullname">Your Full Name :</label>
             <input type="text" name="data[NAME]" id="uname" placeholder="name">
-
+            
             <label for="email">Your Email :</label>
-            <input type="text" name="data[EMAIL]" id="uemail" placeholder="email">
-
+            <input type="text" name="data[EMAIL]" id="uemail-field" placeholder="Enter Valid email" required>
+        
             <label for="phone">Your Phone Number :</label>
             <input type="number" name="data[PHONE]" id="uphone" placeholder="phone number">
 
@@ -82,10 +98,88 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
         </form>
     </div>
 
-    <script>
+    <script>           
+            function setTimestamp() {                
+                console.log("Function one executed");
+                // perform actions
+                const timestampInput = document.getElementById('timestamp-field');            
+                const currentDate = new Date();    //.toLocalString(); 
+
+                // Format the date as Date-Time (database/System Specific) Like This '20/1/2026, 12:21:49 pm'
+                timestampInput.value = currentDate.toLocaleString();  //.toISOString(); give: 2026-01-19T04:57:43.222Z
+
+                //Format the date with the full month name
+                // const options = { year: 'numeric', month: 'long', day: 'numeric', hours: '2-digit', minute: '2-digit'};
+                const formattedDateTime = now.toLocaleString(undefined, options); // Using default locale
+
+                //Set the value of the hidden timestamp field
+                document.getElementById('timestamp-field').value =  timestampInput;  
+                // Code above Writes the DATE cell of SheetDB with Formatted Date and Time;
+
+                // The form will now submit with the added Timestamp field to SheetDB
+                return true; // or false for validation
+            }  
+    
+            // function checkForValidEmail() {
+            //     // Single function that calls all others, then assign that function to onsubmit
+            //     console.log("Function two called");  
+            //     // perform actions          
+            //     const form = document.getElementById('sheetdb-form');
+            //     form.addEventListener('submit', (e)=>{
+            //     //e.preventDefault();
+
+            //         const email = document.getElementById('uemail-field');
+            //         const val = email.value;
+
+            //         let message = '';
+            //         if(!email.includes('@')) {
+            //             message = 'Please enter a valid email'; 
+            //             return false; // or false for validation               
+            //             }else{
+            //                     message = 'Email is valid';
+            //                     return true; // or false for validation
+            //                 }
+            //         document.getElementById('message').innerText = message;
+                    
+            //         // return true; // or false for validation
+            //     })
+            // }        
+                       
+
+            function validateEmail() {
+                emailLabel.style.bottom = "45px";
+
+            if(!emailField.value.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)){
+                emailError.innerHTML = "Please enter a valid email";
+                emailField.style.borderBottomColor = "red";
+                emailError.style.top = "120%";
+                return true;
+            }
+
+        //    emailError.innerHTML = "";
+        //    emailField.style.borderBottomColor = "green";
+        //    emailError.style.top = "100%";
+        //    return true;
+    }
+
+            function handleSubmit(event) {
+                // You might want to prevent the default behavior first
+                // event.prevent.Default();
+
+                const resultOne = setTimestamp();
+                const resultTwo = validateEmail();
+                //const resultTwo = checkForValidEmail();
+
+                //Return the combined result if both to be true for submission
+                return resultOne && resultTwo;                
+            }                  
+    </script>
+
+    <!-- <script>
         var form = document.getElementById('sheetdb-form');
         form.addEventListener("submit", e => {
             e.preventDefault();
+
             fetch(form.action, {
                 method: "post",
                 body: new FormData(document.getElementById("sheetdb-form")),
@@ -97,8 +191,23 @@ Prog Code for DataToGoogleSheet.html – To send Data from Form to Google Sheetd
                 location.reload();
             });
         });        
-    </script>
+    </script> -->
+
+    <p>
+    <div class="exit-container">
+        <!-- <h3 style="margin-bottom: 0;" font-color="blue">Back to Home Page</h3> -->
+         <a href="AriyalurGeologyPage.html">
+            <button class="exit-button" style= "color: blue; font-weight: bolder; font-size: 25px">
+                Click Here to Home Page</button></a>                
+        
+        <!-- <h3 style="margin-bottom: 0;" font-color="blue">Back to Fossils Gallery</h3> -->        
+        <a href="AriyalurFossilsGallery.html">
+            <button class="exit-button" style= "color: blue; font-weight: bolder; font-size: 25px;" >
+                Back to Fossil Gallery</button></a>
+    </div>
+    
 </body>
 </html>
+
 
 
