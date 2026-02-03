@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Description of Trigonoarca abrupta - Bivalve </title>
+    <title>Description for Fossil Trigonoarca abrupta - Bivalve </title>
 <style>
         .grid {
             display: grid;
@@ -49,6 +49,25 @@
         #button:hover {
             background-color: goldenrod;
             color: white;
+        }
+
+        .button-container {
+            display: inline-flex;
+            gap: 60px;
+            align-self: center;
+            justify-content: center;
+        }
+
+        browse-button {
+            color: solid black;
+            height: 60px; width: 300px;
+            border-radius: 20px;
+            display: inline-block;  
+         }
+
+        #browse-button:hover {
+             background-color: goldenrod;
+             color: white;
         }
 
         h2 {
@@ -102,18 +121,18 @@
 <body>
     <div class="grid">
         
-        <div class="title-container" style="display: flex;" id="Box1" >
-    <input type="image" id="image" src="03 ProjImages/Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
+    <div class="title-container" style="display: flex;" id="Box1" >
+        <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
 
-    <a href="DescLucinabivalve.html">
-       <button id="button"> Click here To Go Back to Previous Specimen</button></a> 
+        <a href="DescLucinabivalve.html">
+            <button id="button"> Click here To Go Back to Previous Specimen</button></a> 
 
        <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3> 
 
-    <a href="DescCalycoceras.html">
-       <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
+        <a href="DescCalycoceras.html">
+            <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
 
-       <input type="image" src="03 ProjImages/Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px">    
+        <input type="image" id=image src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px">    
     </div>
 
         <div class="item"  id="box1" >
@@ -122,39 +141,43 @@
        
         <h4> For Enlarged View place cursor over the images</h4>
         <div class="fixed-div" id="box2">
-            <img height="200" src="03 ProjImages/Trigonoarca abrupta Watermarked.jpg">
-            <img height="200" src="03 ProjImages/Trigonoarca abrupta Scientiffic classification.jpg" > 
-            <!-- <img height="300px" src="03 ProjImages/Rastellum from Medagascar.jpg"> -->
+            <img height="200" src="Trigonoarca abrupta Watermarked.jpg">
+            <img height="200" src="Trigonoarca abrupta Scientiffic classification.jpg" > 
+            <!-- <img height="300px" src="Rastellum from Medagascar.jpg"> -->
         </div>
 
         <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
             <article>
                 Name: Trigonoarca abrupta - bivalve <br>
-    Formation: Bivales in all Formations of Ariyalur <br>
-    Locality: Exact location of specimen not available  <br>
-    Classification: Mollusca - Bivalvia -Arcida - Genus: Trigonoarca<br>
-    Age: Temporal Range 99.6 to 65.5 million year ago  <p>
+                Formation: Bivales in all Formations of Ariyalur <br>
+                Locality: Exact location of specimen not available  <br>
+                Classification: Mollusca - Bivalvia -Arcida - Genus: Trigonoarca<br>
+                Age: Temporal Range 99.6 to 65.5 million year ago  <p>
 
-                Trigonoarca abrupta" refers to a species of fossil bivalve belonging to the family Trigoniidae.<br> It is characterized by its trigonal (wedge-shaped) shell and the presence of abrupt, strong ribs on the flank. <br>The term "abrupta" likely refers to the abrupt or sharply defined nature of these ribs.  <p>
+                Trigonoarca abrupta" refers to a species of fossil bivalve belonging to the family Trigoniidae.<br> 
+                It is characterized by its trigonal (wedge-shaped) shell and the presence of abrupt, strong ribs on the flank.<br>
+                The term "abrupta" likely refers to the abrupt or sharply defined nature of these ribs.  <p>
  
-Fossils of Trigonoarca abrupta can be found in various locations and geological formations,<br> providing insights into past marine environments and the evolution of bivalves.  <p>
-    This specimen is collected by Geology students of Coimbatore Arts College during <br>field trip in March 2025, lead Dr B.Gowtham.<br>
-    And identification done by Dr Ayyasami.
-<br><br>
-Ref: https://en.wikipedia.org/wiki/Rastellum
+                Fossils of Trigonoarca abrupta can be found in various locations and geological formations,<br> 
+                providing insights into past marine environments and the evolution of bivalves.  <p>
+                This specimen is collected by Geology students of Coimbatore Arts College during <br>
+                field trip in March 2025, lead Dr B.Gowtham.<br>
+                And identification done by Dr Ayyasami.
+                <br><br>
+                Ref: https://en.wikipedia.org/wiki/Rastellum
             </article>
         </div>
 
         <div class="item" id="box4">For more information go online </div>
 
-        <div class="item" id="box5">
+        <div class="button-container">
+            <a href="FeedBackGoogleSheetData.html">
+                <button style= "color: blue; font-weight: bold;"  id="browse-button" >Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-       <button id="button"> Click Here To Go Back to Gallery Page </button></a> 
+                <button style= "color: blue; font-weight: bold;" id="browse-button"> Click Here To Go Back to Gallery Page </button>/a>             
+            <a href="AriyalurGeologyPage.html">  
+                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
         </div>
-
-        <!-- <div class="item" id="box6">item 6</div>
-        <div class="item" id="box7">item 7</div>
-        <div class="item" id="box8">item 8</div> -->
     </div>   
 
 </body>
