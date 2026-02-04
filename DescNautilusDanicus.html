@@ -50,10 +50,30 @@
             color: white;
         }
 
+        .button-container {
+            display: inline-flex;
+            gap: 60px;
+            align-self: center;
+            justify-content: center;
+        }
+
+        browse-button {
+            color: solid black;
+            height: 60px; width: 300px;
+            border-radius: 20px;
+            display: inline-block;  
+         }
+
+        #browse-button:hover {
+             background-color: goldenrod;
+             color: white;
+        }
+
         h2 {
             color: chocolate;
             margin-top: 0; 
             margin-bottom: 0;
+            font-size: 26px;
         }
 
         h3 {
@@ -66,6 +86,7 @@
             color: rgb(49, 3, 80); margin-top: 0;
             margin-bottom: 0;
             text-align: center;
+            font-size: 22px;
         }
 
         #box1 {
@@ -97,34 +118,29 @@
 </head>
 <body>
     <div class="grid">
+        <div class="title-container" style="display: flex;">        
+            <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
+            <a href="DescScaphites.html">
+                <button id="button"> Click To Go Back to Previous Specimen</button></a> 
 
-        <div class="title-container" style="display: flex;">
+            <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
 
-    <input type="image" id="image" src="03 ProjImages/Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-
-    <a href="DescScaphites.html">
-       <button id="button"> Click To Go Back to Previous Specimen</button></a> 
-
-       <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
-
-    <a href="DescPachydesmocerasPachydiscoide.html">
-       <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
-
-       <input type="image" src="03 ProjImages/Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
+            <a href="DescPachydesmocerasPachydiscoide.html">
+                <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
+            <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
     </div>
 
         <div class="item" id="box1">
             <h2>Nautilus danicus (hercoglossa)</h2>
         </div>
         
-        <div class="fixed-div" id="box2">
-            
-        <h4> For Enlarged View place cursor over the images</h4>
+        <div class="fixed-div" id="box2">            
+            <h4> For Enlarged View place cursor over the images</h4>
         
-            <img height="200" src="03 ProjImages/Nautilus danicus (hercoglossa).JPG">
-            <img height="200"src="03 ProjImages/Nautilus Scientific Classification.jpg">
-            <img height="200"src="03 ProjImages/Nautilus Fossil genera Eutrephoceras.jpg">  
-            <img height="200"src="03 ProjImages/Nautilus belauensis.jpg">
+            <img height="200" src="Nautilus danicus (hercoglossa).JPG">
+            <img height="200"src="Nautilus Scientific Classification.jpg">
+            <img height="200"src="Nautilus Fossil genera Eutrephoceras.jpg">  
+            <img height="200"src="Nautilus belauensis.jpg">
         </div>
 
         <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
@@ -133,15 +149,13 @@
             Locality:    <br>                   
             Classification ; Kingdom: Animalia ; Phylum: Mollusca ; Class: Cephalopoda ; Order: Nautilida ; family: Hercoglossidae.
             <p>
-
             <article>
                 Nautilus danicus is the former name of an extinct species of nautiloid,<br>
                 which is now taxonomically known as Hercoglossa danica. <br>
                 This organism is a significant index fossil used for identifying the Danian age <br>
                 (earliest Paleocene epoch) in geological strata, <br>
                 particularly in places like the Niniyur beds in India and parts of Denmark. 
-                <p>           
-
+                <p>        
                 Key facts about this species: <br>
                 •	Scientific Name: Hercoglossa danica (Schlotheim, 1820). <br>
                     The original name given by Schlotheim was Nautilus danicus.<br>
@@ -151,11 +165,9 @@
                 •	(early Paleocene) periods. Its presence helps define the boundary between the Cretaceous <br>
                     and Paleogene periods in some regions.<br>
                 •	Description: Like modern nautiluses, it had a coiled, chambered shell. 
-                <br>
-                
+                <br>                
                 Hercoglossa danica is one of many extinct shelled cephalopods, a group that was very diverse in ancient seas. 
                 <p>
-
                 Fossil records indicate that nautiloids have experienced minimal morphological changes over the past 500 million years. <br>
                 Many were initially straight-shelled, as in the extinct genus Lituites. They developed in the Late Cambrian period and <br>
                 became a significant group of sea predators during the Ordovician period. Certain species reached over 2.5 m (8 ft) in size.<br> 
@@ -169,24 +181,30 @@
 
                 Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<br>
                 Ref: 02 Wikipedia, the free encyclopedia. <br>
-                Ref: 03 https://www.geovirtual2.cl/geoliteratur/palCrednerNautilus02.htm
-
+                Ref: 03 https://www.geovirtual2.cl/geoliteratur/palCrednerNautilus02.html
             </article>
         </div>
 
         <div class="item" id="box6">   
-            <img height="200"src="03 ProjImages/Nautilus danicus Schloth.jpg">  
-             <img height="200"src="03 ProjImages/Drawing of Nautilus danicus Scloth.jpg"> 
-            <img class="img_deg" height="200" src="03 ProjImages/Nautilus with extended Tentacles.jpg">
-            <img height="200"src="03 ProjImages/Nautilus Swim Method.jpg">  
+            <img height="200"src="Nautilus danicus Schloth.jpg">  
+            <img height="200"src="Drawing of Nautilus danicus Scloth.jpg"> 
+            <img class="img_deg" height="200" src="Nautilus with extended Tentacles.jpg">
+            <img height="200"src="Nautilus Swim Method.jpg">  
         </div>          
 
         <div class="item" id="box4">For more information refer to links given above </div>
 
-        <div class="item" id="box5">
+        <div class="button-container">
+            <a href="FeedBackGoogleSheetData.html">
+                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                    Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-            <button id="button"> Click Here To Go Back to Gallery Page </button></a> 
-        </div>        
+                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
+                    Click To Go Back to Gallery Page </button></a>             
+            <a href="AriyalurGeologyPage.html">  
+                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                    Back to Main  Menu</button></a>         
+        </div>  
     </div>   
 
 </body>
