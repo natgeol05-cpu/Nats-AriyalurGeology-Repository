@@ -20,7 +20,7 @@
         .header {
             background-color: #333;
             color: white;
-            padding: 20px 0;
+            padding: 0px 0;
             text-align: center;
             position: sticky;
             top: 0;
@@ -30,6 +30,15 @@
         .header h1 {
             margin: 0;
             font-size: 32px;
+        }
+
+        h1 {
+            margin-top: 0px;
+        }
+
+        h2 {
+            margin-top: 0px;
+            margin-bottom: 0px;
         }
 
         .nav {
@@ -52,13 +61,13 @@
 
         /* Sections */
         .section {
-            padding: 50px 20px;
+            padding: 20px 20px;
             margin: 0 auto;
             max-width: 1500px;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            border-radius: 8px;
+            margin-bottom: 10px;
+            border-radius: 2px;
         }
 
         .section h2 {
@@ -101,7 +110,7 @@
         .article p {
             margin: 10px 0;
             font-size: 16px;
-            color: #666;
+            color: #666;c:\Users\captn\Visual Studio Code Projects\03 ProjImages\Pachydesmoceras pachydiscoide Tokyo.JPG
         }
 
         /* Skills Section */
@@ -249,110 +258,124 @@
             .footer a {
                 font-size: 14px;
             }
+
+             .box {
+                 background-color: lightyellow;
+                 border: 2px solid blue;
+                 margim-bottom: 10px;
+                 margin-top:0;
+                 text-align: center;
+            }
+
+            .box {
+                background-color: lightyellow;
+                border: 2px soloid blue;
+                /* padding:20px; */
+                margin-bottom: 10px;
+                margin-top: 0;
+                text-align: center;  
+               /* padding-left: 40px;             */
+            } 
+
         }
+
+        button {
+            border-radius: 20px;
+        }
+       
     </style>
 </head>
 
 <body>
     <div class="header">
-        <h1> 😂 Natesan Ramaswami</h1>
+        <h1>Natesan Ramaswami</h1>
         <div class="nav">
-            <a href="#about">About Me 🤔</a>
-            <a href="#experience">Experience 💼</a>
-            <a href="#skills">Skills 🛠️</a>
-            <a href="#portfolio">My Work 💻</a>
-            <a href="#contact">Contact 📬</a>
+            <a href="#about">About Me</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills </a>
+            <a href="#portfolio">My Work</a>
+            <a href="#contact">Contact </a>
         </div>
     </div>
 
     <div class="section" id="about">
-        <h2>About Me and My Website</h2>
-        <p>Welcome to my Home Page. I am a web developer with a passion for creating Contents and 
-            Images in websites for Geology Students. 🚀
+        <h2 style="color: blue;">About Me and My Website</h2>
+        <p style="color: blue;">Welcome to my Home Page. I am a web developer with a passion for creating Contents and 
+            Images in websites for Geology Students. <br>
+            My Websites are at the end of this page
         </p>
     </div>
 
     <div class="section" id="experience">
-        <h2>Experience 💼</h2>
+        <h2 style="color: blue;">Experience</h2>
         <div class="experience">
             <div class="article">
-                <h3>My experience in Geology Subject🖥️</h3>
-                <p>I am an Alumni of Geology Department, The Presidency College, Chennai.</p>
-                <p>Conducted classes, seminars and workshop for students from 2010-11 acadamic year. 
-                    During Covid period conducted many Webinars for students of many Colleges in Tamilnadu.</p>
+                <h3 style="color: blue;">My experience in Geology Subject</h3>
+                <p style="color: blue;">I am an Alumni of Geology Department, The Presidency College, Chennai.<br>
+                <p style="color: blue;">Conducted classes, seminars and workshop for students from 2010-11 acadamic year.<br> 
+                    During Covid period conducted many Webinars for students of many Colleges in Tamilnadu.
+                    <p style="color: blue;">
+                    Consistantly and continuously, I have been studying the Museum collections of Mollusca
+                    in different museums<br> accross the world, including USA, Japan, Hong Kong, Mexico, Bahamas, Hawaii,
+                    Nepal, and India.<br> These repeated visits to many museums gave me an opportunity to study the evolution, distribution   and palaeogeography of fossils musacks.  
             </div>
             <div class="article">
-                <h3>Web Developer  🌐</h3>
-                <p>Developed this Webste for college students. In fact created Website 'studyonline.com' in 2002 itself. </p>
-                <p>Now in 2025, India is considered Digital Capital of the World with deep penetration in common man's life, 
+                <h3 style="color: blue;">Web Developer</h3>
+                <p style="color: blue;">Developed this Webste for college students. In fact created Website 'studyonline.com' in 2002 itself. </p>
+                <p style="color: blue;">Now in 2025, India is considered Digital Capital of the World with deep penetration in common man's life, 
                     irrespective of level of education.</p>
-               <p> Considering this, my website is full with contents and images for Geology Studnts to learn a lot. 
-                Most of the content from Public Domins and most of images from my own large photo archive.</p>
+               <p style="color: blue;"> Considering this, my website is full with contents and images for Geology Studnts to learn lot. 
+                Most of the content from Public Domins and most of images from my own large photo library.</p>
             </div>
         </div>
     </div>
 
     <div class="section" id="skills">
-        <h2>Skills 🛠️</h2>
+        <h2 style="color: blue;">Skills 🛠️</h2>
         <div class="skills">
             <div class="article">
-                <h3>HTML & CSS 📄</h3>
-                <p>Used Visual Code in creating semantic and accessible HTML documents, styling with modern CSS techniques including Flexbox and Grid.</p>
+                <h3 style="color: blue;">HTML & CSS 📄</h3>
+                <p style="color: blue;">Used Visual Code in creating semantic and accessible HTML documents, styling with modern CSS techniques including Flexbox and Grid.</p>
             </div>
             <div class="article">
-                <h3>JavaScript & React ⚛️</h3>
-                <p>Experienced in building interactive user interfaces Website after undergoing two years of intesive course in Javascript. Now, in Visual Code this Website is developed for students.</p>
+                <h3 style="color: blue;">JavaScript & React</h3>
+                <p style="color: blue;">Experienced in building interactive user interfaces Website after undergoing two years of intesive course in Javascript. Now, in Visual Code this Website is developed for students.</p>
             </div>
             <div class="article">
-                <h3>Responsive Design 📱</h3>
-                <p>  This websit is developed keeping in mind the spread of digitilisation and multiple divices used by all. So desinged this responsive websites that work across a variety of devices using media queries and
+                <h3 style="color: blue;">Responsive Design</h3>
+                <p style="color: blue;">  This websit is developed keeping in mind the spread of digitilisation and multiple divices used by all. So desinged this responsive websites that work across a variety of devices using media queries and
 mobile-first design principles.</p>
             </div>
             <div class="article">
-                <h3>Version Control with Git 🌳</h3>
-                <p>Comfortable with Git for version control, including branching, merging, and collaborating on projects
+                <h3 style="color: blue;">Version Control with Git</h3>
+                <p style="color: blue;">Comfortable with Git for version control, including branching, merging, and collaborating on projects
                     using GitHub or GitLab.</p>
             </div>
         </div>
-    </div>
+    </div>                             
 
-    <div class="section" id="portfolio">
-        <h2>My Projects 🎨</h2>
-        <div class="projects">
-            <div class="article">
-                <h3>Project 1 🎯</h3>
-                <img src="../images/p1.png" alt="Project 1">
-                <p>This is a description of my first project. 💡</p>
-            </div>
-            <div class="article">
-                <h3>Project 2 🛠️</h3>
-                <img src="../images/p2.png" alt="Project 2">
-                <p>This is a description of my second project. 🔧</p>
-            </div>
-            <div class="article">
-                <h3>Project 3 🌐</h3>
-                <img src="../images/p3.png" alt="Project 3">
-                <p>This is a description of my third project. 🌍</p>
-            </div>
-        </div>
-    </div>
+    <div class= "projects>                    
+        <h2>My Projects </h2>
+        <div class="article">
+            <div class="box">
+                <h3 style="margin-bottom: 0;">Project 1</h3>
+                <img style="margin-bottom: 0;" src="Geologist's Field Tools.jpg" alt="Project 1"><br>
+                <button><a style="margin-top: 0;" href="AriyalurGeologyPage.html">Click for AriyalurGeologyPage</a></button>                
+            </div><p>
 
-    <div class="section" id="contact">
-        <h2>Contact Me 🤝</h2>
-        <form class="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            <button type="submit">Send 🚀</button>
-        </form>
-    </div>
+            <div class="box">
+                <h3 style="margin-bottom: 0;">Project 2</h3>
+                <img src="Fossils Gallery.jpg" alt="Project 2"> <br>             
+                    <button><a href="AriyalurFossilsGallery.html">Click for Fossils Gallery</a></button>                
+            </div><p>
 
-    <div class="footer">
-        <p>Connect with me on <a href="#">LinkedIn</a> | <a href="#">GitHub</a> 🌐</p>
-    </div>
+            <div class="box">
+                <h3>Project 3</h3>                
+            </div>
+
+            <div class="box">
+                <h3 style="margin-bottom: 0;" font-color="blue">Your Feedback</h3>
+                <button><a href="FeedBackGoogleSheetData.html">Click for Your Feedback</a></button>                
+            </div>    
 </body>
-
 </html>
