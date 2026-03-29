@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            background-color: #f4f4f4;
+            /* background-color: lightskyblue; */
             color: #333;
         }
 
@@ -34,11 +34,13 @@
 
         h1 {
             margin-top: 0px;
+            margin-bottom: 0px;
         }
 
         h2 {
             margin-top: 0px;
             margin-bottom: 0px;
+            margin-left: 50px;      
         }
 
         .nav {
@@ -64,9 +66,9 @@
             padding: 20px 20px;
             margin: 0 auto;
             max-width: 1500px;
-            background-color: white;
+            background-color: #E4E3DB;  /*Lightbluishgrey */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             border-radius: 2px;
         }
 
@@ -87,7 +89,8 @@
         /* Experience Section */
         .experience {
             display: flex;
-            /* flex-wrap: wrap; */ grid-column: 15px;
+            /* flex-wrap: wrap;  */
+            grid-column: 15px;
             justify-content: space-between;
         }
 
@@ -115,8 +118,7 @@
 
         /* Skills Section */
         .skills {
-            display: flex;
-            /* flex-wrap: wrap; */
+            display: flex ;
             justify-content: space-between;
         }
 
@@ -125,23 +127,24 @@
             margin-bottom: 20px;
         }
 
-        /* Projects Section */
+        Projects Section
         .projects {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            width: fit-content;
+            display: inline-block;           
+            /* justify-content: space-between; */
+            
         }
 
         .projects .article {
-            width: 31%;
+            width: auto;     /*  31%;  */
             text-align: center;
         }
 
         .projects .article img {
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 150px;
-        }
+            width: auto;         /*150px;  */
+        } 
 
         /* Contact Section */
         .contact-form {
@@ -157,28 +160,6 @@
             color: #333;
         }
 
-        .contact-form input,
-        .contact-form textarea {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .contact-form button {
-            padding: 15px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
         .contact-form button:hover {
             background-color: #555;
         }
@@ -188,7 +169,7 @@
             background-color: #333;
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 5px;
             margin-top: 20px;
             font-size: 16px;
         }
@@ -216,8 +197,7 @@
             .experience .article,
             .skills .article,
             .projects .article {
-                width: 1500%;
-                margin-bottom: 20px;
+                width: 1500%;                 
             }
 
             .nav a {
@@ -226,7 +206,7 @@
             }
 
             .section {
-                padding: 30px 15px;
+                padding: 2px 15px;
             }
 
             .header h1 {
@@ -259,28 +239,24 @@
                 font-size: 14px;
             }
 
-             .box {
-                 background-color: lightyellow;
-                 border: 2px solid blue;
-                 margim-bottom: 10px;
-                 margin-top:0;
-                 text-align: center;
-            }
-
             .box {
                 background-color: lightyellow;
                 border: 2px soloid blue;
-                /* padding:20px; */
                 margin-bottom: 10px;
                 margin-top: 0;
-                text-align: center;  
-               /* padding-left: 40px;             */
             } 
 
         }
 
         button {
-            border-radius: 20px;
+                border-radius: 20px;
+        }
+        .container {
+                display: inline-flex;
+                justify-content: center;
+                margin-left: 50px;
+                gap: 60px;
+                font-size: larger;
         }
        
     </style>
@@ -299,33 +275,34 @@
     </div>
 
     <div class="section" id="about">
-        <h2 style="color: blue;">About Me and My Website</h2>
-        <p style="color: blue;">Welcome to my Home Page. I am a web developer with a passion for creating Contents and 
+        <h2 style="color: blue;">About Me and My Websites</h2>
+        <p style="color: blue;">Welcome to my Home Page.<br>
+            I am a web developer with a passion for creating Contents and 
             Images in websites for Geology Students. <br>
-            My Websites are at the end of this page
-        </p>
-    </div>
+            To view the Websites click the buttons at the end of this page.<br>
+            Viewed best in Desktops, Laptops, LCD Moniters and in landscape mode in iPad and Smart phones.</p>
+    <div>
 
-    <div class="section" id="experience">
+    <div class="section" id="experience"style=>
         <h2 style="color: blue;">Experience</h2>
         <div class="experience">
             <div class="article">
                 <h3 style="color: blue;">My experience in Geology Subject</h3>
                 <p style="color: blue;">I am an Alumni of Geology Department, The Presidency College, Chennai.<br>
-                <p style="color: blue;">Conducted classes, seminars and workshop for students from 2010-11 acadamic year.<br> 
-                    During Covid period conducted many Webinars for students of many Colleges in Tamilnadu.
-                    <p style="color: blue;">
+                    Conducted classes, seminars and workshop for students from 2010-11 acadamic <br> year. 
+                    During Covid period (2020 to 2024) conducted many Webinars for students of many Colleges in Tamilnadu.
                     Consistantly and continuously, I have been studying the Museum collections of Mollusca
-                    in different museums<br> accross the world, including USA, Japan, Hong Kong, Mexico, Bahamas, Hawaii,
-                    Nepal, and India.<br> These repeated visits to many museums gave me an opportunity to study the evolution, distribution   and palaeogeography of fossils musacks.  
+                    in different museums accross the world, including USA, Japan, Hong Kong, Mexico, Bahamas, Hawaii,
+                    Nepal, and India.<br> These repeated visits to many museums gave me an opportunity to study the evolution, 
+                    distribution   and palaeogeography of fossils musacks.  </p>
             </div>
             <div class="article">
                 <h3 style="color: blue;">Web Developer</h3>
-                <p style="color: blue;">Developed this Webste for college students. In fact created Website 'studyonline.com' in 2002 itself. </p>
-                <p style="color: blue;">Now in 2025, India is considered Digital Capital of the World with deep penetration in common man's life, 
-                    irrespective of level of education.</p>
-               <p style="color: blue;"> Considering this, my website is full with contents and images for Geology Studnts to learn lot. 
-                Most of the content from Public Domins and most of images from my own large photo library.</p>
+                <p style="color: blue;">Developed this Webste for college students. In fact I created Website 'studyonline.com' 
+                in 2002 itself. Now in 2025, India is considered Digital Capital of the World with deep penetration in citizen's 
+                life, irrespective of level of education.<br><br>
+                Considering this, my websites are packed with contents and images for Geology Studnts to learn lot. 
+                Most of the contents are from Public Domins and most of images are from my own large photo library.</p>
             </div>
         </div>
     </div>
@@ -352,30 +329,63 @@ mobile-first design principles.</p>
                     using GitHub or GitLab.</p>
             </div>
         </div>
-    </div>                             
+    </div>            
+    
+    
+    div class="section" id="experience"style=>
+        <h2 style="color: blue;">Experience</h2>
+        <div class="experience">
+            <div class="article">
+                <h3 style="color: blue;">Special Note</h3>
+                <p style="color: blue;">Developed this Website for not only college students, but also for others. There are many who are fossil collecters
+                    and they are interesing to know more about their fossils. We start and initiate you to identify Cretaceous vertebrate and invertebrate
+                    fossils in South India by experts available on the field.
+                <p style="color: blue;">
+                    We encourage all to send clear photograph of front, sides and top views with a wooden scale indicating the size.
+                    Every specimen should have a field visible number on it. GPS data is desirable. If a querry on such fossils are received, there wiil be
+                    a reply posted on this website within a reasonable period (say, within two weeks).</p>
+            </div>
+            <div class="article">
+                <h3 style="color: blue;">Get your Fossils Identified</h3>
+                <p style="color: blue;">Click the button  below -(Form for Fossil Details) - to get the form for giving details and photos. 
+                     Printout this form paste the photos and send a digital copy to email ID: natgeol05@gmail.com.
+                <p>
+                <div class="box" >
+                    <h3 style="margin-bottom: 0;" font-color="blue">Your Fossils's details</h3>
+                    <!-- <img   src="Feedback Form.JPG" alt="Form for Fossil Details"> <br>                    -->
+                    <button><a style="font-size: 18px; font-weight: bold;" href="FormYourFossilsDetails.html">Form for Fossil Details</a></button>                    
+            </div>      
+            </div>
+        </div>
+    </div>
 
-    <div class= "projects>                    
-        <h2>My Projects </h2>
-        <div class="article">
-            <div class="box">
+    <div class= "projects">                        
+        <h2 style="margin-bottom: 0;">My Projects </h2>
+        <div class="container">
+            <div class="box" >
                 <h3 style="margin-bottom: 0;">Project 1</h3>
                 <img style="margin-bottom: 0;" src="Geologist's Field Tools.jpg" alt="Project 1"><br>
-                <button><a style="margin-top: 0;" href="AriyalurGeologyPage.html">Click for AriyalurGeologyPage</a></button>                
-            </div><p>
-
+                    <button><a style="font-size: 18px; font-weight: bold;"  style="margin-top: 0;" href="AriyalurGeologyPage.html">Click for AriyalurGeologyPage</a></button>                
+        </div>
             <div class="box">
                 <h3 style="margin-bottom: 0;">Project 2</h3>
-                <img src="Fossils Gallery.jpg" alt="Project 2"> <br>             
-                    <button><a href="AriyalurFossilsGallery.html">Click for Fossils Gallery</a></button>                
-            </div><p>
-
-            <div class="box">
-                <h3>Project 3</h3>                
+                <img  src="Fossils Gallery.jpg" alt="Project 2"> <br>         
+                   <button><a style="font-size: 18px; font-weight: bold;"  href="AriyalurFossilsGallery.html">Click for Ariyalur Fossils Gallery</a></button>                
             </div>
-
-            <div class="box">
-                <h3 style="margin-bottom: 0;" font-color="blue">Your Feedback</h3>
-                <button><a href="FeedBackGoogleSheetData.html">Click for Your Feedback</a></button>                
-            </div>    
+              
+            <div class="box" >
+                <!-- <h3 style="margin-bottom: 0;">Project 3</h3>    -->
+                 <h3 style="margin-bottom: 0;" font-color="blue">Your Feedback</h3>
+                <img   src="Feedback Form.JPG" alt="Feedbak Form"> <br>                   
+                  <button><a style="font-size: 18px; font-weight: bold;" href="FeedBackGoogleSheetData.html">Click for Your Feedback</a></button>                    
+            </div>            
+        </div>
+        <hr style="height: 10px; background-color: maroon;">  
+    </div>   
+    
 </body>
 </html>
+
+
+
+
