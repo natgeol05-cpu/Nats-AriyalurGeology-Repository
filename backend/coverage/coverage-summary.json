@@ -1,3 +1,0 @@
-{"total": {"lines":{"total":109,"covered":94,"skipped":0,"pct":86.23},"statements":{"total":113,"covered":97,"skipped":0,"pct":85.84},"functions":{"total":10,"covered":9,"skipped":0,"pct":90},"branches":{"total":79,"covered":63,"skipped":0,"pct":79.74},"branchesTrue":{"total":0,"covered":0,"skipped":0,"pct":"Unknown"}}
-,"/home/runner/work/Nats-AriyalurGeology-Repository/Nats-AriyalurGeology-Repository/backend/server.js": {"lines":{"total":109,"covered":94,"skipped":0,"pct":86.23},"functions":{"total":10,"covered":9,"skipped":0,"pct":90},"statements":{"total":113,"covered":97,"skipped":0,"pct":85.84},"branches":{"total":79,"covered":63,"skipped":0,"pct":79.74}}
-}
