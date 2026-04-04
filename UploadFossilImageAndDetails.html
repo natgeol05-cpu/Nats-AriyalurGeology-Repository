@@ -4,36 +4,216 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Fossil Image and Details</title>
+    <style>
+        h1 { color: blue; }
+        h3 { color: red; }
+
+        .curved-button {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 15px;
+            margin: 8px;
+            cursor: pointer;
+            background-color: lightblue;
+            border: 1px solid #ccc;
+        }
+        .curved-button:hover { background-color: #87ceeb; }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background: bisque;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #aaa;
+        }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input[type="text"], input[type="file"], textarea {
+            width: 100%; padding: 8px; margin-top: 4px;
+            border-radius: 5px; border: 1px solid #999;
+            background-color: rgb(250, 250, 127);
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            margin-top: 15px;
+            background-color: gray; color: white;
+            padding: 10px 25px; border: none;
+            border-radius: 20px; cursor: pointer;
+        }
+        input[type="submit"]:hover { background-color: rgb(230, 142, 48); }
+        #statusMessage { margin-top: 10px; font-weight: bold; }
+    </style>
 </head>
-<style>
-    h1 {
-        color: blue;
-    }
-
-    h3 {
-        color: red;
-    }
-
-</style>
 <body>
-
     <div align="center">
         <h1>Upload your Fossil Image and fill Details in the form</h1>
-        <h3>Please upload image files only in jpeg, jpg, JPG, JPG, png, PNG, gif, Gif formats. </h3>
+        <h3>Please upload image files only in jpeg, jpg, png, gif formats.</h3>
         <h3>A Field Number at least on one Image of the Specimen is a Must</h3>
         <h3>The image file size should be below 250KB</h3>
-        <h3>To Reduce Image Size you may use https://www.reduceimages.com a Online Free website</h3>
-        <h3>Maximum Upload per Specimen only Four images</h3>
-        <h3>After Uploading Images of a Specimen immediately fill up the Fossil Details Form </h3><p>
-
-            <!-- <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href="http://localhost:8080/RegistrationForm/RegistrationForm.html"> Form for Registration</a></button>    -->
-            
-            <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href=" http://localhost:8080/imagesUploadToDB/AddImage.jsp"> Add your Image</a></button>               
-            
-                              
-            <button class="curved-button" style="margin-left: 25px; font-size: 15px;"> <a href=" http://localhost:8080/FossilDetailsForm/FossilForm.html">Form for Fossil Details</a></button>  
-
+        <h3>To Reduce Image Size you may use <a href="https://www.reduceimages.com" target="_blank">reduceimages.com</a></h3>
+        <h3>Maximum Upload per Specimen: Four images</h3>
+        <h3>After Uploading Images of a Specimen immediately fill up the Fossil Details Form</h3>
     </div>
-    
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Step 1: Upload Images                                                -->
+    <!-- ------------------------------------------------------------------ -->
+    <form id="imageUploadForm">
+        <h2 style="color:blue;">Step 1 – Upload Fossil Images</h2>
+        <label for="fossilImages">Select images (max 4, each ≤ 250 KB):</label>
+        <input type="file" id="fossilImages" name="images" accept=".jpg,.jpeg,.png,.gif" multiple required>
+
+        <div style="text-align:center;">
+            <input type="submit" value="Upload Images">
+        </div>
+        <p id="uploadStatus"></p>
+    </form>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Step 2: Fossil Details Form                                         -->
+    <!-- ------------------------------------------------------------------ -->
+    <form id="fossilDetailsForm">
+        <h2 style="color:blue;">Step 2 – Fossil Details Form</h2>
+
+        <label for="fossilName">Fossil Name: *</label>
+        <input type="text" id="fossilName" placeholder="e.g. Ammonite" required>
+
+        <label for="scientificName">Scientific Name:</label>
+        <input type="text" id="scientificName" placeholder="e.g. Acanthoceras">
+
+        <label for="fieldNumber">Field Number: *</label>
+        <input type="text" id="fieldNumber" placeholder="e.g. F001" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="e.g. Ariyalur, Tamil Nadu">
+
+        <label for="age">Geological Age:</label>
+        <input type="text" id="age" placeholder="e.g. Cretaceous">
+
+        <label for="collectorName">Collector Name:</label>
+        <input type="text" id="collectorName" placeholder="Your name">
+
+        <label for="description">Description:</label>
+        <textarea id="description" rows="4" placeholder="Describe the fossil..."></textarea>
+
+        <div style="text-align:center;">
+            <input type="submit" value="Submit Fossil Details">
+        </div>
+        <p id="detailsStatus"></p>
+    </form>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- Registration link                                                    -->
+    <!-- ------------------------------------------------------------------ -->
+    <div align="center" style="margin: 20px;">
+        <button class="curved-button" onclick="window.location.href='FeedBackGoogleSheetData.html'">
+            Registration / Feedback Form
+        </button>
+    </div>
+
+    <script>
+        // ---------------------------------------------------------------------------
+        // Configuration – update API_BASE_URL after deploying the backend
+        // ---------------------------------------------------------------------------
+        const API_BASE_URL = 'https://your-backend.vercel.app';
+
+        // Tracks image URLs returned after Step 1 upload
+        let uploadedImageUrls = [];
+
+        // ---- Step 1: Image Upload ---------------------------------------------
+        document.getElementById('imageUploadForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const statusEl = document.getElementById('uploadStatus');
+            const fileInput = document.getElementById('fossilImages');
+            const files = fileInput.files;
+
+            if (!files || files.length === 0) {
+                statusEl.style.color = 'red';
+                statusEl.textContent = 'Please select at least one image.';
+                return;
+            }
+            if (files.length > 4) {
+                statusEl.style.color = 'red';
+                statusEl.textContent = 'Maximum 4 images allowed.';
+                return;
+            }
+
+            for (const file of files) {
+                if (file.size > 250 * 1024) {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = `File "${file.name}" exceeds 250 KB.`;
+                    return;
+                }
+            }
+
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append('images', file);
+            }
+
+            statusEl.style.color = 'blue';
+            statusEl.textContent = 'Uploading images…';
+
+            try {
+                const response = await fetch(API_BASE_URL + '/api/fossils/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+                if (result.success) {
+                    uploadedImageUrls = result.urls;
+                    statusEl.style.color = 'green';
+                    statusEl.textContent = `✅ ${result.urls.length} image(s) uploaded successfully! Now fill in Step 2.`;
+                } else {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = 'Upload failed: ' + (result.error || 'Unknown error');
+                }
+            } catch (err) {
+                statusEl.style.color = 'red';
+                statusEl.textContent = 'Error: ' + err.message;
+            }
+        });
+
+        // ---- Step 2: Fossil Details -------------------------------------------
+        document.getElementById('fossilDetailsForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const statusEl = document.getElementById('detailsStatus');
+
+            const payload = {
+                fossilName:     document.getElementById('fossilName').value.trim(),
+                scientificName: document.getElementById('scientificName').value.trim(),
+                fieldNumber:    document.getElementById('fieldNumber').value.trim(),
+                location:       document.getElementById('location').value.trim(),
+                age:            document.getElementById('age').value.trim(),
+                collectorName:  document.getElementById('collectorName').value.trim(),
+                description:    document.getElementById('description').value.trim(),
+                imageUrls:      uploadedImageUrls,
+            };
+
+            statusEl.style.color = 'blue';
+            statusEl.textContent = 'Submitting details…';
+
+            try {
+                const response = await fetch(API_BASE_URL + '/api/fossils/details', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const result = await response.json();
+                if (result.success) {
+                    statusEl.style.color = 'green';
+                    statusEl.textContent = '✅ Fossil details saved successfully! Thank you.';
+                    document.getElementById('fossilDetailsForm').reset();
+                    uploadedImageUrls = [];
+                } else {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = 'Error: ' + (result.error || 'Unknown error');
+                }
+            } catch (err) {
+                statusEl.style.color = 'red';
+                statusEl.textContent = 'Error: ' + err.message;
+            }
+        });
+    </script>
 </body>
 </html>
