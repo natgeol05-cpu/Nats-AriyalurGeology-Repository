@@ -133,8 +133,8 @@ if [[ ! -f "$BACKEND_PKG" ]]; then
     "express": "^4.18.3",
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
-    "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.10",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.4",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
