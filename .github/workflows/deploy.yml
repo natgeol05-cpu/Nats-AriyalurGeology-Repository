@@ -1,0 +1,189 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Minimal permissions for the GITHUB_TOKEN
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # ──────────────────────────────────────────────────────────────
+  # JOB 1: Validate – lint HTML, validate JSON, run API tests
+  # ──────────────────────────────────────────────────────────────
+  validate:
+    name: Validate Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate vercel.json
+        run: node -e "
+          const fs = require('fs');
+          try {
+            JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+            console.log('vercel.json is valid JSON');
+          } catch (e) {
+            console.error('vercel.json is invalid:', e.message);
+            process.exit(1);
+          }
+        "
+
+      - name: Check API files exist
+        run: |
+          echo "Checking required API files..."
+          for f in api/register.js api/fossil-details.js api/upload-image.js api/health.js; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Missing required file: $f"
+              exit 1
+            else
+              echo "  ✓ $f"
+            fi
+          done
+
+      - name: Check HTML forms exist
+        run: |
+          echo "Checking required HTML form files..."
+          for f in RegistrationForm.html FossilDetailsForm.html UploadFossilImageAndDetails.html; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Missing required HTML file: $f"
+              exit 1
+            else
+              echo "  ✓ $f"
+            fi
+          done
+
+      - name: Check for localhost references in HTML
+        run: |
+          echo "Checking for localhost references in HTML files..."
+          if grep -rn "localhost:8080" *.html 2>/dev/null; then
+            echo "ERROR: Found localhost:8080 references. Update these to use cloud API endpoints."
+            exit 1
+          else
+            echo "  ✓ No localhost:8080 references found"
+          fi
+
+      - name: Lint API JavaScript files
+        run: |
+          echo "Checking JavaScript syntax..."
+          for f in api/*.js; do
+            node --check "$f" && echo "  ✓ $f" || exit 1
+          done
+
+      - name: Run API unit tests
+        run: npm test
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+  # ──────────────────────────────────────────────────────────────
+  # JOB 2: Deploy to Vercel Preview (Pull Requests)
+  # ──────────────────────────────────────────────────────────────
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Vercel Preview
+        id: vercel-deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Comment Preview URL on PR
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 **Preview Deployment Ready!**\n\nURL: ${{ steps.vercel-deploy.outputs.preview-url }}\n\nTest the forms:\n- [Registration Form](${{ steps.vercel-deploy.outputs.preview-url }}/RegistrationForm.html)\n- [Fossil Details Form](${{ steps.vercel-deploy.outputs.preview-url }}/FossilDetailsForm.html)\n- [API Health Check](${{ steps.vercel-deploy.outputs.preview-url }}/api/health)`
+            })
+
+  # ──────────────────────────────────────────────────────────────
+  # JOB 3: Deploy to Vercel Production (main branch push)
+  # ──────────────────────────────────────────────────────────────
+  deploy-production:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Vercel Production
+        id: vercel-prod
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Health check after production deploy
+        run: |
+          echo "Running health check on production deployment..."
+          sleep 15
+          DEPLOY_URL="${{ steps.vercel-prod.outputs.preview-url }}"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${DEPLOY_URL}/api/health")
+          if [ "$STATUS" = "200" ]; then
+            echo "  ✓ Health check passed (HTTP $STATUS)"
+          else
+            echo "  ✗ Health check failed (HTTP $STATUS)"
+            echo "  Check the deployment logs at https://vercel.com/dashboard"
+            exit 1
+          fi
