@@ -1,15 +1,22 @@
-// tests/api.test.js
+// tests/api.test.cjs
 // Unit tests for the Ariyalur Geology API functions
 // Tests run without a real Supabase connection by mocking the client
+//
+// The @supabase/supabase-js mock is provided by the ESM loader hook in
+// supabase-hook.mjs (registered via tests/mock-loader.mjs via --import).
+// Mock state is shared via a temporary JSON file so this CJS file can
+// control it between test cases.
 
 'use strict';
 
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
 // ──────────────────────────────────────────────────────────────
-// Mock @supabase/supabase-js so tests don't need real credentials
-// Must be set up BEFORE requiring the API handlers
+// Mock config – written to a temp file that the ESM hook reads
 // ──────────────────────────────────────────────────────────────
-const Module = require('module');
-const _originalLoad = Module._load;
+const CONFIG_FILE = path.join(os.tmpdir(), 'supabase-mock-config.json');
 
 const supabaseMockConfig = {
   insertError: null,
@@ -17,56 +24,23 @@ const supabaseMockConfig = {
   selectError: null,
 };
 
-Module._load = function (request, parent, isMain) {
-  if (request === '@supabase/supabase-js') {
-    return {
-      createClient: () => ({
-        from: () => ({
-          insert: () => ({
-            select: () => Promise.resolve({
-              data: supabaseMockConfig.insertError
-                ? null
-                : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
-                     registered_at: new Date().toISOString(),
-                     fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }],
-              error: supabaseMockConfig.insertError,
-            }),
-          }),
-          select: () => ({
-            eq: () => ({
-              order: () => Promise.resolve({
-                data: supabaseMockConfig.selectError ? null : [],
-                error: supabaseMockConfig.selectError,
-              }),
-            }),
-          }),
-        }),
-        storage: {
-          from: () => ({
-            upload: () => Promise.resolve({
-              data: supabaseMockConfig.uploadError ? null : { path: 'fossils/test.jpg' },
-              error: supabaseMockConfig.uploadError,
-            }),
-            getPublicUrl: () => ({
-              data: { publicUrl: 'https://example.supabase.co/storage/v1/object/public/fossil-images/fossils/test.jpg' },
-            }),
-          }),
-          listBuckets: () => Promise.resolve({ error: null }),
-        },
-      }),
-    };
-  }
-  return _originalLoad.apply(this, arguments);
-};
+function updateConfig() {
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(supabaseMockConfig));
+}
+
+// Initialise config file before loading handlers
+updateConfig();
 
 // Set env vars before loading handlers
 process.env.SUPABASE_URL = 'https://mock.supabase.co';
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'mock-service-key';
 
-const registerHandler = require('../api/register');
-const fossilHandler   = require('../api/fossil-details');
-const uploadHandler   = require('../api/upload-image');
-const healthHandler   = require('../api/health');
+// Node 22+ allows require() of synchronous ES modules; the .default property
+// holds the exported handler function.
+const registerHandler = require('../api/register').default;
+const fossilHandler   = require('../api/fossil-details').default;
+const uploadHandler   = require('../api/upload-image').default;
+const healthHandler   = require('../api/health').default;
 
 // ──────────────────────────────────────────────────────────────
 // Minimal test helpers
@@ -152,6 +126,7 @@ async function runTests() {
 
   await test('returns 201 on successful registration', async () => {
     supabaseMockConfig.insertError = null;
+    updateConfig();
     const res = mockRes();
     await registerHandler(mockReq('POST', {
       name: 'Dr Ayyaswami', email: 'ayyaswami@geology.com', phone: '9999999999',
@@ -163,10 +138,12 @@ async function runTests() {
 
   await test('returns 500 on database error', async () => {
     supabaseMockConfig.insertError = { message: 'DB error' };
+    updateConfig();
     const res = mockRes();
     await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
     assert(res._status === 500, 'Expected 500, got ' + res._status);
     supabaseMockConfig.insertError = null;
+    updateConfig();
   });
 
   // ════════════════════════════════════════════════════════════
@@ -198,6 +175,7 @@ async function runTests() {
 
   await test('returns 201 on successful fossil submission', async () => {
     supabaseMockConfig.insertError = null;
+    updateConfig();
     const res = mockRes();
     await fossilHandler(mockReq('POST', {
       fossil_name:     'Calycoceras',
@@ -252,6 +230,7 @@ async function runTests() {
 
   await test('returns 201 on successful image upload', async () => {
     supabaseMockConfig.uploadError = null;
+    updateConfig();
     // Minimal valid base64 JPEG (1x1 pixel, ~100 bytes decoded)
     const tiny1x1 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=';
     const res = mockRes();

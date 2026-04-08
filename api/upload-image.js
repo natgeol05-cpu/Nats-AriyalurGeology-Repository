@@ -1,7 +1,7 @@
 // api/upload-image.js - Vercel Serverless Function
 // Handles fossil image uploads to Supabase Storage
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,7 +13,7 @@ const MAX_SIZE_BYTES = 250 * 1024;
 // Max images per specimen
 const MAX_IMAGES = 4;
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -92,4 +92,4 @@ module.exports = async (req, res) => {
     console.error('Unexpected error:', err);
     return res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
   }
-};
+}

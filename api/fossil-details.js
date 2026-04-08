@@ -1,12 +1,12 @@
 // api/fossil-details.js - Vercel Serverless Function
 // Handles fossil specimen detail submissions and stores data in Supabase
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
@@ -105,4 +105,4 @@ module.exports = async (req, res) => {
     console.error('Unexpected error:', err);
     return res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
   }
-};
+}
