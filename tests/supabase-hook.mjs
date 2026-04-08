@@ -10,12 +10,11 @@ import { join } from 'node:path';
 
 export const MOCK_CONFIG_FILE = join(tmpdir(), 'supabase-mock-config.json');
 
+// Interpolate the resolved path so the mock source does not need to recompute it.
 const MOCK_SOURCE = `
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { tmpdir } from 'node:os';
 
-const CONFIG_FILE = join(tmpdir(), 'supabase-mock-config.json');
+const CONFIG_FILE = ${JSON.stringify(MOCK_CONFIG_FILE)};
 
 function getConfig() {
   try {
