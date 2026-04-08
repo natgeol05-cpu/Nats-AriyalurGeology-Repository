@@ -1,12 +1,12 @@
 // api/health.js - Vercel Serverless Function
 // Health check endpoint to verify the backend API and database connectivity
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -44,4 +44,4 @@ module.exports = async (req, res) => {
     status.storage = 'error';
     return res.status(503).json(status);
   }
-};
+}
