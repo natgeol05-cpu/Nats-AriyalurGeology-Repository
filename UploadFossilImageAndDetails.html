@@ -4,36 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Fossil Image and Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: lightcyan; padding: 20px; }
+        h1 { color: blue; text-align: center; }
+        h3 { color: red; text-align: center; }
+        .info-box {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 20px; }
+        .curved-button {
+            border-radius: 20px;
+            border: none;
+            height: 38px;
+            padding: 0 20px;
+            font-size: 15px;
+            cursor: pointer;
+            background-color: darkorange;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .curved-button:hover { background-color: chocolate; }
+        .back-btn { background-color: steelblue; }
+        .back-btn:hover { background-color: navy; }
+    </style>
 </head>
-<style>
-    h1 {
-        color: blue;
-    }
-
-    h3 {
-        color: red;
-    }
-
-</style>
 <body>
 
     <div align="center">
         <h1>Upload your Fossil Image and fill Details in the form</h1>
         <h3>Please upload image files only in jpeg, jpg, JPG, JPG, png, PNG, gif, Gif formats. </h3>
         <h3>A Field Number at least on one Image of the Specimen is a Must</h3>
+        <h3>The image should display it's relative size, so use scale or common item while taking pictures</h3>    
         <h3>The image file size should be below 250KB</h3>
         <h3>To Reduce Image Size you may use https://www.reduceimages.com a Online Free website</h3>
         <h3>Maximum Upload per Specimen only Four images</h3>
         <h3>After Uploading Images of a Specimen immediately fill up the Fossil Details Form </h3><p>
 
-            <!-- <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href="http://localhost:8080/RegistrationForm/RegistrationForm.html"> Form for Registration</a></button>    -->
-            
-            <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href=" http://localhost:8080/imagesUploadToDB/AddImage.jsp"> Add your Image</a></button>               
-            
-                              
-            <button class="curved-button" style="margin-left: 25px; font-size: 15px;"> <a href=" http://localhost:8080/FossilDetailsForm/FossilForm.html">Form for Fossil Details</a></button>  
+        <div class="info-box">
+            <h3 style="margin-top:0;">Image Upload Guidelines</h3>
+            <p>Please upload image files only in <strong>JPEG, JPG, PNG, GIF</strong> formats.</p>
+            <p>A <strong>Field Number</strong> visible on at least one image of the specimen is required.</p>
+            <p>Each image file size must be <strong>below 250 KB</strong>.</p>
+            <p>To reduce image size, use
+                <a href="https://www.reduceimages.com" target="_blank">reduceimages.com</a> — a free online tool.
+            </p>
+            <p>Maximum <strong>4 images</strong> per specimen.</p>
+            <p>After uploading your images, immediately fill in the <strong>Fossil Details Form</strong>.</p>
 
+            <div class="btn-row">
+                <a class="curved-button" href="RegistrationForm.html">Register First</a>
+                <a class="curved-button" href="FossilDetailsForm.html">Fossil Details &amp; Image Upload</a>
+                <a class="curved-button back-btn" href="AriyalurGeologyPage.html">← Back to Main Menu</a>
+            </div>
+        </div>
     </div>
-    
+
 </body>
 </html>

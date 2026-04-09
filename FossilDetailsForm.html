@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fossil Details Form – Ariyalur Geology</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightcyan;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: brown; text-align: center; }
+        h3 { color: darkblue; text-align: center; }
+        .form-container {
+            max-width: 650px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        legend {
+            font-weight: bold;
+            color: brown;
+            font-size: 16px;
+            padding: 0 8px;
+        }
+        label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+            background-color: lightyellow;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea { height: 90px; resize: vertical; }
+        .required-star { color: red; }
+        .error-msg {
+            color: red;
+            font-size: 13px;
+            margin-top: 3px;
+            display: none;
+        }
+        .hint {
+            font-size: 12px;
+            color: gray;
+            margin-top: 3px;
+        }
+        #imagePreviewArea {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .preview-img {
+            width: 120px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid brown;
+            border-radius: 8px;
+        }
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        button {
+            border-radius: 20px;
+            border: none;
+            height: 38px;
+            padding: 0 20px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        #submitBtn  { background-color: darkorange; color: white; flex: 1; }
+        #submitBtn:hover { background-color: chocolate; }
+        #resetBtn   { background-color: lightgray; color: #333; }
+        #backBtn {
+            background-color: steelblue;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            height: 38px;
+            padding: 0 20px;
+            font-size: 15px;
+        }
+        #backBtn:hover { background-color: navy; }
+        #statusMsg {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error   { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .spinner { display: none; text-align: center; margin-top: 10px; color: gray; }
+        .upload-progress {
+            font-size: 13px;
+            color: steelblue;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fossil Details Submission Form</h1>
+    <h3>Share your fossil discoveries with the Ariyalur Geology community</h3>
+
+    <div class="form-container">
+        <form id="fossilForm" novalidate>
+
+            <!-- Specimen Info -->
+            <fieldset>
+                <legend>Specimen Information</legend>
+
+                <label for="fossilName">
+                    Fossil Name / Common Name <span class="required-star">*</span>
+                </label>
+                <input type="text" id="fossilName" name="fossilName" placeholder="e.g. Calycoceras, Belemnite">
+                <div class="error-msg" id="fossilNameError">Fossil name is required.</div>
+
+                <label for="genusSpecies">Genus and Species (Scientific Name)</label>
+                <input type="text" id="genusSpecies" name="genusSpecies" placeholder="e.g. Calycoceras newboldi">
+
+                <label for="formation">Formation / Rock Unit</label>
+                <input type="text" id="formation" name="formation" placeholder="e.g. Trichinopoly Group, Niniyur Formation">
+
+                <label for="locality">Locality (Collection Site)</label>
+                <input type="text" id="locality" name="locality" placeholder="e.g. Ariyalur, Karai, Kulakkalnattam">
+
+                <label for="age">Geological Age</label>
+                <select id="age" name="age">
+                    <option value="">-- Select Age --</option>
+                    <option value="Cenomanian">Cenomanian</option>
+                    <option value="Turonian">Turonian</option>
+                    <option value="Coniacian">Coniacian</option>
+                    <option value="Santonian">Santonian</option>
+                    <option value="Campanian">Campanian</option>
+                    <option value="Maastrichtian">Maastrichtian</option>
+                    <option value="Cretaceous (undifferentiated)">Cretaceous (undifferentiated)</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="classification">Classification / Taxonomy</label>
+                <input type="text" id="classification" name="classification" placeholder="e.g. Mollusca – Cephalopoda – Ammonoidea">
+
+                <label for="fieldNumber">
+                    Field Number <span class="required-star">*</span>
+                </label>
+                <input type="text" id="fieldNumber" name="fieldNumber" placeholder="e.g. NAT-2024-001">
+                <div class="hint">A Field Number visible on at least one specimen image is required.</div>
+                <div class="error-msg" id="fieldNumberError">Field number is required.</div>
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                    placeholder="Describe the fossil: preservation state, notable features, measurements…"></textarea>
+            </fieldset>
+
+            <!-- Image Upload -->
+            <fieldset>
+                <legend>Fossil Images (max 4, each ≤ 250 KB)</legend>
+
+                <label for="fossilImages">Select Images</label>
+                <input type="file" id="fossilImages" name="fossilImages"
+                    accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG,.gif,.GIF"
+                    multiple>
+                <div class="hint">
+                    Formats: JPEG, JPG, PNG, GIF — max 250 KB each.
+                    Use <a href="https://www.reduceimages.com" target="_blank">reduceimages.com</a> to compress images.
+                </div>
+                <div class="error-msg" id="imagesError"></div>
+                <div class="upload-progress" id="uploadProgress"></div>
+                <div id="imagePreviewArea"></div>
+            </fieldset>
+
+            <!-- Collector Info -->
+            <fieldset>
+                <legend>Collector Information</legend>
+
+                <label for="collectorName">
+                    Your Name <span class="required-star">*</span>
+                </label>
+                <input type="text" id="collectorName" name="collectorName" placeholder="Full name">
+                <div class="error-msg" id="collectorNameError">Collector name is required.</div>
+
+                <label for="collectorEmail">
+                    Your Email <span class="required-star">*</span>
+                </label>
+                <input type="email" id="collectorEmail" name="collectorEmail" placeholder="example@domain.com">
+                <div class="error-msg" id="collectorEmailError">Please enter a valid email.</div>
+            </fieldset>
+
+            <div class="btn-row">
+                <button type="submit" id="submitBtn">Submit Fossil Details</button>
+                <button type="button" id="resetBtn" onclick="resetForm()">Clear Form</button>
+                <a href="UploadFossilImageAndDetails.html" id="backBtn">← Back</a>
+            </div>
+        </form>
+
+        <div class="spinner" id="spinner">Uploading images and saving details… please wait.</div>
+        <div id="statusMsg"></div>
+    </div>
+
+    <script>
+        // Replace with your Vercel deployment URL once deployed.
+        const API_BASE = window.location.origin;
+        const UPLOAD_API   = API_BASE + '/api/upload-image';
+        const DETAILS_API  = API_BASE + '/api/fossil-details';
+        const MAX_FILES    = 4;
+        const MAX_SIZE     = 250 * 1024; // 250 KB in bytes
+
+        const form              = document.getElementById('fossilForm');
+        const statusMsg         = document.getElementById('statusMsg');
+        const spinner           = document.getElementById('spinner');
+        const submitBtn         = document.getElementById('submitBtn');
+        const imageInput        = document.getElementById('fossilImages');
+        const imagePreviewArea  = document.getElementById('imagePreviewArea');
+        const imagesError       = document.getElementById('imagesError');
+        const uploadProgress    = document.getElementById('uploadProgress');
+
+        function showError(el, msg) { el.textContent = msg; el.style.display = 'block'; }
+        function hideError(el)      { el.style.display = 'none'; }
+
+        // Live image preview with validation
+        imageInput.addEventListener('change', () => {
+            imagePreviewArea.innerHTML = '';
+            imagesError.style.display = 'none';
+            const files = Array.from(imageInput.files);
+
+            if (files.length > MAX_FILES) {
+                showError(imagesError, `Maximum ${MAX_FILES} images allowed. You selected ${files.length}.`);
+                imageInput.value = '';
+                return;
+            }
+
+            for (const file of files) {
+                if (file.size > MAX_SIZE) {
+                    showError(imagesError,
+                        `"${file.name}" is ${(file.size/1024).toFixed(0)} KB – over the 250 KB limit. ` +
+                        'Please compress it at reduceimages.com.'
+                    );
+                    imageInput.value = '';
+                    imagePreviewArea.innerHTML = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-img';
+                    img.title = file.name;
+                    imagePreviewArea.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function validateForm() {
+            let valid = true;
+
+            if (!document.getElementById('fossilName').value.trim()) {
+                showError(document.getElementById('fossilNameError'), 'Fossil name is required.');
+                valid = false;
+            } else {
+                hideError(document.getElementById('fossilNameError'));
+            }
+
+            if (!document.getElementById('fieldNumber').value.trim()) {
+                showError(document.getElementById('fieldNumberError'), 'Field number is required.');
+                valid = false;
+            } else {
+                hideError(document.getElementById('fieldNumberError'));
+            }
+
+            if (!document.getElementById('collectorName').value.trim()) {
+                showError(document.getElementById('collectorNameError'), 'Your name is required.');
+                valid = false;
+            } else {
+                hideError(document.getElementById('collectorNameError'));
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            const email = document.getElementById('collectorEmail').value.trim();
+            if (!email || !emailRegex.test(email)) {
+                showError(document.getElementById('collectorEmailError'), 'Please enter a valid email.');
+                valid = false;
+            } else {
+                hideError(document.getElementById('collectorEmailError'));
+            }
+
+            return valid;
+        }
+
+        function resetForm() {
+            form.reset();
+            imagePreviewArea.innerHTML = '';
+            ['fossilNameError','fieldNumberError','collectorNameError',
+             'collectorEmailError','imagesError'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            statusMsg.style.display = 'none';
+            uploadProgress.textContent = '';
+        }
+
+        // Upload a single image file and return its public URL
+        async function uploadImage(file, fieldNumber) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    try {
+                        const response = await fetch(UPLOAD_API, {
+                            method:  'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                file_name:    file.name,
+                                file_type:    file.type,
+                                file_size:    file.size,
+                                file_data:    e.target.result,
+                                field_number: fieldNumber,
+                            }),
+                        });
+                        const result = await response.json();
+                        if (response.ok && result.success) {
+                            resolve(result.public_url);
+                        } else {
+                            reject(new Error(result.error || 'Upload failed'));
+                        }
+                    } catch (err) {
+                        reject(err);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            submitBtn.disabled = true;
+            spinner.style.display = 'block';
+            statusMsg.style.display = 'none';
+
+            const files = Array.from(imageInput.files);
+            const fieldNumber = document.getElementById('fieldNumber').value.trim();
+            const uploadedUrls = [];
+
+            try {
+                // Upload each image and collect public URLs
+                for (let i = 0; i < files.length; i++) {
+                    uploadProgress.textContent = `Uploading image ${i + 1} of ${files.length}…`;
+                    const url = await uploadImage(files[i], fieldNumber);
+                    uploadedUrls.push(url);
+                }
+                uploadProgress.textContent = '';
+
+                // Submit fossil details with image URLs
+                const payload = {
+                    fossil_name:     document.getElementById('fossilName').value.trim(),
+                    genus_species:   document.getElementById('genusSpecies').value.trim(),
+                    formation:       document.getElementById('formation').value.trim(),
+                    locality:        document.getElementById('locality').value.trim(),
+                    age:             document.getElementById('age').value,
+                    classification:  document.getElementById('classification').value.trim(),
+                    description:     document.getElementById('description').value.trim(),
+                    collector_name:  document.getElementById('collectorName').value.trim(),
+                    collector_email: document.getElementById('collectorEmail').value.trim(),
+                    field_number:    fieldNumber,
+                    image_urls:      uploadedUrls,
+                };
+
+                const response = await fetch(DETAILS_API, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(payload),
+                });
+                const result = await response.json();
+
+                statusMsg.style.display = 'block';
+                if (response.ok && result.success) {
+                    statusMsg.className = 'success';
+                    statusMsg.textContent = result.message;
+                    form.reset();
+                    imagePreviewArea.innerHTML = '';
+                } else {
+                    statusMsg.className = 'error';
+                    statusMsg.textContent = result.error || 'Submission failed. Please try again.';
+                }
+            } catch (err) {
+                statusMsg.style.display = 'block';
+                statusMsg.className = 'error';
+                statusMsg.textContent = 'Network error: ' + err.message + '. Please check your connection.';
+                uploadProgress.textContent = '';
+            } finally {
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

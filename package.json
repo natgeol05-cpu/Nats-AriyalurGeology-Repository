@@ -1,0 +1,30 @@
+{
+  "name": "ariyalur-geology-backend",
+  "version": "1.0.0",
+  "description": "Serverless backend API for the Ariyalur Geology website – handles registrations, fossil detail submissions, and image uploads via Supabase.",
+  "type": "module",
+  "main": "api/health.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "test": "node --import ./tests/mock-loader.mjs tests/api.test.cjs"
+  },
+  "keywords": [
+    "geology",
+    "ariyalur",
+    "fossil",
+    "supabase",
+    "vercel"
+  ],
+  "author": "natgeolo5@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.101.1"
+  },
+  "devDependencies": {
+    "vercel": "^37.4.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
