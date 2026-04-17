@@ -19,7 +19,9 @@
   "author": "natgeolo5@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "@supabase/supabase-js": "^2.101.1"
+    "@supabase/supabase-js": "^2.101.1",
+    "bcryptjs": "^3.0.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "vercel": "^37.4.2"
