@@ -98,8 +98,7 @@ export default function RegistrationForm({ additionalFields = [] }: Registration
       setFormValues(initialFormState);
       setExtraValues(Object.fromEntries(normalizedFields.map((field) => [field.name, ''])));
       setFieldErrors({});
-    } catch (error) {
-      console.error('Registration request failed:', error);
+    } catch {
       setStatusMessage({ type: 'error', text: 'Unexpected error occurred while submitting the form.' });
     } finally {
       setIsSubmitting(false);
