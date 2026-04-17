@@ -1,8 +1,6 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
-import bcrypt from 'bcryptjs';
-import { getSupabaseClient } from '../lib/supabase';
 import { registrationFormSchema, type RegistrationFormValues } from '../lib/validation';
 
 type AdditionalField = {
@@ -14,7 +12,6 @@ type AdditionalField = {
 };
 
 type RegistrationFormProps = {
-  tableName?: string;
   additionalFields?: AdditionalField[];
 };
 
@@ -24,7 +21,7 @@ const initialFormState: RegistrationFormValues = {
   full_name: '',
 };
 
-export default function RegistrationForm({ tableName = 'registrations', additionalFields = [] }: RegistrationFormProps) {
+export default function RegistrationForm({ additionalFields = [] }: RegistrationFormProps) {
   const [formValues, setFormValues] = useState<RegistrationFormValues>(initialFormState);
   const [extraValues, setExtraValues] = useState<Record<string, string>>(
     Object.fromEntries(additionalFields.map((field) => [field.name, '']))
@@ -79,36 +76,32 @@ export default function RegistrationForm({ tableName = 'registrations', addition
 
     try {
       setIsSubmitting(true);
-      const hashedPassword = await bcrypt.hash(parsed.data.password, 12);
-      const now = new Date().toISOString();
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: parsed.data.email,
+          password: parsed.data.password,
+          full_name: parsed.data.full_name,
+          extraValues,
+        }),
+      });
 
-      const payload: Record<string, unknown> = {
-        email: parsed.data.email.trim().toLowerCase(),
-        password_hash: hashedPassword,
-        full_name: parsed.data.full_name?.trim() || null,
-        created_at: now,
-        updated_at: now,
-      };
+      const result = (await response.json()) as { error?: string; message?: string };
 
-      for (const field of normalizedFields) {
-        const value = extraValues[field.name]?.trim();
-        payload[field.name] = value || null;
-      }
-
-      const supabase = getSupabaseClient();
-      const { error } = await supabase.from(tableName).insert([payload]);
-
-      if (error) {
-        if (error.code === '23505') {
+      if (!response.ok) {
+        if (response.status === 409) {
           setFieldErrors((prev) => ({ ...prev, email: 'This email is already registered' }));
           setStatusMessage({ type: 'error', text: 'Email already exists. Please use a different email.' });
           return;
         }
-        setStatusMessage({ type: 'error', text: error.message || 'Registration failed. Please try again.' });
+        setStatusMessage({ type: 'error', text: result.error || 'Registration failed. Please try again.' });
         return;
       }
 
-      setStatusMessage({ type: 'success', text: 'Registration submitted successfully.' });
+      setStatusMessage({ type: 'success', text: result.message || 'Registration submitted successfully.' });
       setFormValues(initialFormState);
       setExtraValues(Object.fromEntries(normalizedFields.map((field) => [field.name, ''])));
       setFieldErrors({});

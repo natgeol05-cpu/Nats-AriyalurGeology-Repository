@@ -11,12 +11,7 @@ export function getSupabaseClient() {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables');
   }
 
-  supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
+  supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
   return supabaseClient;
 }
