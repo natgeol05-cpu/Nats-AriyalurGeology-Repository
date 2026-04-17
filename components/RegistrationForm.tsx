@@ -2,17 +2,10 @@
 
 import { useMemo, useState, type FormEvent } from 'react';
 import { registrationFormSchema, type RegistrationFormValues } from '../lib/validation';
-
-type AdditionalField = {
-  name: string;
-  label: string;
-  required?: boolean;
-  placeholder?: string;
-  type?: 'text' | 'number';
-};
+import type { AdditionalRegistrationField } from '../lib/registration-config';
 
 type RegistrationFormProps = {
-  additionalFields?: AdditionalField[];
+  additionalFields?: AdditionalRegistrationField[];
 };
 
 const initialFormState: RegistrationFormValues = {

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { getSupabaseClient } from '../../../lib/supabase';
 import { registrationFormSchema } from '../../../lib/validation';
+import { additionalRegistrationFields } from '../../../lib/registration-config';
 
 export async function POST(request: Request) {
   try {
@@ -31,16 +32,17 @@ export async function POST(request: Request) {
     const now = new Date().toISOString();
     const password_hash = await bcrypt.hash(parsed.data.password, 12);
     const payload: Record<string, unknown> = {
-      email: parsed.data.email.trim().toLowerCase(),
+      email: parsed.data.email,
       password_hash,
       full_name: parsed.data.full_name?.trim() || null,
       created_at: now,
       updated_at: now,
     };
 
+    const allowedAdditionalColumns = new Set(additionalRegistrationFields.map((field) => field.name));
     if (body.extraValues && typeof body.extraValues === 'object') {
       for (const [key, value] of Object.entries(body.extraValues)) {
-        if (/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(key)) {
+        if (allowedAdditionalColumns.has(key)) {
           payload[key] = value?.trim() ? value.trim() : null;
         }
       }
