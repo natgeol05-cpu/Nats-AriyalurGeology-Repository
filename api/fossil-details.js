@@ -63,9 +63,8 @@ export default async function handler(req, res) {
 
   const resolvedFossilName = fossil_name || name;
   const resolvedCollectorName = collector_name || submitted_by;
-  const resolvedCollectorEmail = collector_email
-    ? (collector_email.trim().toLowerCase() || null)
-    : null;
+  const normalizedCollectorEmail = collector_email ? collector_email.trim().toLowerCase() : '';
+  const resolvedCollectorEmail = normalizedCollectorEmail || null;
   const resolvedGenusSpecies = genus_species || scientific_name;
   const resolvedLocality = locality || location;
   const resolvedAge = age || period;
