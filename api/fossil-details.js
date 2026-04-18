@@ -44,26 +44,35 @@ export default async function handler(req, res) {
 
   const {
     fossil_name,
+    name,
     genus_species,
+    scientific_name,
     formation,
     locality,
+    location,
     age,
+    period,
     classification,
     description,
     collector_name,
+    submitted_by,
     collector_email,
     field_number,
     image_urls,
   } = req.body || {};
 
-  if (!fossil_name || !collector_name || !collector_email) {
+  const resolvedFossilName = fossil_name || name;
+  const resolvedCollectorName = collector_name || submitted_by;
+  const resolvedCollectorEmail = collector_email ? collector_email.trim().toLowerCase() : null;
+
+  if (!resolvedFossilName || !resolvedCollectorName) {
     return res.status(400).json({
-      error: 'Fossil name, collector name, and email are required.',
+      error: 'Fossil name and collector name are required.',
     });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if (!emailRegex.test(collector_email)) {
+  if (resolvedCollectorEmail && !emailRegex.test(resolvedCollectorEmail)) {
     return res.status(400).json({ error: 'Invalid email address format.' });
   }
 
@@ -74,15 +83,15 @@ export default async function handler(req, res) {
       .from('fossil_details')
       .insert([
         {
-          fossil_name: fossil_name.trim(),
-          genus_species: genus_species ? genus_species.trim() : null,
+          fossil_name: resolvedFossilName.trim(),
+          genus_species: (genus_species || scientific_name) ? (genus_species || scientific_name).trim() : null,
           formation: formation ? formation.trim() : null,
-          locality: locality ? locality.trim() : null,
-          age: age ? age.trim() : null,
+          locality: (locality || location) ? (locality || location).trim() : null,
+          age: (age || period) ? (age || period).trim() : null,
           classification: classification ? classification.trim() : null,
           description: description ? description.trim() : null,
-          collector_name: collector_name.trim(),
-          collector_email: collector_email.trim().toLowerCase(),
+          collector_name: resolvedCollectorName.trim(),
+          collector_email: resolvedCollectorEmail,
           field_number: field_number ? field_number.trim() : null,
           image_urls: image_urls || [],
           status: 'pending',
@@ -98,7 +107,7 @@ export default async function handler(req, res) {
 
     return res.status(201).json({
       success: true,
-      message: `Thank you, ${collector_name}! Fossil details for "${fossil_name}" submitted successfully. It will appear in the gallery after review.`,
+      message: `Thank you, ${resolvedCollectorName}! Fossil details for "${resolvedFossilName}" submitted successfully. It will appear in the gallery after review.`,
       submission_id: data[0].id,
     });
   } catch (err) {
