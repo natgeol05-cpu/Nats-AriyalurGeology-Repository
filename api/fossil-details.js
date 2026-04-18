@@ -63,7 +63,12 @@ export default async function handler(req, res) {
 
   const resolvedFossilName = fossil_name || name;
   const resolvedCollectorName = collector_name || submitted_by;
-  const resolvedCollectorEmail = collector_email ? collector_email.trim().toLowerCase() : null;
+  const resolvedCollectorEmail = collector_email
+    ? (collector_email.trim().toLowerCase() || null)
+    : null;
+  const resolvedGenusSpecies = genus_species || scientific_name;
+  const resolvedLocality = locality || location;
+  const resolvedAge = age || period;
 
   if (!resolvedFossilName || !resolvedCollectorName) {
     return res.status(400).json({
@@ -84,10 +89,10 @@ export default async function handler(req, res) {
       .insert([
         {
           fossil_name: resolvedFossilName.trim(),
-          genus_species: (genus_species || scientific_name) ? (genus_species || scientific_name).trim() : null,
+          genus_species: resolvedGenusSpecies ? resolvedGenusSpecies.trim() : null,
           formation: formation ? formation.trim() : null,
-          locality: (locality || location) ? (locality || location).trim() : null,
-          age: (age || period) ? (age || period).trim() : null,
+          locality: resolvedLocality ? resolvedLocality.trim() : null,
+          age: resolvedAge ? resolvedAge.trim() : null,
           classification: classification ? classification.trim() : null,
           description: description ? description.trim() : null,
           collector_name: resolvedCollectorName.trim(),
