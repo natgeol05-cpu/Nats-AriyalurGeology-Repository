@@ -39,8 +39,11 @@ process.env.SUPABASE_SERVICE_ROLE_KEY = 'mock-service-key';
 // holds the exported handler function.
 const registerHandler = require('../api/register').default;
 const fossilHandler   = require('../api/fossil-details').default;
+const fossilsAliasHandler = require('../api/fossils').default;
 const uploadHandler   = require('../api/upload-image').default;
+const uploadAliasHandler = require('../api/upload').default;
 const healthHandler   = require('../api/health').default;
+const rootHealthHandler = require('../health').default;
 
 // ──────────────────────────────────────────────────────────────
 // Minimal test helpers
@@ -192,6 +195,20 @@ async function runTests() {
     assert(res._body.submission_id, 'Expected submission_id');
   });
 
+  await test('accepts compatibility payload on /api/fossils alias', async () => {
+    const res = mockRes();
+    await fossilsAliasHandler(mockReq('POST', {
+      name: 'Ammonite',
+      scientific_name: 'Calycoceras newboldi',
+      period: 'Turonian',
+      location: 'Ariyalur',
+      description: 'Well-preserved specimen',
+      submitted_by: 'Research Student',
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+  });
+
   // ════════════════════════════════════════════════════════════
   // /api/upload-image
   // ════════════════════════════════════════════════════════════
@@ -243,6 +260,17 @@ async function runTests() {
     assert(res._body.public_url, 'Expected public_url');
   });
 
+  await test('returns 201 on successful image upload via /api/upload alias', async () => {
+    const tiny1x1 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=';
+    const res = mockRes();
+    await uploadAliasHandler(mockReq('POST', {
+      file_name: 'fossil.jpg', file_type: 'image/jpeg',
+      file_data: tiny1x1, field_number: 'NAT-2024-001',
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+  });
+
   // ════════════════════════════════════════════════════════════
   // /api/health
   // ════════════════════════════════════════════════════════════
@@ -251,6 +279,13 @@ async function runTests() {
   await test('returns 200 with all systems ok', async () => {
     const res = mockRes();
     await healthHandler(mockReq('GET'), res);
+    assert(res._status === 200, 'Expected 200, got ' + res._status);
+    assert(res._body.api === 'ok', 'Expected api: ok');
+  });
+
+  await test('returns 200 on /health root alias', async () => {
+    const res = mockRes();
+    await rootHealthHandler(mockReq('GET'), res);
     assert(res._status === 200, 'Expected 200, got ' + res._status);
     assert(res._body.api === 'ok', 'Expected api: ok');
   });
@@ -275,4 +310,3 @@ runTests().catch(function (err) {
   console.error('Test runner error:', err);
   process.exit(1);
 });
-
