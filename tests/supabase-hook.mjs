@@ -27,19 +27,22 @@ function getConfig() {
 export function createClient() {
   return {
     from: () => ({
-      insert: () => ({
-        select: () => {
-          const c = getConfig();
-          return Promise.resolve({
-            data: c.insertError
-              ? null
-              : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
-                   registered_at: new Date().toISOString(),
-                   fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }],
-            error: c.insertError || null,
-          });
-        },
-      }),
+      insert: (rows) => {
+        globalThis.supabaseMockLastInsertedRows = rows;
+        return {
+          select: () => {
+            const c = getConfig();
+            return Promise.resolve({
+              data: c.insertError
+                ? null
+                : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
+                     registered_at: new Date().toISOString(),
+                     fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }],
+              error: c.insertError || null,
+            });
+          },
+        };
+      },
       select: () => ({
         eq: () => ({
           order: () => {

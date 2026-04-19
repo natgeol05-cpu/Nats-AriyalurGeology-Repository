@@ -95,7 +95,7 @@ async function runTests() {
   // ════════════════════════════════════════════════════════════
   console.log('\n/api/register');
 
-  await test('returns 405 for unsupported methods', async () => {
+  await test('returns 405 for PATCH requests', async () => {
     const res = mockRes();
     await registerHandler(mockReq('PATCH'), res);
     assert(res._status === 405, 'Expected 405, got ' + res._status);
@@ -147,6 +147,11 @@ async function runTests() {
     assert(res._body.success === true, 'Expected success: true');
     assert(res._body.registration_id, 'Expected registration_id');
     assert(res._body.message.includes('Dr Ayyaswami'), 'Expected trimmed name in message');
+    assert(Array.isArray(global.supabaseMockLastInsertedRows), 'Expected captured insert payload array');
+    assert(global.supabaseMockLastInsertedRows.length > 0, 'Expected captured insert payload to be non-empty');
+    assert(global.supabaseMockLastInsertedRows[0].name === 'Dr Ayyaswami', 'Expected name to be trimmed before insert');
+    assert(global.supabaseMockLastInsertedRows[0].email === 'ayyaswami@geology.com', 'Expected email to be normalized before insert');
+    assert(global.supabaseMockLastInsertedRows[0].status === 'pending', 'Expected registration status to be pending');
   });
 
   await test('returns 500 on database error', async () => {
