@@ -97,8 +97,9 @@ async function runTests() {
 
   await test('returns 405 for GET requests', async () => {
     const res = mockRes();
-    await registerHandler(mockReq('GET'), res);
+    await registerHandler(mockReq('PATCH'), res);
     assert(res._status === 405, 'Expected 405, got ' + res._status);
+    assert(res._body.success === false, 'Expected success: false');
   });
 
   await test('returns 200 for OPTIONS (CORS preflight)', async () => {
@@ -107,11 +108,20 @@ async function runTests() {
     assert(res._status === 200, 'Expected 200, got ' + res._status);
   });
 
+  await test('returns 200 for GET requests', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('GET'), res);
+    assert(res._status === 200, 'Expected 200, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+    assert(Array.isArray(res._body.registrations), 'Expected registrations array');
+  });
+
   await test('returns 400 when name is missing', async () => {
     const res = mockRes();
     await registerHandler(mockReq('POST', { email: 'test@test.com' }), res);
     assert(res._status === 400, 'Expected 400, got ' + res._status);
     assert(res._body && res._body.error, 'Expected error message');
+    assert(res._body.success === false, 'Expected success: false');
   });
 
   await test('returns 400 when email is missing', async () => {
@@ -127,16 +137,24 @@ async function runTests() {
     assert(res._body.error.toLowerCase().includes('email'), 'Error should mention email');
   });
 
+  await test('returns 400 for whitespace-only name', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: '   ', email: 'test@test.com' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body.success === false, 'Expected success: false');
+  });
+
   await test('returns 201 on successful registration', async () => {
     supabaseMockConfig.insertError = null;
     updateConfig();
     const res = mockRes();
     await registerHandler(mockReq('POST', {
-      name: 'Dr Ayyaswami', email: 'ayyaswami@geology.com', phone: '9999999999',
+      name: ' Dr Ayyaswami ', email: ' AYYASWAMI@geology.com ', phone: '9999999999',
     }), res);
     assert(res._status === 201, 'Expected 201, got ' + res._status);
     assert(res._body.success === true, 'Expected success: true');
     assert(res._body.registration_id, 'Expected registration_id');
+    assert(res._body.message.includes('Dr Ayyaswami'), 'Expected trimmed name in message');
   });
 
   await test('returns 500 on database error', async () => {
