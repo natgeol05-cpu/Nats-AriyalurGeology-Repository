@@ -9,37 +9,15 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // GET: fetch registrations (for admin/review workflows)
-  if (req.method === 'GET') {
-    try {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data, error } = await supabase
-        .from('registrations')
-        .select('id, name, email, phone, institution, purpose, status, registered_at')
-        .eq('status', 'pending')
-        .order('registered_at', { ascending: false });
-
-      if (error) {
-        console.error('Supabase fetch error:', error);
-        return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
-      }
-
-      return res.status(200).json({ success: true, registrations: data });
-    } catch (err) {
-      console.error('Unexpected error:', err);
-      return res.status(500).json({ success: false, error: 'An unexpected error occurred. Please try again.' });
-    }
-  }
-
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, error: 'Method not allowed. Use POST or GET.' });
+    return res.status(405).json({ success: false, error: 'Method not allowed. Use POST.' });
   }
 
   const { name, email, phone, institution, purpose } = req.body || {};

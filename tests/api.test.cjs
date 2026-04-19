@@ -95,7 +95,7 @@ async function runTests() {
   // ════════════════════════════════════════════════════════════
   console.log('\n/api/register');
 
-  await test('returns 405 for GET requests', async () => {
+  await test('returns 405 for unsupported methods', async () => {
     const res = mockRes();
     await registerHandler(mockReq('PATCH'), res);
     assert(res._status === 405, 'Expected 405, got ' + res._status);
@@ -106,14 +106,6 @@ async function runTests() {
     const res = mockRes();
     await registerHandler(mockReq('OPTIONS'), res);
     assert(res._status === 200, 'Expected 200, got ' + res._status);
-  });
-
-  await test('returns 200 for GET requests', async () => {
-    const res = mockRes();
-    await registerHandler(mockReq('GET'), res);
-    assert(res._status === 200, 'Expected 200, got ' + res._status);
-    assert(res._body.success === true, 'Expected success: true');
-    assert(Array.isArray(res._body.registrations), 'Expected registrations array');
   });
 
   await test('returns 400 when name is missing', async () => {
