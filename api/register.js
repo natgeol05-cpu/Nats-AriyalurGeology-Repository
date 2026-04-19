@@ -17,18 +17,23 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+    return res.status(405).json({ success: false, error: 'Method not allowed. Use POST.' });
   }
 
   const { name, email, phone, institution, purpose } = req.body || {};
+  const normalizedName = typeof name === 'string' ? name.trim() : '';
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+  const normalizedPhone = typeof phone === 'string' ? phone.trim() : '';
+  const normalizedInstitution = typeof institution === 'string' ? institution.trim() : '';
+  const normalizedPurpose = typeof purpose === 'string' ? purpose.trim() : '';
 
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required fields.' });
+  if (!normalizedName || !normalizedEmail) {
+    return res.status(400).json({ success: false, error: 'Name and email are required fields.' });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email address format.' });
+  if (!emailRegex.test(normalizedEmail)) {
+    return res.status(400).json({ success: false, error: 'Invalid email address format.' });
   }
 
   try {
@@ -38,11 +43,12 @@ export default async function handler(req, res) {
       .from('registrations')
       .insert([
         {
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          phone: phone ? phone.trim() : null,
-          institution: institution ? institution.trim() : null,
-          purpose: purpose ? purpose.trim() : null,
+          name: normalizedName,
+          email: normalizedEmail,
+          phone: normalizedPhone || null,
+          institution: normalizedInstitution || null,
+          purpose: normalizedPurpose || null,
+          status: 'pending',
           registered_at: new Date().toISOString(),
         },
       ])
@@ -50,16 +56,16 @@ export default async function handler(req, res) {
 
     if (error) {
       console.error('Supabase insert error:', error);
-      return res.status(500).json({ error: 'Database error. Please try again.' });
+      return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
     }
 
     return res.status(201).json({
       success: true,
-      message: `Thank you, ${name}! Your registration is successful.`,
+      message: `Thank you, ${normalizedName}! Your registration is successful.`,
       registration_id: data[0].id,
     });
   } catch (err) {
     console.error('Unexpected error:', err);
-    return res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
+    return res.status(500).json({ success: false, error: 'An unexpected error occurred. Please try again.' });
   }
 }
