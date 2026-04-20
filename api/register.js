@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
-const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9]))+$/i;
+const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 const MAX_LENGTHS = {
   name: 255,
   email: 255,
@@ -62,7 +62,7 @@ function getRequestContext(req, normalizedEmail = '') {
  */
 function sanitizeInput(value, options = {}) {
   const text = typeof value === 'string'
-    ? value.trim().replace(/[\u0000-\u001F\u007F]/g, '')
+    ? value.trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
     : '';
 
   return options.lowercase ? text.toLowerCase() : text;
@@ -85,7 +85,7 @@ function applyCors(req, res) {
     res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   }
 
-  return !allowedOrigin || !requestOrigin || requestOrigin === allowedOrigin;
+  return !allowedOrigin || (requestOrigin && requestOrigin === allowedOrigin);
 }
 
 /**
@@ -96,7 +96,16 @@ function applyCors(req, res) {
 function isRateLimited(ip) {
   const now = Date.now();
   const validSince = now - RATE_LIMIT_WINDOW_MS;
-  const recentRequests = (rateLimitByIp.get(ip) || []).filter((timestamp) => timestamp > validSince);
+  for (const [knownIp, timestamps] of rateLimitByIp.entries()) {
+    const activeTimestamps = timestamps.filter((timestamp) => timestamp > validSince);
+    if (activeTimestamps.length === 0) {
+      rateLimitByIp.delete(knownIp);
+    } else if (activeTimestamps.length !== timestamps.length) {
+      rateLimitByIp.set(knownIp, activeTimestamps);
+    }
+  }
+
+  const recentRequests = rateLimitByIp.get(ip) || [];
 
   if (recentRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
     rateLimitByIp.set(ip, recentRequests);
@@ -167,9 +176,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'Invalid characters in input.' });
   }
 
-  const emailParts = normalizedEmail.split('@');
-  const topLevelDomain = emailParts[1] ? emailParts[1].split('.').pop() : '';
-  if (!EMAIL_REGEX.test(normalizedEmail) || !topLevelDomain || topLevelDomain.length < 2) {
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
     return res.status(400).json({ success: false, error: 'Invalid email address format.' });
   }
 

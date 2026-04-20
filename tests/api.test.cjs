@@ -56,7 +56,15 @@ function assert(condition, message) {
 }
 
 function mockReq(method, body, headers) {
-  return { method: method || 'POST', body: body || {}, headers: headers || {} };
+  return {
+    method: method || 'POST',
+    body: body || {},
+    headers: {
+      origin: 'https://allowed.example',
+      'x-forwarded-for': '127.0.0.1',
+      ...(headers || {}),
+    },
+  };
 }
 
 function mockRes() {
@@ -169,7 +177,7 @@ async function runTests() {
     const res = mockRes();
     await registerHandler(mockReq('POST', {
       name: ' Dr Ayyaswami ', email: ' AYYASWAMI@geology.com ', phone: '9999999999',
-      institution: '   ', purpose: '',
+      institution: '   ', purpose: '   ',
     }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.10' }), res);
     assert(res._status === 201, 'Expected 201, got ' + res._status);
     assert(res._body.success === true, 'Expected success: true');
@@ -182,6 +190,24 @@ async function runTests() {
     assert(global.supabaseMockLastInsertedRows[0].institution === null, 'Expected blank institution to normalize to null');
     assert(global.supabaseMockLastInsertedRows[0].purpose === null, 'Expected blank purpose to normalize to null');
     assert(global.supabaseMockLastInsertedRows[0].status === 'pending', 'Expected registration status to be pending');
+  });
+
+  await test('stores trimmed optional fields when provided', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Trim Test',
+      email: 'trim-optional@test.com',
+      institution: '  Ariyalur Institute  ',
+      purpose: '  Study visit  ',
+    }, { 'x-forwarded-for': '192.168.0.14' }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(global.supabaseMockLastInsertedRows[0].institution === 'Ariyalur Institute', 'Expected trimmed institution');
+    assert(global.supabaseMockLastInsertedRows[0].purpose === 'Study visit', 'Expected trimmed purpose');
   });
 
   await test('returns 409 when email is already registered', async () => {
