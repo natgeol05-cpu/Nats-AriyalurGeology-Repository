@@ -2,11 +2,11 @@
 CREATE TABLE registrations (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
     phone TEXT,
     institution TEXT,
     purpose TEXT,
-    status TEXT DEFAULT 'pending',
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -21,10 +21,13 @@ CREATE TABLE fossil_details (
     classification TEXT,
     description TEXT,
     collector_name TEXT NOT NULL,
-    collector_email TEXT,
+    collector_email TEXT CHECK (
+        collector_email IS NULL
+        OR collector_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+    ),
     field_number TEXT,
     image_urls TEXT[] DEFAULT '{}',
-    status TEXT DEFAULT 'pending',
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
