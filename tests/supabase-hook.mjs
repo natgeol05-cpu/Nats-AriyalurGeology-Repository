@@ -35,9 +35,9 @@ export function createClient() {
             return Promise.resolve({
               data: c.insertError
                 ? null
-                : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
-                     registered_at: new Date().toISOString(),
-                     fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }],
+                : (Array.isArray(c.insertData) ? c.insertData : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
+                      registered_at: new Date().toISOString(),
+                      fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }]),
               error: c.insertError || null,
             });
           },
@@ -48,7 +48,7 @@ export function createClient() {
           order: () => {
             const c = getConfig();
             return Promise.resolve({
-              data: c.selectError ? null : [],
+              data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
               error: c.selectError || null,
             });
           },
