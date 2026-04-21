@@ -22,6 +22,7 @@ const supabaseMockConfig = {
   insertError: null,
   uploadError: null,
   selectError: null,
+  listBucketsError: null,
   selectData: [],
   insertData: null,
 };
@@ -126,6 +127,18 @@ async function runTests() {
     const res = mockRes();
     await registerHandler(mockReq('OPTIONS'), res);
     assert(res._status === 200, 'Expected 200, got ' + res._status);
+  });
+
+  await test('returns 500 with missing env details when Supabase vars are not configured', async () => {
+    const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    assert(Array.isArray(res._body.missing_env_vars), 'Expected missing_env_vars array');
+    assert(res._body.missing_env_vars.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Expected missing key in response');
+    assert(res._body.error.includes('/api/health'), 'Expected health endpoint guidance');
+    process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
   });
 
   await test('returns 400 when name is missing', async () => {
@@ -279,6 +292,22 @@ async function runTests() {
     updateConfig();
   });
 
+  await test('returns 500 with actionable message when Supabase credentials are invalid', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = { status: 401, message: 'Invalid API key' };
+    supabaseMockConfig.selectData = [];
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test',
+      email: 'invalid-credentials@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.15' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    assert(res._body.error.includes('Supabase credentials are invalid'), 'Expected actionable credential error');
+    supabaseMockConfig.selectError = null;
+    updateConfig();
+  });
+
   // ════════════════════════════════════════════════════════════
   // /api/fossil-details
   // ════════════════════════════════════════════════════════════
@@ -411,6 +440,34 @@ async function runTests() {
     await healthHandler(mockReq('GET'), res);
     assert(res._status === 200, 'Expected 200, got ' + res._status);
     assert(res._body.api === 'ok', 'Expected api: ok');
+    assert(res._body.configuration.status === 'ok', 'Expected configuration: ok');
+  });
+
+  await test('returns 503 when Supabase env vars are missing', async () => {
+    const previousUrl = process.env.SUPABASE_URL;
+    delete process.env.SUPABASE_URL;
+    const res = mockRes();
+    await healthHandler(mockReq('GET'), res);
+    assert(res._status === 503, 'Expected 503, got ' + res._status);
+    assert(res._body.configuration.status === 'error', 'Expected configuration: error');
+    assert(Array.isArray(res._body.configuration.missingEnvVars), 'Expected missingEnvVars array');
+    assert(res._body.configuration.missingEnvVars.includes('SUPABASE_URL'), 'Expected SUPABASE_URL in missing env vars');
+    process.env.SUPABASE_URL = previousUrl;
+  });
+
+  await test('returns 503 when Supabase connectivity checks fail', async () => {
+    supabaseMockConfig.selectError = { message: 'network error' };
+    supabaseMockConfig.listBucketsError = { message: 'storage error' };
+    updateConfig();
+    const res = mockRes();
+    await healthHandler(mockReq('GET'), res);
+    assert(res._status === 503, 'Expected 503, got ' + res._status);
+    assert(res._body.api === 'degraded', 'Expected api: degraded');
+    assert(res._body.database === 'error', 'Expected database: error');
+    assert(res._body.storage === 'error', 'Expected storage: error');
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.listBucketsError = null;
+    updateConfig();
   });
 
   await test('returns 200 on /health root alias', async () => {

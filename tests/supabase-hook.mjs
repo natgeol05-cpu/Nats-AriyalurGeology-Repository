@@ -43,17 +43,18 @@ export function createClient() {
           },
         };
       },
-      select: () => ({
-        eq: () => ({
-          order: () => {
-            const c = getConfig();
-            return Promise.resolve({
-              data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
-              error: c.selectError || null,
-            });
-          },
-        }),
-      }),
+      select: () => {
+        const c = getConfig();
+        const result = Promise.resolve({
+          data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
+          error: c.selectError || null,
+        });
+        return Object.assign(result, {
+          eq: () => ({
+            order: () => result,
+          }),
+        });
+      },
     }),
     storage: {
       from: () => ({
@@ -68,7 +69,10 @@ export function createClient() {
           data: { publicUrl: 'https://example.supabase.co/storage/v1/object/public/fossil-images/fossils/test.jpg' },
         }),
       }),
-      listBuckets: () => Promise.resolve({ error: null }),
+      listBuckets: () => {
+        const c = getConfig();
+        return Promise.resolve({ error: c.listBucketsError || null });
+      },
     },
   };
 }
