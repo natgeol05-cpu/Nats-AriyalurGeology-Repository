@@ -44,16 +44,22 @@ export function createClient() {
         };
       },
       select: () => {
-        const c = getConfig();
-        const result = Promise.resolve({
-          data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
-          error: c.selectError || null,
-        });
-        return Object.assign(result, {
+        const buildResult = () => {
+          const c = getConfig();
+          return Promise.resolve({
+            data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
+            error: c.selectError || null,
+          });
+        };
+        const query = {
           eq: () => ({
-            order: () => result,
+            order: () => buildResult(),
           }),
-        });
+          then: (...args) => buildResult().then(...args),
+          catch: (...args) => buildResult().catch(...args),
+          finally: (...args) => buildResult().finally(...args),
+        };
+        return query;
       },
     }),
     storage: {

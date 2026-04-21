@@ -24,12 +24,21 @@ if [[ ! "$SUPABASE_URL" =~ ^https://.*\.supabase\.co$ ]]; then
 fi
 echo "PASS: SUPABASE_URL format looks correct."
 
+set +e
 auth_status=$(curl -sS -o /dev/null -w "%{http_code}" \
   -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
   -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
-  "$SUPABASE_URL/rest/v1/" || true)
+  "$SUPABASE_URL/rest/v1/")
+curl_exit=$?
+set -e
 
-if [[ "$auth_status" =~ ^[23] ]]; then
+if [[ "$curl_exit" -ne 0 ]]; then
+  echo "FAIL: Could not reach Supabase REST endpoint (curl exit $curl_exit)."
+  echo "Action: verify network connectivity and SUPABASE_URL."
+  exit 1
+fi
+
+if [[ "$auth_status" == "200" ]]; then
   echo "PASS: Supabase REST endpoint is reachable with provided key (HTTP $auth_status)."
 else
   echo "FAIL: Supabase REST endpoint check failed (HTTP $auth_status)."

@@ -16,6 +16,7 @@ const RATE_LIMIT_MAX_REQUESTS = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const rateLimitByIp = new Map();
 const REQUIRED_SUPABASE_ENV_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
+const SUPABASE_CONFIG_INVALID_ERROR = 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.';
 
 function getMissingSupabaseEnvVars() {
   return REQUIRED_SUPABASE_ENV_VARS.filter((envVarName) => !process.env[envVarName]);
@@ -25,19 +26,21 @@ function getSupabaseConfigErrorMessage(missingSupabaseEnvVars) {
   return `Server misconfiguration: missing ${missingSupabaseEnvVars.join(', ')}. Set these in Vercel Project Settings -> Environment Variables and redeploy. Use /api/health to verify connectivity.`;
 }
 
-if (getMissingSupabaseEnvVars().length > 0) {
-  console.error('Missing required environment variables for register API:', getMissingSupabaseEnvVars());
+const initialMissingSupabaseEnvVars = getMissingSupabaseEnvVars();
+if (initialMissingSupabaseEnvVars.length > 0) {
+  console.error('Missing required environment variables for register API:', initialMissingSupabaseEnvVars);
 }
 
 function isSupabaseConfigurationError(error) {
-  const errorText = String(error?.message || error?.details || '').toLowerCase();
+  const errorText = (error?.message || error?.details || '')?.toString?.().toLowerCase() || '';
+  const hasJwtCredentialError = /jwt (expired|invalid|malformed)|invalid jwt/.test(errorText);
   return (
     error?.status === 401 ||
     error?.status === 403 ||
     error?.code === 'PGRST301' ||
     error?.code === 'PGRST302' ||
     errorText.includes('invalid api key') ||
-    errorText.includes('jwt') ||
+    hasJwtCredentialError ||
     errorText.includes('unauthorized') ||
     errorText.includes('forbidden')
   );
@@ -218,7 +221,7 @@ export default async function handler(req, res) {
       if (isSupabaseConfigurationError(duplicateCheckError)) {
         return res.status(500).json({
           success: false,
-          error: 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.',
+          error: SUPABASE_CONFIG_INVALID_ERROR,
         });
       }
       return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
@@ -248,7 +251,7 @@ export default async function handler(req, res) {
       if (isSupabaseConfigurationError(error)) {
         return res.status(500).json({
           success: false,
-          error: 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.',
+          error: SUPABASE_CONFIG_INVALID_ERROR,
         });
       }
       return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
