@@ -1,64 +1,58 @@
 #!/bin/bash
 
-# supabase-diagnostic.sh - A diagnostic script to test Supabase connectivity and database setup
+# supabase-diagnostic.sh - Verify Supabase environment configuration quickly.
 
-# Check if required environment variables are set
-if [[ -z "$SUPABASE_URL" || -z "$SUPABASE_SERVICE_ROLE_KEY" ]]; then
-    echo "FAIL: Required environment variables are not set."
-    exit 1
-else
-    echo "PASS: Required environment variables are set."
+set -euo pipefail
+
+echo "== Supabase configuration diagnostic =="
+
+missing_vars=()
+[[ -z "${SUPABASE_URL:-}" ]] && missing_vars+=("SUPABASE_URL")
+[[ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]] && missing_vars+=("SUPABASE_SERVICE_ROLE_KEY")
+
+if [[ ${#missing_vars[@]} -gt 0 ]]; then
+  echo "FAIL: Missing required environment variables: ${missing_vars[*]}"
+  echo "Action: set them in your shell/.env and Vercel Project Settings -> Environment Variables."
+  exit 1
+fi
+echo "PASS: Required environment variables are set."
+
+if [[ ! "$SUPABASE_URL" =~ ^https://.*\.supabase\.co$ ]]; then
+  echo "FAIL: SUPABASE_URL does not look valid: $SUPABASE_URL"
+  echo "Action: use the exact Project URL from Supabase Settings -> API."
+  exit 1
+fi
+echo "PASS: SUPABASE_URL format looks correct."
+
+set +e
+auth_status=$(curl -sS -o /dev/null -w "%{http_code}" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  "$SUPABASE_URL/rest/v1/")
+curl_exit=$?
+set -e
+
+if [[ "$curl_exit" -ne 0 ]]; then
+  echo "FAIL: Could not reach Supabase REST endpoint (curl exit $curl_exit)."
+  echo "Action: verify network connectivity and SUPABASE_URL."
+  exit 1
 fi
 
-# Test connection to Supabase
-response=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "$SUPABASE_URL")
-if [ "$response" -eq 200 ]; then
-    echo "PASS: Connection to Supabase established."
+if [[ "$auth_status" == "200" ]]; then
+  echo "PASS: Supabase REST endpoint is reachable with provided key (HTTP $auth_status)."
 else
-    echo "FAIL: Unable to connect to Supabase. Status code: $response"
-    exit 1
+  echo "FAIL: Supabase REST endpoint check failed (HTTP $auth_status)."
+  echo "Action: verify SUPABASE_SERVICE_ROLE_KEY value and project URL."
+  exit 1
 fi
 
-# Verify database tables exist
-tables=("registrations" "fossil_details")
-for table in "${tables[@]}"; do
-    result=$(psql -U postgres -d your_database_name -c "
-    SELECT EXISTS (
-        SELECT 1 FROM information_schema.tables WHERE table_name = '$table'
-    );")
-    if echo "$result" | grep -q "t"; then
-        echo "PASS: Table $table exists."
-    else
-        echo "FAIL: Table $table does not exist."
-        exit 1
-    fi
-done
-
-# Check if storage bucket exists
-bucket_exists=$(supabase storage list | grep "your_bucket_name")
-if [[ -n "$bucket_exists" ]]; then
-    echo "PASS: Storage bucket exists."
-else
-    echo "FAIL: Storage bucket does not exist."
-    exit 1
-fi
-
-# Verify RLS policies are enabled
-rls_status=$(psql -U postgres -d your_database_name -c "SHOW row_security")
-if [[ "$rls_status" == *"on"* ]]; then
-    echo "PASS: RLS policies are enabled."
-else
-    echo "FAIL: RLS policies are not enabled."
-    exit 1
-fi
-
-# Test inserting a sample record
-insert_result=$(psql -U postgres -d your_database_name -c "INSERT INTO registrations (name, created_at) VALUES ('Test User', NOW()) RETURNING id;")
-if [[ -n "$insert_result" ]]; then
-    echo "PASS: Sample record inserted successfully."
-else
-    echo "FAIL: Sample record insertion failed."
-    exit 1
+if [[ -n "${APP_HEALTH_URL:-}" ]]; then
+  health_status=$(curl -sS -o /dev/null -w "%{http_code}" "$APP_HEALTH_URL")
+  if [[ "$health_status" == "200" ]]; then
+    echo "PASS: App health endpoint reachable (HTTP 200): $APP_HEALTH_URL"
+  else
+    echo "WARN: App health endpoint returned HTTP $health_status: $APP_HEALTH_URL"
+  fi
 fi
 
 echo "Diagnostic completed successfully."

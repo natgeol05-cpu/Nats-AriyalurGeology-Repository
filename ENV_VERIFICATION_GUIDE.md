@@ -1,55 +1,52 @@
 # Environment Verification Guide
 
-This comprehensive guide provides step-by-step instructions for verifying your Supabase credentials and Vercel environment variable configuration.
+Use this guide when the registration API returns **"Server misconfiguration"** or data is not reaching the `registrations` table.
 
-## 1. Verifying Supabase Credentials
-To verify your Supabase credentials, follow these steps:
+## Required Environment Variables
 
-### Step 1: Access Supabase Dashboard
-- Go to the [Supabase](https://supabase.io) dashboard.
-- Select your project from the list.
+For backend API routes (`/api/register`, `/api/health`) you must set:
 
-### Step 2: Locate API Keys
-- Navigate to the **Settings** section.
-- Select **API** to find your project API keys and URL.
-
-### Step 3: Verify Environment Variables
-Ensure that the following environment variables in your Vercel configuration match the Supabase settings:
 - `SUPABASE_URL`
-- `SUPABASE_PUBLIC_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-## 2. Configuring Vercel Environment Variables
-To set up Vercel environment variables:
+Use `.env.example` as the template:
 
-### Step 1: Access Vercel Dashboard
-- Go to [Vercel](https://vercel.com) dashboard.
-- Choose your project.
+```bash
+cp .env.example .env
+```
 
-### Step 2: Set Environment Variables
-- Navigate to the **Settings** section of your project.
-- In the **Environment Variables** section, add the necessary keys:
-  - `SUPABASE_URL`
-  - `SUPABASE_PUBLIC_ANON_KEY`
+Then fill in real values from **Supabase Dashboard → Settings → API**.
 
-### Step 3: Verify Configuration
-After setting the variables, ensure they are listed correctly.
+## Verify Configuration Locally
 
-## 3. Accessing the /api/diagnose Endpoint
-To access the new `/api/diagnose` endpoint:
-- Use your browser or Postman to make a GET request to `https://your-vercel-project-url/api/diagnose`.
+Run the diagnostic script:
 
-### Expected Responses
-- **200**: If the setup is correct, you will receive a message indicating successful connection to Supabase.
-- **500**: If there’s a connectivity issue, you will receive an error message indicating what went wrong.
+```bash
+chmod +x ./supabase-diagnostic.sh
+./supabase-diagnostic.sh
+```
 
-## 4. Troubleshooting Common Issues
-- **Missing Environment Variables**: Check Vercel for any missing variables. Ensure all required keys are set.
-- **Failed Supabase Connectivity**: Ensure that the Supabase URL and keys are correct and match the ones in the dashboard.
+Optional: also verify deployed API health by passing `APP_HEALTH_URL`:
 
-## 5. Setup Checklist
-- [ ] Verify Supabase credentials are correct.
-- [ ] Configure Vercel environment variables correctly.
-- [ ] Access the `/api/diagnose` endpoint successfully.
-- [ ] Review troubleshooting steps if you encounter issues.
+```bash
+APP_HEALTH_URL="https://your-project.vercel.app/api/health" ./supabase-diagnostic.sh
+```
 
-By following these instructions, you should be able to verify your environment configuration successfully!
+## Verify in Vercel
+
+1. Open Vercel project settings.
+2. Go to **Environment Variables**.
+3. Confirm both `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` exist for the target environment.
+4. Redeploy after changes.
+
+## Health Endpoint Diagnostics
+
+Call:
+
+```bash
+curl -s https://your-project.vercel.app/api/health | jq
+```
+
+- `200` + `"api":"ok"` means configuration and connectivity checks passed.
+- `503` + `"configuration":{"status":"error"...}` means missing env vars.
+- `503` + `"api":"degraded"` means Supabase connectivity failed; verify URL/key values.

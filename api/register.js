@@ -3,8 +3,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
 const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 const MAX_LENGTHS = {
@@ -17,13 +15,35 @@ const MAX_LENGTHS = {
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const rateLimitByIp = new Map();
-const missingSupabaseEnvVars = [];
+const REQUIRED_SUPABASE_ENV_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
+const SUPABASE_CONFIG_INVALID_ERROR = 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.';
 
-if (!supabaseUrl) missingSupabaseEnvVars.push('SUPABASE_URL');
-if (!supabaseKey) missingSupabaseEnvVars.push('SUPABASE_SERVICE_ROLE_KEY');
+function getMissingSupabaseEnvVars() {
+  return REQUIRED_SUPABASE_ENV_VARS.filter((envVarName) => !process.env[envVarName]);
+}
 
-if (missingSupabaseEnvVars.length > 0) {
-  console.error('Missing required environment variables for register API:', missingSupabaseEnvVars);
+function getSupabaseConfigErrorMessage(missingSupabaseEnvVars) {
+  return `Server misconfiguration: missing ${missingSupabaseEnvVars.join(', ')}. Set these in Vercel Project Settings -> Environment Variables and redeploy. Use /api/health to verify connectivity.`;
+}
+
+const initialMissingSupabaseEnvVars = getMissingSupabaseEnvVars();
+if (initialMissingSupabaseEnvVars.length > 0) {
+  console.error('Missing required environment variables for register API:', initialMissingSupabaseEnvVars);
+}
+
+function isSupabaseConfigurationError(error) {
+  const errorText = (error?.message || error?.details || '')?.toString?.().toLowerCase() || '';
+  const hasJwtCredentialError = /jwt (expired|invalid|malformed)|invalid jwt/.test(errorText);
+  return (
+    error?.status === 401 ||
+    error?.status === 403 ||
+    error?.code === 'PGRST301' ||
+    error?.code === 'PGRST302' ||
+    errorText.includes('invalid api key') ||
+    hasJwtCredentialError ||
+    errorText.includes('unauthorized') ||
+    errorText.includes('forbidden')
+  );
 }
 
 /**
@@ -135,9 +155,11 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  const missingSupabaseEnvVars = getMissingSupabaseEnvVars();
   if (missingSupabaseEnvVars.length > 0) {
+    const errorMessage = getSupabaseConfigErrorMessage(missingSupabaseEnvVars);
     console.error('Register API misconfiguration:', { ...context, missingSupabaseEnvVars });
-    return res.status(500).json({ success: false, error: 'Server misconfiguration.' });
+    return res.status(500).json({ success: false, error: errorMessage, missing_env_vars: missingSupabaseEnvVars });
   }
 
   if (req.method !== 'POST') {
@@ -185,6 +207,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { data: existingRegistrations, error: duplicateCheckError } = await supabase
       .from('registrations')
@@ -194,6 +218,12 @@ export default async function handler(req, res) {
 
     if (duplicateCheckError) {
       console.error('Supabase duplicate-email check error:', { ...contextWithEmail, duplicateCheckError });
+      if (isSupabaseConfigurationError(duplicateCheckError)) {
+        return res.status(500).json({
+          success: false,
+          error: SUPABASE_CONFIG_INVALID_ERROR,
+        });
+      }
       return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
     }
 
@@ -218,6 +248,12 @@ export default async function handler(req, res) {
 
     if (error) {
       console.error('Supabase register insert error:', { ...contextWithEmail, error });
+      if (isSupabaseConfigurationError(error)) {
+        return res.status(500).json({
+          success: false,
+          error: SUPABASE_CONFIG_INVALID_ERROR,
+        });
+      }
       return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
     }
 

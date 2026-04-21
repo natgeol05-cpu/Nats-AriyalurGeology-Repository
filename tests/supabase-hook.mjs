@@ -43,17 +43,24 @@ export function createClient() {
           },
         };
       },
-      select: () => ({
-        eq: () => ({
-          order: () => {
-            const c = getConfig();
-            return Promise.resolve({
-              data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
-              error: c.selectError || null,
-            });
-          },
-        }),
-      }),
+      select: () => {
+        const buildResult = () => {
+          const c = getConfig();
+          return Promise.resolve({
+            data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
+            error: c.selectError || null,
+          });
+        };
+        const query = {
+          eq: () => ({
+            order: () => buildResult(),
+          }),
+          then: (...args) => buildResult().then(...args),
+          catch: (...args) => buildResult().catch(...args),
+          finally: (...args) => buildResult().finally(...args),
+        };
+        return query;
+      },
     }),
     storage: {
       from: () => ({
@@ -68,7 +75,10 @@ export function createClient() {
           data: { publicUrl: 'https://example.supabase.co/storage/v1/object/public/fossil-images/fossils/test.jpg' },
         }),
       }),
-      listBuckets: () => Promise.resolve({ error: null }),
+      listBuckets: () => {
+        const c = getConfig();
+        return Promise.resolve({ error: c.listBucketsError || null });
+      },
     },
   };
 }
