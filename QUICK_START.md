@@ -12,7 +12,7 @@ If `/api/health` or `/api/register` returns `404 NOT_FOUND`, do this:
 3. Wait 2–3 minutes.
 4. Test:
    ```bash
-   curl "https://natsariyalurgeology.vercel.app/api/health"
+   curl "https://<your-project>.vercel.app/api/health"
    ```
 
 Expected:
@@ -25,11 +25,11 @@ Expected:
 ## Windows check command
 
 ```powershell
-.\supabase-diagnostic.ps1 -AppHealthUrl "https://natsariyalurgeology.vercel.app/api/health"
+.\supabase-diagnostic.ps1 -AppHealthUrl "https://<your-project>.vercel.app/api/health"
 ```
 
 ## Unix/macOS check command
 
 ```bash
-APP_HEALTH_URL="https://natsariyalurgeology.vercel.app/api/health" ./supabase-diagnostic.sh
+APP_HEALTH_URL="https://<your-project>.vercel.app/api/health" ./supabase-diagnostic.sh
 ```

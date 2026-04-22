@@ -45,7 +45,7 @@ if ($missingVars.Count -gt 0) {
 }
 Write-Host "PASS: Required environment variables are set."
 
-if ($supabaseUrl -notmatch "^https://.*\.supabase\.co$") {
+if ($supabaseUrl -notmatch "^https://[a-z0-9-]+\.supabase\.co$") {
     Write-Host "FAIL: SUPABASE_URL does not look valid: $supabaseUrl"
     Write-Host "Action: use the exact Project URL from Supabase Settings -> API."
     exit 1

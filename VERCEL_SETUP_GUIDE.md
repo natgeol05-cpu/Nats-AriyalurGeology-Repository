@@ -6,6 +6,10 @@ Use this guide when deployed API routes like `/api/health` or `/api/register` re
 
 Open:
 
+`https://vercel.com/<your-team>/<your-project>/settings/environment-variables`
+
+For this repository, the current project settings page is:
+
 `https://vercel.com/nats-geology-team/natsariyalurgeology/settings/environment-variables`
 
 Add these variables for **Production**:
@@ -32,8 +36,8 @@ Wait 2–3 minutes for Vercel build and serverless function rollout.
 ## 4) Verify endpoints
 
 ```bash
-curl "https://natsariyalurgeology.vercel.app/api/health"
-curl -X POST "https://natsariyalurgeology.vercel.app/api/register" \
+curl "https://<your-project>.vercel.app/api/health"
+curl -X POST "https://<your-project>.vercel.app/api/register" \
   -H "Content-Type: application/json" \
   -d '{"name":"Test User","email":"test@example.com"}'
 ```
@@ -58,11 +62,11 @@ These files must be included in the branch deployed by Vercel.
 Unix/macOS:
 
 ```bash
-APP_HEALTH_URL="https://natsariyalurgeology.vercel.app/api/health" ./supabase-diagnostic.sh
+APP_HEALTH_URL="https://<your-project>.vercel.app/api/health" ./supabase-diagnostic.sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-.\supabase-diagnostic.ps1 -AppHealthUrl "https://natsariyalurgeology.vercel.app/api/health"
+.\supabase-diagnostic.ps1 -AppHealthUrl "https://<your-project>.vercel.app/api/health"
 ```
