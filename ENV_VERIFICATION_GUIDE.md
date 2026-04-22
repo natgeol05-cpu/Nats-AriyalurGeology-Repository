@@ -32,6 +32,13 @@ Optional: also verify deployed API health by passing `APP_HEALTH_URL`:
 APP_HEALTH_URL="https://your-project.vercel.app/api/health" ./supabase-diagnostic.sh
 ```
 
+Windows PowerShell equivalent:
+
+```powershell
+.\supabase-diagnostic.ps1
+.\supabase-diagnostic.ps1 -AppHealthUrl "https://your-project.vercel.app/api/health"
+```
+
 ## Verify in Vercel
 
 1. Open Vercel project settings.

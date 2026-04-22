@@ -8,7 +8,8 @@
     "dev": "vercel dev",
     "deploy": "vercel --prod",
     "test": "node --import ./tests/mock-loader.mjs tests/api.test.cjs",
-    "verify:supabase-config": "bash ./supabase-diagnostic.sh"
+    "verify:supabase-config": "bash ./supabase-diagnostic.sh",
+    "verify:supabase-config:windows": "powershell -ExecutionPolicy Bypass -File ./supabase-diagnostic.ps1"
   },
   "keywords": [
     "geology",
