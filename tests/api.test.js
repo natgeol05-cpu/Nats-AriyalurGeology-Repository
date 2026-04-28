@@ -169,6 +169,15 @@ async function runTests() {
     supabaseMockConfig.insertError = null;
   });
 
+  await test('returns 409 on duplicate email registration', async () => {
+    supabaseMockConfig.insertError = { code: '23505', message: 'duplicate key value violates unique constraint' };
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
+    assert(res._status === 409, 'Expected 409, got ' + res._status);
+    assert(res._body.error.toLowerCase().includes('already registered'), 'Error should mention already registered');
+    supabaseMockConfig.insertError = null;
+  });
+
   // ════════════════════════════════════════════════════════════
   // /api/fossil-details
   // ════════════════════════════════════════════════════════════

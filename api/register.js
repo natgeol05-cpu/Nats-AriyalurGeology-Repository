@@ -50,6 +50,9 @@ module.exports = async (req, res) => {
 
     if (error) {
       console.error('Supabase insert error:', error);
+      if (error.code === '23505') {
+        return res.status(409).json({ error: 'This email address is already registered.' });
+      }
       return res.status(500).json({ error: 'Database error. Please try again.' });
     }
 
