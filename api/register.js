@@ -212,9 +212,9 @@ export default async function handler(req, res) {
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { data: existingRegistrations, error: duplicateCheckError } = await supabase
       .from('registrations')
-      .select('id, registered_at')
+      .select('id')
       .eq('email', normalizedEmail)
-      .order('registered_at', { ascending: false });
+      .limit(1);
 
     if (duplicateCheckError) {
       console.error('Supabase duplicate-email check error:', { ...contextWithEmail, duplicateCheckError });
