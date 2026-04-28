@@ -54,6 +54,7 @@ export function createClient() {
         const query = {
           eq: () => ({
             order: () => buildResult(),
+            limit: () => buildResult(),
           }),
           then: (...args) => buildResult().then(...args),
           catch: (...args) => buildResult().catch(...args),
