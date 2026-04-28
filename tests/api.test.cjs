@@ -1,0 +1,499 @@
+// tests/api.test.cjs
+// Unit tests for the Ariyalur Geology API functions
+// Tests run without a real Supabase connection by mocking the client
+//
+// The @supabase/supabase-js mock is provided by the ESM loader hook in
+// supabase-hook.mjs (registered via tests/mock-loader.mjs via --import).
+// Mock state is shared via a temporary JSON file so this CJS file can
+// control it between test cases.
+
+'use strict';
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
+// ──────────────────────────────────────────────────────────────
+// Mock config – written to a temp file that the ESM hook reads
+// ──────────────────────────────────────────────────────────────
+const CONFIG_FILE = path.join(os.tmpdir(), 'supabase-mock-config.json');
+
+const supabaseMockConfig = {
+  insertError: null,
+  uploadError: null,
+  selectError: null,
+  listBucketsError: null,
+  selectData: [],
+  insertData: null,
+};
+
+function updateConfig() {
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(supabaseMockConfig));
+}
+
+// Initialise config file before loading handlers
+updateConfig();
+
+// Set env vars before loading handlers
+process.env.SUPABASE_URL = 'https://mock.supabase.co';
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'mock-service-key';
+process.env.ALLOWED_ORIGIN = 'https://allowed.example';
+
+// Node 22+ allows require() of synchronous ES modules; the .default property
+// holds the exported handler function.
+const registerHandler = require('../api/register').default;
+const fossilHandler   = require('../api/fossil-details').default;
+const fossilsAliasHandler = require('../api/fossils').default;
+const uploadHandler   = require('../api/upload-image').default;
+const uploadAliasHandler = require('../api/upload').default;
+const healthHandler   = require('../api/health').default;
+const rootHealthHandler = require('../health').default;
+
+// ──────────────────────────────────────────────────────────────
+// Minimal test helpers
+// ──────────────────────────────────────────────────────────────
+function assert(condition, message) {
+  if (!condition) throw new Error(message || 'Assertion failed');
+}
+
+function mockReq(method, body, headers) {
+  return {
+    method: method || 'POST',
+    body: body || {},
+    headers: {
+      origin: 'https://allowed.example',
+      'x-forwarded-for': '127.0.0.1',
+      ...(headers || {}),
+    },
+  };
+}
+
+function mockRes() {
+  const res = {
+    _status: null,
+    _body:   null,
+    _headers: {},
+    status(code)       { this._status = code; return this; },
+    json(body)         { this._body = body;   return this; },
+    end()              { return this; },
+    setHeader(k, v)    { this._headers[k] = v; },
+  };
+  return res;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Main test runner (async function – avoids top-level await issues)
+// ──────────────────────────────────────────────────────────────
+async function runTests() {
+  let passCount = 0;
+  let failCount = 0;
+  const failures = [];
+
+  async function test(name, fn) {
+    try {
+      await fn();
+      console.log('  \u2713 ' + name);
+      passCount++;
+    } catch (err) {
+      console.error('  \u2717 ' + name);
+      console.error('    ' + err.message);
+      failCount++;
+      failures.push({ name, error: err.message });
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // /api/register
+  // ════════════════════════════════════════════════════════════
+  console.log('\n/api/register');
+
+  await test('returns 405 for PATCH requests', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('PATCH'), res);
+    assert(res._status === 405, 'Expected 405, got ' + res._status);
+    assert(res._body.success === false, 'Expected success: false');
+  });
+
+  await test('returns 403 for disallowed CORS origin', async () => {
+    const res = mockRes();
+    await registerHandler(
+      mockReq('POST', { name: 'Test', email: 'test@test.com' }, { origin: 'https://blocked.example' }),
+      res,
+    );
+    assert(res._status === 403, 'Expected 403, got ' + res._status);
+  });
+
+  await test('returns 200 for OPTIONS (CORS preflight)', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('OPTIONS'), res);
+    assert(res._status === 200, 'Expected 200, got ' + res._status);
+  });
+
+  await test('returns 500 with missing env details when Supabase vars are not configured', async () => {
+    const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    assert(Array.isArray(res._body.missing_env_vars), 'Expected missing_env_vars array');
+    assert(res._body.missing_env_vars.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Expected missing key in response');
+    assert(res._body.error.includes('/api/health'), 'Expected health endpoint guidance');
+    process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
+  });
+
+  await test('returns 400 when name is missing', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { email: 'test@test.com' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body && res._body.error, 'Expected error message');
+    assert(res._body.success === false, 'Expected success: false');
+  });
+
+  await test('returns 400 when email is missing', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test User' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 400 for invalid email format', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test', email: 'not-an-email' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body.error.toLowerCase().includes('email'), 'Error should mention email');
+  });
+
+  await test('returns 400 for invalid email TLD length', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'Test', email: 'a@b.c' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 400 for whitespace-only name', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: '   ', email: 'test@test.com' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body.success === false, 'Expected success: false');
+  });
+
+  await test('returns 400 when name exceeds max length', async () => {
+    const res = mockRes();
+    await registerHandler(mockReq('POST', { name: 'a'.repeat(256), email: 'test@test.com' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 201 on successful registration', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: ' Dr Ayyaswami ', email: ' AYYASWAMI@geology.com ', phone: '9999999999',
+      institution: '   ', purpose: '   ',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.10' }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+    assert(res._body.registration_id, 'Expected registration_id');
+    assert(res._body.message.includes('Dr Ayyaswami'), 'Expected trimmed name in message');
+    assert(Array.isArray(global.supabaseMockLastInsertedRows), 'Expected captured insert payload array');
+    assert(global.supabaseMockLastInsertedRows.length > 0, 'Expected captured insert payload to be non-empty');
+    assert(global.supabaseMockLastInsertedRows[0].name === 'Dr Ayyaswami', 'Expected name to be trimmed before insert');
+    assert(global.supabaseMockLastInsertedRows[0].email === 'ayyaswami@geology.com', 'Expected email to be normalized before insert');
+    assert(global.supabaseMockLastInsertedRows[0].institution === null, 'Expected blank institution to normalize to null');
+    assert(global.supabaseMockLastInsertedRows[0].purpose === null, 'Expected blank purpose to normalize to null');
+    assert(global.supabaseMockLastInsertedRows[0].status === 'pending', 'Expected registration status to be pending');
+  });
+
+  await test('stores trimmed optional fields when provided', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Trim Test',
+      email: 'trim-optional@test.com',
+      institution: '  Ariyalur Institute  ',
+      purpose: '  Study visit  ',
+    }, { 'x-forwarded-for': '192.168.0.14' }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(global.supabaseMockLastInsertedRows[0].institution === 'Ariyalur Institute', 'Expected trimmed institution');
+    assert(global.supabaseMockLastInsertedRows[0].purpose === 'Study visit', 'Expected trimmed purpose');
+  });
+
+  await test('returns 409 when email is already registered', async () => {
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [{ id: 'existing-registration-id' }];
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test User', email: 'test@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.11' }), res);
+    assert(res._status === 409, 'Expected 409, got ' + res._status);
+    supabaseMockConfig.selectData = [];
+    updateConfig();
+  });
+
+  await test('returns 429 after 5 registrations from same IP within one hour', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    for (let i = 0; i < 5; i++) {
+      const okRes = mockRes();
+      await registerHandler(mockReq('POST', {
+        name: `Rate User ${i}`,
+        email: `rate-limit-${i}@test.com`,
+      }, { origin: 'https://allowed.example', 'x-forwarded-for': '10.0.0.5' }), okRes);
+      assert(okRes._status === 201, 'Expected 201 for attempt ' + (i + 1) + ', got ' + okRes._status);
+    }
+
+    const limitedRes = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Rate User 6',
+      email: 'rate-limit-6@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '10.0.0.5' }), limitedRes);
+    assert(limitedRes._status === 429, 'Expected 429, got ' + limitedRes._status);
+  });
+
+  await test('returns 500 when insert response has empty data array', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = [];
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test',
+      email: 'empty-insert@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.12' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+  });
+
+  await test('returns 500 on database error', async () => {
+    supabaseMockConfig.insertError = { message: 'DB error' };
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test', email: 'test@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.13' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    supabaseMockConfig.insertError = null;
+    updateConfig();
+  });
+
+  await test('returns 500 with actionable message when Supabase credentials are invalid', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = { status: 401, message: 'Invalid API key' };
+    supabaseMockConfig.selectData = [];
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test',
+      email: 'invalid-credentials@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.15' }), res);
+    assert(res._status === 500, 'Expected 500, got ' + res._status);
+    assert(res._body.error.includes('Supabase credentials are invalid'), 'Expected actionable credential error');
+    supabaseMockConfig.selectError = null;
+    updateConfig();
+  });
+
+  // ════════════════════════════════════════════════════════════
+  // /api/fossil-details
+  // ════════════════════════════════════════════════════════════
+  console.log('\n/api/fossil-details');
+
+  await test('returns 405 for PUT requests', async () => {
+    const res = mockRes();
+    await fossilHandler(mockReq('PUT'), res);
+    assert(res._status === 405, 'Expected 405, got ' + res._status);
+  });
+
+  await test('returns 400 when fossil_name is missing', async () => {
+    const res = mockRes();
+    await fossilHandler(mockReq('POST', {
+      collector_name: 'Test', collector_email: 'test@test.com',
+    }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 400 for invalid collector email', async () => {
+    const res = mockRes();
+    await fossilHandler(mockReq('POST', {
+      fossil_name: 'Ammonite', collector_name: 'Test', collector_email: 'bad-email',
+    }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 201 on successful fossil submission', async () => {
+    supabaseMockConfig.insertError = null;
+    updateConfig();
+    const res = mockRes();
+    await fossilHandler(mockReq('POST', {
+      fossil_name:     'Calycoceras',
+      genus_species:   'Calycoceras newboldi',
+      formation:       'Trichinopoly Group',
+      locality:        'Ariyalur',
+      collector_name:  'Dr Gowtham',
+      collector_email: 'gowtham@geology.com',
+      field_number:    'NAT-2024-001',
+      image_urls:      ['https://example.com/fossil1.jpg'],
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+    assert(res._body.submission_id, 'Expected submission_id');
+  });
+
+  await test('accepts compatibility payload on /api/fossils alias', async () => {
+    const res = mockRes();
+    await fossilsAliasHandler(mockReq('POST', {
+      name: 'Ammonite',
+      scientific_name: 'Calycoceras newboldi',
+      period: 'Turonian',
+      location: 'Ariyalur',
+      description: 'Well-preserved specimen',
+      submitted_by: 'Research Student',
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+  });
+
+  // ════════════════════════════════════════════════════════════
+  // /api/upload-image
+  // ════════════════════════════════════════════════════════════
+  console.log('\n/api/upload-image');
+
+  await test('returns 405 for GET requests', async () => {
+    const res = mockRes();
+    await uploadHandler(mockReq('GET'), res);
+    assert(res._status === 405, 'Expected 405, got ' + res._status);
+  });
+
+  await test('returns 400 when file_name is missing', async () => {
+    const res = mockRes();
+    await uploadHandler(mockReq('POST', { file_type: 'image/jpeg', file_data: 'abc' }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+  });
+
+  await test('returns 400 for disallowed file type', async () => {
+    const res = mockRes();
+    await uploadHandler(mockReq('POST', {
+      file_name: 'doc.pdf', file_type: 'application/pdf', file_data: 'abc',
+    }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body.error.toLowerCase().includes('file type'), 'Error should mention file type');
+  });
+
+  await test('returns 400 when file exceeds 250 KB', async () => {
+    const res = mockRes();
+    await uploadHandler(mockReq('POST', {
+      file_name: 'big.jpg', file_type: 'image/jpeg',
+      file_size: 300 * 1024, file_data: 'abc',
+    }), res);
+    assert(res._status === 400, 'Expected 400, got ' + res._status);
+    assert(res._body.error.includes('250KB'), 'Error should mention 250KB limit');
+  });
+
+  await test('returns 201 on successful image upload', async () => {
+    supabaseMockConfig.uploadError = null;
+    updateConfig();
+    // Minimal valid base64 JPEG (1x1 pixel, ~100 bytes decoded)
+    const tiny1x1 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=';
+    const res = mockRes();
+    await uploadHandler(mockReq('POST', {
+      file_name: 'fossil.jpg', file_type: 'image/jpeg',
+      file_data: tiny1x1, field_number: 'NAT-2024-001',
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+    assert(res._body.public_url, 'Expected public_url');
+  });
+
+  await test('returns 201 on successful image upload via /api/upload alias', async () => {
+    const tiny1x1 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=';
+    const res = mockRes();
+    await uploadAliasHandler(mockReq('POST', {
+      file_name: 'fossil.jpg', file_type: 'image/jpeg',
+      file_data: tiny1x1, field_number: 'NAT-2024-001',
+    }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+    assert(res._body.success === true, 'Expected success: true');
+  });
+
+  // ════════════════════════════════════════════════════════════
+  // /api/health
+  // ════════════════════════════════════════════════════════════
+  console.log('\n/api/health');
+
+  await test('returns 200 with all systems ok', async () => {
+    const res = mockRes();
+    await healthHandler(mockReq('GET'), res);
+    assert(res._status === 200, 'Expected 200, got ' + res._status);
+    assert(res._body.api === 'ok', 'Expected api: ok');
+    assert(res._body.configuration.status === 'ok', 'Expected configuration: ok');
+  });
+
+  await test('returns 503 when Supabase env vars are missing', async () => {
+    const previousUrl = process.env.SUPABASE_URL;
+    delete process.env.SUPABASE_URL;
+    const res = mockRes();
+    await healthHandler(mockReq('GET'), res);
+    assert(res._status === 503, 'Expected 503, got ' + res._status);
+    assert(res._body.configuration.status === 'error', 'Expected configuration: error');
+    assert(Array.isArray(res._body.configuration.missingEnvVars), 'Expected missingEnvVars array');
+    assert(res._body.configuration.missingEnvVars.includes('SUPABASE_URL'), 'Expected SUPABASE_URL in missing env vars');
+    process.env.SUPABASE_URL = previousUrl;
+  });
+
+  await test('returns 503 when Supabase connectivity checks fail', async () => {
+    supabaseMockConfig.selectError = { message: 'network error' };
+    supabaseMockConfig.listBucketsError = { message: 'storage error' };
+    updateConfig();
+    const res = mockRes();
+    await healthHandler(mockReq('GET'), res);
+    assert(res._status === 503, 'Expected 503, got ' + res._status);
+    assert(res._body.api === 'degraded', 'Expected api: degraded');
+    assert(res._body.database === 'error', 'Expected database: error');
+    assert(res._body.storage === 'error', 'Expected storage: error');
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.listBucketsError = null;
+    updateConfig();
+  });
+
+  await test('returns 200 on /health root alias', async () => {
+    const res = mockRes();
+    await rootHealthHandler(mockReq('GET'), res);
+    assert(res._status === 200, 'Expected 200, got ' + res._status);
+    assert(res._body.api === 'ok', 'Expected api: ok');
+  });
+
+  // ──────────────────────────────────────────────────────────
+  // Summary
+  // ──────────────────────────────────────────────────────────
+  console.log('\n' + '-'.repeat(50));
+  console.log('Tests: ' + (passCount + failCount) + ' total, ' + passCount + ' passed, ' + failCount + ' failed');
+
+  if (failures.length > 0) {
+    console.error('\nFailed tests:');
+    failures.forEach(function (f) { console.error('  x ' + f.name + ': ' + f.error); });
+    process.exit(1);
+  } else {
+    console.log('\nAll tests passed!');
+    process.exit(0);
+  }
+}
+
+runTests().catch(function (err) {
+  console.error('Test runner error:', err);
+  process.exit(1);
+});

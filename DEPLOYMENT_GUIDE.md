@@ -202,6 +202,9 @@ WITH CHECK (bucket_id = 'fossil-images');
    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
    ```
 
+   > For backend API health and registrations, `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are mandatory.
+   > If either is missing, `/api/register` returns a misconfiguration error and `/api/health` returns `503`.
+
 3. Verify `.env` is listed in `.gitignore` (it already is):
    ```bash
    grep ".env" .gitignore
@@ -670,6 +673,20 @@ curl -v -X POST https://your-project.vercel.app/api/register \
 1. Supabase Dashboard → SQL Editor
 2. Run: `SELECT count(*) FROM registrations;`
 3. If this works, the database is healthy
+
+**Run configuration verification script:**
+```bash
+chmod +x ./supabase-diagnostic.sh
+./supabase-diagnostic.sh
+
+# Optional: also verify deployed health endpoint
+APP_HEALTH_URL="https://your-project.vercel.app/api/health" ./supabase-diagnostic.sh
+```
+
+**Interpret `/api/health` output:**
+- `200` + `"api":"ok"` → Supabase config/connectivity checks passed
+- `503` + `"configuration":{"status":"error","missingEnvVars":[...]}` → missing required env vars
+- `503` + `"api":"degraded"` with database/storage error → Supabase URL/key may be invalid or inaccessible
 
 **Re-deploy from scratch:**
 ```bash

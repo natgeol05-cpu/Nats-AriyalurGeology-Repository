@@ -157,7 +157,11 @@
     <script>
         // Replace this with your deployed Vercel API URL once deployed.
         // Example: https://your-project.vercel.app/api/register
-        const API_URL = window.location.origin + '/api/register';
+        // const API_URL = window.location.origin + '/api/register';
+        //const API_URL = https://app.supabase.com/project/natgeolwebsites/settings/api/register; // tried on 26Apr26 Not working.
+         //const API_URL = https://natsariyalurgeology-git-main-nats-geology-team.vercel.app/api/register;
+        //cont API_URL = https://cauverbasingeology.app/api/register;
+        const API_URL = 'https://natsariyalurgeology.vercel.app/api/register';
 
         const form        = document.getElementById('registrationForm');
         const nameInput   = document.getElementById('name');
@@ -210,7 +214,7 @@
             spinner.style.display = 'block';
             statusMsg.style.display = 'none';
 
-            const payload = {
+           const payload = {
                 name:        nameInput.value.trim(),
                 email:       emailInput.value.trim(),
                 phone:       document.getElementById('phone').value.trim(),
