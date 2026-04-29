@@ -4,7 +4,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
-const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+const EMAIL_REGEX = /^[a-z0-9.!#$%&'+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 const MAX_LENGTHS = {
   name: 255,
   email: 255,
