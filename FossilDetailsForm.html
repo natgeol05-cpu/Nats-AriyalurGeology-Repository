@@ -229,9 +229,10 @@
 
     <script>
         // Replace with your Vercel deployment URL once deployed.
-        const API_BASE = window.location.origin;
+        const API_BASE   = window.location.origin;
         const UPLOAD_API   = API_BASE + '/api/upload';
         const DETAILS_API  = API_BASE + '/api/fossils';
+        const HEALTH_URL   = API_BASE + '/api/health';
         const MAX_FILES    = 4;
         const MAX_SIZE     = 250 * 1024; // 250 KB in bytes
 
@@ -246,6 +247,18 @@
 
         function showError(el, msg) { el.textContent = msg; el.style.display = 'block'; }
         function hideError(el)      { el.style.display = 'none'; }
+
+        async function checkApiHealth() {
+            try {
+                const res  = await fetch(HEALTH_URL);
+                const data = await res.json().catch(() => ({}));
+                console.info('API health check result:', data);
+                return res.ok;
+            } catch (err) {
+                console.warn('API health check also failed:', err.message);
+                return false;
+            }
+        }
 
         // Live image preview with validation
         imageInput.addEventListener('change', () => {
@@ -414,10 +427,16 @@
                     statusMsg.textContent = result.error || 'Submission failed. Please try again.';
                 }
             } catch (err) {
+                console.error('Fossil details submission error:', err);
                 statusMsg.style.display = 'block';
                 statusMsg.className = 'error';
-                statusMsg.textContent = 'Network error: ' + err.message + '. Please check your connection.';
                 uploadProgress.textContent = '';
+                const apiReachable = await checkApiHealth();
+                if (!apiReachable) {
+                    statusMsg.textContent = 'The submission server is currently unreachable. Please try again later or contact support.';
+                } else {
+                    statusMsg.textContent = 'Network error. Please check your connection and try again.';
+                }
             } finally {
                 submitBtn.disabled = false;
                 spinner.style.display = 'none';
