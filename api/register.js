@@ -203,7 +203,7 @@ export default async function handler(req, res) {
   }
 
   if (isRateLimited(contextWithEmail.ip)) {
-    return res.status(429).json({ success: false, error: 'Too many registration attempts. Please try again later.' });
+    return res.status(429).json({ success: false, error: 'Too many registration attempts 001. Please try again later.' });
   }
 
   try {
