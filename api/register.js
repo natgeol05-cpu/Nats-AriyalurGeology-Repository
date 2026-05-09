@@ -232,8 +232,7 @@ export default async function handler(req, res) {
     }
 
     const { data, error } = await supabase
-
-      .from('registrationForm')
+      .from('registrations')
       .insert([
         {
           name: normalizedName,
