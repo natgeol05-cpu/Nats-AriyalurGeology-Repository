@@ -244,7 +244,7 @@ export default async function handler(req, res) {
           registered_at: new Date().toISOString(),
         },
       ])
-      .select('id, name, email, registered_at');
+      .select('id, name, email,phone,institution, purpose, registered_at');
 
     if (error) {
       console.error('Supabase register insert error:', { ...contextWithEmail, error });
