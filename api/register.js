@@ -254,13 +254,13 @@ export default async function handler(req, res) {
           error: SUPABASE_CONFIG_INVALID_ERROR,
         });
       }
-      return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
+      return res.status(500).json({ success: false, error: 'Database error 00. Please try again.' });
     }
 
     const registrationId = Array.isArray(data) && data.length > 0 ? data[0].id : null;
     if (!registrationId) {
       console.error('Supabase register insert returned empty data array', contextWithEmail);
-      return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
+      return res.status(500).json({ success: false, error: 'Database error 01. Please try again.' });
     }
 
     return res.status(201).json({
@@ -270,6 +270,6 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('Unexpected register API error:', { ...contextWithEmail, error: err });
-    return res.status(500).json({ success: false, error: 'An unexpected error occurred. Please try again.' });
+    return res.status(500).json({ success: false, error: 'An unexpected error occurred 02. Please try again.' });
   }
 }
