@@ -170,14 +170,57 @@
 
         async function checkApiHealth() {
             try {
-                const res  = await fetch(HEALTH_URL);
-                const data = await res.json().catch(() => ({}));
-                console.info('API health check result:', data);
+                const res = await fetch(HEALTH_URL, { cache: 'no-store' });
+                const text = await res.text();
+                let data = null;
+
+                if (text) {
+                    try {
+                        data = JSON.parse(text);
+                    } catch (parseError) {
+                        console.warn('API health check returned a non-JSON response:', text.slice(0, 200));
+                    }
+                }
+
+                console.info('API health check result:', data || text || '(empty response)');
                 return res.ok;
             } catch (err) {
                 console.warn('API health check also failed:', err.message);
                 return false;
             }
+        }
+
+        async function readApiResponse(response) {
+            const contentType = response.headers.get('content-type') || '';
+            const text = await response.text();
+
+            if (!text) {
+                return { data: null, text: '', contentType };
+            }
+
+            try {
+                return { data: JSON.parse(text), text, contentType };
+            } catch (parseError) {
+                console.warn('Registration API returned a non-JSON response:', text.slice(0, 200));
+                return { data: null, text, contentType };
+            }
+        }
+
+        function getRegistrationErrorMessage(response, apiResult) {
+            if (apiResult.data && typeof apiResult.data.error === 'string' && apiResult.data.error.trim()) {
+                return apiResult.data.error;
+            }
+
+            if (!apiResult.text) {
+                return `Registration failed (HTTP ${response.status}). The server returned an empty response.`;
+            }
+
+            const looksLikeHtml = apiResult.contentType.includes('text/html') || /^\s*</.test(apiResult.text);
+            if (looksLikeHtml) {
+                return `Registration failed (HTTP ${response.status}). The server returned an unexpected HTML response.`;
+            }
+
+            return `Registration failed (HTTP ${response.status}). ${apiResult.text.slice(0, 200)}`;
         }
 
         function showError(el, msg) {
@@ -236,7 +279,8 @@
                     body:    JSON.stringify(payload),
                 });
 
-                const result = await response.json();
+                const apiResult = await readApiResponse(response);
+                const result = apiResult.data || {};
 
                 statusMsg.style.display = 'block';
                 if (response.ok && result.success) {
@@ -245,7 +289,7 @@
                     form.reset();
                 } else {
                     statusMsg.className = 'error';
-                    statusMsg.textContent = result.error || 'Registration failed. Please try again.';
+                    statusMsg.textContent = getRegistrationErrorMessage(response, apiResult);
                 }
             } catch (err) {
                 console.error('Registration fetch error:', err);
@@ -255,7 +299,7 @@
                 if (!apiReachable) {
                     statusMsg.textContent = 'The registration server is currently unreachable. Please try again later or contact support.';
                 } else {
-                    statusMsg.textContent = 'Network error. Please check your connection and try again.';
+                    statusMsg.textContent = `Network error while contacting the registration service${err && err.message ? `: ${err.message}` : '.'} Please try again.`;
                 }
             } finally {
                 submitBtn.disabled = false;

@@ -2,8 +2,6 @@
 // Handles visitor registration and stores data in Supabase
 
 import { createClient } from '@supabase/supabase-js';
-
-const allowedOrigin = process.env.ALLOWED_ORIGIN;
 const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 const MAX_LENGTHS = {
   name: 255,
@@ -88,6 +86,25 @@ function sanitizeInput(value, options = {}) {
   return options.lowercase ? text.toLowerCase() : text;
 }
 
+function normalizeOrigin(origin) {
+  if (typeof origin !== 'string' || !origin.trim()) {
+    return '';
+  }
+
+  try {
+    return new URL(origin.trim()).origin;
+  } catch {
+    return origin.trim().replace(/\/+$/, '');
+  }
+}
+
+function getAllowedOrigins() {
+  return (process.env.ALLOWED_ORIGIN || '')
+    .split(',')
+    .map((origin) => normalizeOrigin(origin))
+    .filter(Boolean);
+}
+
 /**
  * Applies CORS headers and validates origin if allowlist is configured.
  * @param {object} req - Vercel request object.
@@ -95,17 +112,23 @@ function sanitizeInput(value, options = {}) {
  * @returns {boolean} True if request origin is allowed.
  */
 function applyCors(req, res) {
-  const requestOrigin = req?.headers?.origin;
+  const requestOrigin = normalizeOrigin(req?.headers?.origin);
+  const allowedOrigins = getAllowedOrigins();
 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Vary', 'Origin');
 
-  if (allowedOrigin && requestOrigin === allowedOrigin) {
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  if (!requestOrigin) {
+    return true;
   }
 
-  return !allowedOrigin || (requestOrigin && requestOrigin === allowedOrigin);
+  if (allowedOrigins.length === 0 || allowedOrigins.includes(requestOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -240,7 +263,7 @@ export default async function handler(req, res) {
           phone: normalizedPhone || null,
           institution: normalizedInstitution || null,
           purpose: normalizedPurpose || null,
-          status 'pending',
+          status: 'pending',
           registered_at: new Date().toISOString(),
         },
       ])

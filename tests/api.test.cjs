@@ -129,6 +129,40 @@ async function runTests() {
     assert(res._status === 200, 'Expected 200, got ' + res._status);
   });
 
+  await test('allows requests without an Origin header', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'No Origin',
+      email: 'no-origin@test.com',
+    }, { origin: undefined, 'x-forwarded-for': '192.168.0.16' }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+  });
+
+  await test('accepts normalized origins from a comma-separated allowlist', async () => {
+    const previousAllowedOrigin = process.env.ALLOWED_ORIGIN;
+    try {
+      process.env.ALLOWED_ORIGIN = 'https://allowed.example/, https://preview.allowed.example';
+      supabaseMockConfig.insertError = null;
+      supabaseMockConfig.selectError = null;
+      supabaseMockConfig.selectData = [];
+      supabaseMockConfig.insertData = null;
+      updateConfig();
+      const res = mockRes();
+      await registerHandler(mockReq('POST', {
+        name: 'Normalized Origin',
+        email: 'normalized-origin@test.com',
+      }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.17' }), res);
+      assert(res._status === 201, 'Expected 201, got ' + res._status);
+    } finally {
+      process.env.ALLOWED_ORIGIN = previousAllowedOrigin;
+    }
+  });
+
   await test('returns 500 with missing env details when Supabase vars are not configured', async () => {
     const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     delete process.env.SUPABASE_SERVICE_ROLE_KEY;
