@@ -190,9 +190,9 @@
             }
         }
 
-        async function readApiResponse(response) {
-            const contentType = response.headers.get('content-type') || '';
-            const text = await response.text();
+        async function readApiResponse(httpResponse) {
+            const contentType = httpResponse.headers.get('content-type') || '';
+            const text = await httpResponse.text();
 
             if (!text) {
                 return { data: null, text: '', contentType };
@@ -206,21 +206,21 @@
             }
         }
 
-        function getRegistrationErrorMessage(response, apiResult) {
+        function getRegistrationErrorMessage(httpResponse, apiResult) {
             if (apiResult.data && typeof apiResult.data.error === 'string' && apiResult.data.error.trim()) {
                 return apiResult.data.error;
             }
 
             if (!apiResult.text) {
-                return `Registration failed (HTTP ${response.status}). The server returned an empty response.`;
+                return `Registration failed (HTTP ${httpResponse.status}). The server returned an empty response.`;
             }
 
             const looksLikeHtml = apiResult.contentType.includes('text/html') || /^\s*</.test(apiResult.text);
             if (looksLikeHtml) {
-                return `Registration failed (HTTP ${response.status}). The server returned an unexpected HTML response.`;
+                return `Registration failed (HTTP ${httpResponse.status}). The server returned an unexpected HTML response.`;
             }
 
-            return `Registration failed (HTTP ${response.status}). ${apiResult.text.slice(0, 200)}`;
+            return `Registration failed (HTTP ${httpResponse.status}). ${apiResult.text.slice(0, 200)}`;
         }
 
         function showError(el, msg) {

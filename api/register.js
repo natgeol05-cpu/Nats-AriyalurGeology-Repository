@@ -86,7 +86,7 @@ function sanitizeInput(value, options = {}) {
   return options.lowercase ? text.toLowerCase() : text;
 }
 
-function normalizeOrigin(origin) {
+export function normalizeOrigin(origin) {
   if (typeof origin !== 'string' || !origin.trim()) {
     return '';
   }
@@ -98,10 +98,16 @@ function normalizeOrigin(origin) {
   }
 }
 
-function getAllowedOrigins() {
+export function getAllowedOrigins() {
   return (process.env.ALLOWED_ORIGIN || '')
     .split(',')
-    .map((origin) => normalizeOrigin(origin))
+    .map((origin) => {
+      try {
+        return new URL(origin.trim()).origin;
+      } catch {
+        return '';
+      }
+    })
     .filter(Boolean);
 }
 
