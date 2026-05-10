@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS public.registrations (
     phone TEXT,
     institution TEXT,
     purpose TEXT,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     registered_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

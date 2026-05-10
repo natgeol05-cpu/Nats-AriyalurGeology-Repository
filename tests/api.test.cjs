@@ -41,7 +41,9 @@ process.env.ALLOWED_ORIGIN = 'https://allowed.example';
 
 // Node 22+ allows require() of synchronous ES modules; the .default property
 // holds the exported handler function.
-const registerHandler = require('../api/register').default;
+const registerModule = require('../api/register');
+const { normalizeOrigin, getAllowedOrigins } = registerModule;
+const registerHandler = registerModule.default;
 const fossilHandler   = require('../api/fossil-details').default;
 const fossilsAliasHandler = require('../api/fossils').default;
 const uploadHandler   = require('../api/upload-image').default;
@@ -107,6 +109,33 @@ async function runTests() {
   // ════════════════════════════════════════════════════════════
   console.log('\n/api/register');
 
+  await test('normalizeOrigin returns normalized origins for valid URLs', async () => {
+    assert(normalizeOrigin(' https://allowed.example/path?q=1 ') === 'https://allowed.example', 'Expected normalized valid origin');
+  });
+
+  await test('normalizeOrigin falls back to trimming invalid origin strings', async () => {
+    assert(normalizeOrigin(' custom-origin/// ') === 'custom-origin', 'Expected trimmed fallback origin');
+  });
+
+  await test('normalizeOrigin returns empty string for blank or non-string values', async () => {
+    assert(normalizeOrigin('   ') === '', 'Expected blank string to normalize to empty');
+    assert(normalizeOrigin(null) === '', 'Expected null to normalize to empty');
+  });
+
+  await test('getAllowedOrigins parses comma-separated origins and filters invalid entries', async () => {
+    const previousAllowedOrigin = process.env.ALLOWED_ORIGIN;
+    try {
+      process.env.ALLOWED_ORIGIN = ' , not a url, https://allowed.example/, https://preview.allowed.example/path ';
+      const allowedOrigins = getAllowedOrigins();
+      assert(Array.isArray(allowedOrigins), 'Expected array of allowed origins');
+      assert(allowedOrigins.length === 2, 'Expected invalid allowlist entries to be filtered');
+      assert(allowedOrigins[0] === 'https://allowed.example', 'Expected first normalized origin');
+      assert(allowedOrigins[1] === 'https://preview.allowed.example', 'Expected second normalized origin');
+    } finally {
+      process.env.ALLOWED_ORIGIN = previousAllowedOrigin;
+    }
+  });
+
   await test('returns 405 for PATCH requests', async () => {
     const res = mockRes();
     await registerHandler(mockReq('PATCH'), res);
@@ -127,6 +156,40 @@ async function runTests() {
     const res = mockRes();
     await registerHandler(mockReq('OPTIONS'), res);
     assert(res._status === 200, 'Expected 200, got ' + res._status);
+  });
+
+  await test('allows requests without an Origin header', async () => {
+    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertData = null;
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'No Origin',
+      email: 'no-origin@test.com',
+    }, { origin: undefined, 'x-forwarded-for': '192.168.0.16' }), res);
+    assert(res._status === 201, 'Expected 201, got ' + res._status);
+  });
+
+  await test('accepts normalized origins from a comma-separated allowlist', async () => {
+    const previousAllowedOrigin = process.env.ALLOWED_ORIGIN;
+    try {
+      process.env.ALLOWED_ORIGIN = 'https://allowed.example/, https://preview.allowed.example';
+      supabaseMockConfig.insertError = null;
+      supabaseMockConfig.selectError = null;
+      supabaseMockConfig.selectData = [];
+      supabaseMockConfig.insertData = null;
+      updateConfig();
+      const res = mockRes();
+      await registerHandler(mockReq('POST', {
+        name: 'Normalized Origin',
+        email: 'normalized-origin@test.com',
+      }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.17' }), res);
+      assert(res._status === 201, 'Expected 201, got ' + res._status);
+    } finally {
+      process.env.ALLOWED_ORIGIN = previousAllowedOrigin;
+    }
   });
 
   await test('returns 500 with missing env details when Supabase vars are not configured', async () => {
