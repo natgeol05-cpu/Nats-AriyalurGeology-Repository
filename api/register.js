@@ -240,7 +240,7 @@ export default async function handler(req, res) {
           phone: normalizedPhone || null,
           institution: normalizedInstitution || null,
           purpose: normalizedPurpose || null,
-          status: 'pending',
+          
           registered_at: new Date().toISOString(),
         },
       ])
