@@ -42,10 +42,11 @@ function getMalformedSupabaseEnvVars() {
     if (/[\r\n]/.test(envValue)) {
       issues.push('line breaks');
     }
-    if (SUPABASE_ENV_SMART_PUNCTUATION_REGEX.test(envValue)) {
+    const hasSmartPunctuation = SUPABASE_ENV_SMART_PUNCTUATION_REGEX.test(envValue);
+    if (hasSmartPunctuation) {
       issues.push('smart punctuation/bullets');
     }
-    if (SUPABASE_ENV_NON_ASCII_REGEX.test(envValue)) {
+    if (SUPABASE_ENV_NON_ASCII_REGEX.test(envValue) && !hasSmartPunctuation) {
       issues.push('non-ASCII characters');
     }
 
