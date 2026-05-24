@@ -15,6 +15,8 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const rateLimitByIp = new Map();
 const REQUIRED_SUPABASE_ENV_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
 const SUPABASE_CONFIG_INVALID_ERROR = 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.';
+const SUPABASE_ENV_SMART_PUNCTUATION_REGEX = /[\u2018\u2019\u201C\u201D\u2022\u00B7\u2013\u2014]/;
+const SUPABASE_ENV_NON_ASCII_REGEX = /[^\x00-\x7F]/;
 
 function getMissingSupabaseEnvVars() {
   return REQUIRED_SUPABASE_ENV_VARS.filter((envVarName) => !process.env[envVarName]);
@@ -22,6 +24,43 @@ function getMissingSupabaseEnvVars() {
 
 function getSupabaseConfigErrorMessage(missingSupabaseEnvVars) {
   return `Server misconfiguration: missing ${missingSupabaseEnvVars.join(', ')}. Set these in Vercel Project Settings -> Environment Variables and redeploy. Use /api/health to verify connectivity.`;
+}
+
+function getMalformedSupabaseEnvVars() {
+  const malformedVars = [];
+
+  for (const envVarName of REQUIRED_SUPABASE_ENV_VARS) {
+    const envValue = process.env[envVarName];
+    if (typeof envValue !== 'string' || !envValue) {
+      continue;
+    }
+
+    const issues = [];
+    if (envValue !== envValue.trim()) {
+      issues.push('leading/trailing whitespace');
+    }
+    if (/[\r\n]/.test(envValue)) {
+      issues.push('line breaks');
+    }
+    const hasSmartPunctuation = SUPABASE_ENV_SMART_PUNCTUATION_REGEX.test(envValue);
+    if (hasSmartPunctuation) {
+      issues.push('smart punctuation/bullets');
+    }
+    if (SUPABASE_ENV_NON_ASCII_REGEX.test(envValue) && !hasSmartPunctuation) {
+      issues.push('non-ASCII characters');
+    }
+
+    if (issues.length > 0) {
+      malformedVars.push({ envVarName, issues });
+    }
+  }
+
+  return malformedVars;
+}
+
+function getSupabaseMalformedConfigErrorMessage(malformedSupabaseEnvVars) {
+  const malformedNames = malformedSupabaseEnvVars.map((entry) => entry.envVarName);
+  return `Server misconfiguration: malformed ${malformedNames.join(', ')}. Remove leading/trailing whitespace, line breaks, and non-ASCII characters (for example smart punctuation/bullets), then redeploy. Use /api/health to verify connectivity.`;
 }
 
 const initialMissingSupabaseEnvVars = getMissingSupabaseEnvVars();
@@ -40,7 +79,9 @@ function isSupabaseConfigurationError(error) {
     errorText.includes('invalid api key') ||
     hasJwtCredentialError ||
     errorText.includes('unauthorized') ||
-    errorText.includes('forbidden')
+    errorText.includes('forbidden') ||
+    errorText.includes('bytestring') ||
+    errorText.includes('greater than 255')
   );
 }
 
@@ -191,6 +232,14 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: errorMessage, missing_env_vars: missingSupabaseEnvVars });
   }
 
+  const malformedSupabaseEnvVars = getMalformedSupabaseEnvVars();
+  if (malformedSupabaseEnvVars.length > 0) {
+    const errorMessage = getSupabaseMalformedConfigErrorMessage(malformedSupabaseEnvVars);
+    const malformedEnvVarNames = malformedSupabaseEnvVars.map((entry) => entry.envVarName);
+    console.error('Register API malformed configuration:', { ...context, malformedSupabaseEnvVars });
+    return res.status(500).json({ success: false, error: errorMessage, malformed_env_vars: malformedEnvVarNames });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed. Use POST.' });
   }
@@ -252,7 +301,7 @@ try {
           error: SUPABASE_CONFIG_INVALID_ERROR,
         });
       }
-      return res.status(500).json({ success: false, error: 'Database error induplicateCheckError. Please try again.' });
+      return res.status(500).json({ success: false, error: 'Database error during duplicate email check. Please try again.' });
     }
 
     if (Array.isArray(existingRegistrations) && existingRegistrations.length > 0) {
