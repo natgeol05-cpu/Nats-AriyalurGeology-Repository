@@ -253,7 +253,7 @@ export default async function handler(req, res) {
           error: SUPABASE_CONFIG_INVALID_ERROR,
         });
       }
-      return res.status(500).json({ success: false, error: 'Database error. Please try again.' });
+      return res.status(500).json({ success: false, error: 'Database error induplicateCheckError. Please try again.' });
     }
 
     if (Array.isArray(existingRegistrations) && existingRegistrations.length > 0) {
