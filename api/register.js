@@ -235,30 +235,7 @@ export default async function handler(req, res) {
     return res.status(429).json({ success: false, error: 'Too many registration attempts 001. Please try again later.' });
   }
 
-  try {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data: existingRegistrations, error: duplicateCheckError } = await supabase
-      .from('registrations')
-      .select('id')
-      .eq('email', normalizedEmail)
-      .limit(1);
-
-    if (duplicateCheckError) {
-      console.error('Supabase duplicate-email check error:', { ...contextWithEmail, duplicateCheckError });
-      if (isSupabaseConfigurationError(duplicateCheckError)) {
-        return res.status(500).json({
-          success: false,
-          error: SUPABASE_CONFIG_INVALID_ERROR,
-        });
-      }
-      return res.status(500).json({ success: false, error: 'Database error induplicateCheckError. Please try again.' });
-    }
-
-    if (Array.isArray(existingRegistrations) && existingRegistrations.length > 0) {
-      return res.status(409).json({ success: false, error: 'Email already registered.' });
-    }
+        
 
     const { data, error } = await supabase
       .from('registrations')
