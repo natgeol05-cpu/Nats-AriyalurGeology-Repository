@@ -204,6 +204,36 @@ async function runTests() {
     process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
   });
 
+  await test('returns 500 with malformed env details when SUPABASE_URL contains non-ASCII characters', async () => {
+    const previousUrl = process.env.SUPABASE_URL;
+    try {
+      process.env.SUPABASE_URL = 'https://mock.supabase.co•';
+      const res = mockRes();
+      await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
+      assert(res._status === 500, 'Expected 500, got ' + res._status);
+      assert(Array.isArray(res._body.malformed_env_vars), 'Expected malformed_env_vars array');
+      assert(res._body.malformed_env_vars.includes('SUPABASE_URL'), 'Expected malformed SUPABASE_URL in response');
+      assert(res._body.error.toLowerCase().includes('malformed supabase_url'), 'Expected malformed SUPABASE_URL guidance');
+    } finally {
+      process.env.SUPABASE_URL = previousUrl;
+    }
+  });
+
+  await test('returns 500 with malformed env details when SUPABASE_SERVICE_ROLE_KEY has surrounding whitespace and line breaks', async () => {
+    const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    try {
+      process.env.SUPABASE_SERVICE_ROLE_KEY = ' mock-service-key\n';
+      const res = mockRes();
+      await registerHandler(mockReq('POST', { name: 'Test', email: 'test@test.com' }), res);
+      assert(res._status === 500, 'Expected 500, got ' + res._status);
+      assert(Array.isArray(res._body.malformed_env_vars), 'Expected malformed_env_vars array');
+      assert(res._body.malformed_env_vars.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Expected malformed SUPABASE_SERVICE_ROLE_KEY in response');
+      assert(res._body.error.toLowerCase().includes('line breaks'), 'Expected line-break guidance');
+    } finally {
+      process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
+    }
+  });
+
   await test('returns 400 when name is missing', async () => {
     const res = mockRes();
     await registerHandler(mockReq('POST', { email: 'test@test.com' }), res);
