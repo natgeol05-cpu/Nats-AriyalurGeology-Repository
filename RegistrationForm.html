@@ -119,10 +119,6 @@
             </label>
             <input type="text" id="name" name="name" placeholder="Enter your full name" required>
             <div class="error-msg" id="nameError">Name is required.</div>
-
-            <label for="email">
-                Email Address <span class="required-star">*</span>
-            </label>
             <input type="email" id="email" name="email" placeholder="example@domain.com" required>
             <div class="error-msg" id="emailError">Please enter a valid email address.</div>
 
@@ -155,10 +151,11 @@
     </div>
 
     <script>
-        // Replace this with your deployed Vercel API URL once deployed.
-        // Example: https://your-project.vercel.app/api/register
-        const API_URL = window.location.origin + '/api/register';
-
+        // Relative URL works automatically in any deployment environment.
+        const API_URL    = window.location.origin + '/api/register';
+        const HEALTH_URL = window.location.origin + '/api/health';
+        const MAX_ERROR_PREVIEW_LENGTH = 200;
+        
         const form        = document.getElementById('registrationForm');
         const nameInput   = document.getElementById('name');
         const emailInput  = document.getElementById('email');
@@ -167,6 +164,61 @@
         const statusMsg   = document.getElementById('statusMsg');
         const spinner     = document.getElementById('spinner');
         const submitBtn   = document.getElementById('submitBtn');
+
+        async function checkApiHealth() {
+            try {
+                const res = await fetch(HEALTH_URL, { cache: 'no-store' });
+                const text = await res.text();
+                let data = null;
+
+                if (text) {
+                    try {
+                        data = JSON.parse(text);
+                    } catch (parseError) {
+                        console.warn('API health check returned a non-JSON response:', text.slice(0, MAX_ERROR_PREVIEW_LENGTH));
+                    }
+                }
+
+                console.info('API health check result:', data || text || '(empty response)');
+                return res.ok;
+            } catch (err) {
+                console.warn('API health check also failed:', err.message);
+                return false;
+            }
+        }
+
+        async function readApiResponse(httpResponse) {
+            const contentType = httpResponse.headers.get('content-type') || '';
+            const text = await httpResponse.text();
+
+            if (!text) {
+                return { data: null, text: '', contentType };
+            }
+
+            try {
+                return { data: JSON.parse(text), text, contentType };
+            } catch (parseError) {
+                console.warn('Registration API returned a non-JSON response:', text.slice(0, MAX_ERROR_PREVIEW_LENGTH));
+                return { data: null, text, contentType };
+            }
+        }
+
+        function getRegistrationErrorMessage(httpResponse, apiResult) {
+            if (apiResult.data && typeof apiResult.data.error === 'string' && apiResult.data.error.trim()) {
+                return apiResult.data.error;
+            }
+
+            if (!apiResult.text) {
+                return `Registration failed (HTTP ${httpResponse.status}). The server returned an empty response.`;
+            }
+
+            const looksLikeHtml = apiResult.contentType.includes('text/html') || /^\s*</.test(apiResult.text);
+            if (looksLikeHtml) {
+                return `Registration failed (HTTP ${httpResponse.status}). The server returned an unexpected HTML response.`;
+            }
+
+            return `Registration failed (HTTP ${httpResponse.status}). ${apiResult.text.slice(0, MAX_ERROR_PREVIEW_LENGTH)}`;
+        }
 
         function showError(el, msg) {
             el.textContent = msg;
@@ -191,7 +243,6 @@
             } else {
                 hideError(emailError);
             }
-
             return valid;
         }
 
@@ -210,7 +261,7 @@
             spinner.style.display = 'block';
             statusMsg.style.display = 'none';
 
-            const payload = {
+           const payload = {
                 name:        nameInput.value.trim(),
                 email:       emailInput.value.trim(),
                 phone:       document.getElementById('phone').value.trim(),
@@ -225,7 +276,8 @@
                     body:    JSON.stringify(payload),
                 });
 
-                const result = await response.json();
+                const apiResult = await readApiResponse(response);
+                const result = apiResult.data || {};
 
                 statusMsg.style.display = 'block';
                 if (response.ok && result.success) {
@@ -234,12 +286,18 @@
                     form.reset();
                 } else {
                     statusMsg.className = 'error';
-                    statusMsg.textContent = result.error || 'Registration failed. Please try again.';
+                    statusMsg.textContent = getRegistrationErrorMessage(response, apiResult);
                 }
             } catch (err) {
+                console.error('Registration fetch error:', err);
                 statusMsg.style.display = 'block';
                 statusMsg.className = 'error';
-                statusMsg.textContent = 'Network error. Please check your connection and try again.';
+                const apiReachable = await checkApiHealth();
+                if (!apiReachable) {
+                    statusMsg.textContent = 'The registration server is currently unreachable. Please try again later or contact support.';
+                } else {
+                    statusMsg.textContent = `Network error while contacting the registration service${err && err.message ? `: ${err.message}` : '.'} Please try again.`;
+                }
             } finally {
                 submitBtn.disabled = false;
                 spinner.style.display = 'none';

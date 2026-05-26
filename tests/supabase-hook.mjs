@@ -27,30 +27,41 @@ function getConfig() {
 export function createClient() {
   return {
     from: () => ({
-      insert: () => ({
-        select: () => {
-          const c = getConfig();
-          return Promise.resolve({
-            data: c.insertError
-              ? null
-              : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
-                   registered_at: new Date().toISOString(),
-                   fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }],
-            error: c.insertError || null,
-          });
-        },
-      }),
-      select: () => ({
-        eq: () => ({
-          order: () => {
+      insert: (rows) => {
+        globalThis.supabaseMockLastInsertedRows = rows;
+        return {
+          select: () => {
             const c = getConfig();
             return Promise.resolve({
-              data: c.selectError ? null : [],
-              error: c.selectError || null,
+              data: c.insertError
+                ? null
+                : (Array.isArray(c.insertData) ? c.insertData : [{ id: 'mock-uuid-123', name: 'Test', email: 'test@test.com',
+                      registered_at: new Date().toISOString(),
+                      fossil_name: 'Ammonite', submitted_at: new Date().toISOString() }]),
+              error: c.insertError || null,
             });
           },
-        }),
-      }),
+        };
+      },
+      select: () => {
+        const buildResult = () => {
+          const c = getConfig();
+          return Promise.resolve({
+            data: c.selectError ? null : (Array.isArray(c.selectData) ? c.selectData : []),
+            error: c.selectError || null,
+          });
+        };
+        const query = {
+          eq: () => ({
+            order: () => buildResult(),
+            limit: () => buildResult(),
+          }),
+          then: (...args) => buildResult().then(...args),
+          catch: (...args) => buildResult().catch(...args),
+          finally: (...args) => buildResult().finally(...args),
+        };
+        return query;
+      },
     }),
     storage: {
       from: () => ({
@@ -65,7 +76,10 @@ export function createClient() {
           data: { publicUrl: 'https://example.supabase.co/storage/v1/object/public/fossil-images/fossils/test.jpg' },
         }),
       }),
-      listBuckets: () => Promise.resolve({ error: null }),
+      listBuckets: () => {
+        const c = getConfig();
+        return Promise.resolve({ error: c.listBucketsError || null });
+      },
     },
   };
 }

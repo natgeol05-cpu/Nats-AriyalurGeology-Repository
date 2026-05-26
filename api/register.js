@@ -2,64 +2,351 @@
 // Handles visitor registration and stores data in Supabase
 
 import { createClient } from '@supabase/supabase-js';
+const EMAIL_REGEX = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+const MAX_LENGTHS = {
+  name: 255,
+  email: 255,
+  phone: 50,
+  institution: 1000,
+  purpose: 1000,
+};
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const rateLimitByIp = new Map();
+const REQUIRED_SUPABASE_ENV_VARS = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
+const SUPABASE_CONFIG_INVALID_ERROR = 'Supabase credentials are invalid or lack access. Verify SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy. Check /api/health for diagnostics.';
+const SUPABASE_ENV_SMART_PUNCTUATION_REGEX = /[\u2018\u2019\u201C\u201D\u2022\u00B7\u2013\u2014]/;
+const SUPABASE_ENV_NON_ASCII_REGEX = /[^\x00-\x7F]/;
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+function getMissingSupabaseEnvVars() {
+  return REQUIRED_SUPABASE_ENV_VARS.filter((envVarName) => !process.env[envVarName]);
+}
 
-export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
+function getSupabaseConfigErrorMessage(missingSupabaseEnvVars) {
+  return `Server misconfiguration: missing ${missingSupabaseEnvVars.join(', ')}. Set these in Vercel Project Settings -> Environment Variables and redeploy. Use /api/health to verify connectivity.`;
+}
+
+function getMalformedSupabaseEnvVars() {
+  const malformedVars = [];
+
+  for (const envVarName of REQUIRED_SUPABASE_ENV_VARS) {
+    const envValue = process.env[envVarName];
+    if (typeof envValue !== 'string' || !envValue) {
+      continue;
+    }
+
+    const issues = [];
+    if (envValue !== envValue.trim()) {
+      issues.push('leading/trailing whitespace');
+    }
+    if (/[\r\n]/.test(envValue)) {
+      issues.push('line breaks');
+    }
+    const hasSmartPunctuation = SUPABASE_ENV_SMART_PUNCTUATION_REGEX.test(envValue);
+    if (hasSmartPunctuation) {
+      issues.push('smart punctuation/bullets');
+    }
+    if (SUPABASE_ENV_NON_ASCII_REGEX.test(envValue) && !hasSmartPunctuation) {
+      issues.push('non-ASCII characters');
+    }
+
+    if (issues.length > 0) {
+      malformedVars.push({ envVarName, issues });
+    }
+  }
+
+  return malformedVars;
+}
+
+function getSupabaseMalformedConfigErrorMessage(malformedSupabaseEnvVars) {
+  const malformedNames = malformedSupabaseEnvVars.map((entry) => entry.envVarName);
+  return `Server misconfiguration: malformed ${malformedNames.join(', ')}. Remove leading/trailing whitespace, line breaks, and non-ASCII characters (for example smart punctuation/bullets), then redeploy. Use /api/health to verify connectivity.`;
+}
+
+const initialMissingSupabaseEnvVars = getMissingSupabaseEnvVars();
+if (initialMissingSupabaseEnvVars.length > 0) {
+  console.error('Missing required environment variables for register API:', initialMissingSupabaseEnvVars);
+}
+
+function isSupabaseConfigurationError(error) {
+  const errorText = (error?.message || error?.details || '')?.toString?.().toLowerCase() || '';
+  const hasJwtCredentialError = /jwt (expired|invalid|malformed)|invalid jwt/.test(errorText);
+  return (
+    error?.status === 401 ||
+    error?.status === 403 ||
+    error?.code === 'PGRST301' ||
+    error?.code === 'PGRST302' ||
+    errorText.includes('invalid api key') ||
+    hasJwtCredentialError ||
+    errorText.includes('unauthorized') ||
+    errorText.includes('forbidden') ||
+    errorText.includes('bytestring') ||
+    errorText.includes('greater than 255')
+  );
+}
+
+/**
+ * Gets a best-effort client IP from the request.
+ * @param {object} req - Vercel request object.
+ * @returns {string} Client IP.
+ */
+function getClientIp(req) {
+  const forwarded = req?.headers?.['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.trim()) {
+    return forwarded.split(',')[0].trim();
+  }
+  return req?.socket?.remoteAddress || req?.connection?.remoteAddress || 'unknown';
+}
+
+/**
+ * Builds a request context object for safer, richer logging.
+ * @param {object} req - Vercel request object.
+ * @param {string} normalizedEmail - Normalized email if available.
+ * @returns {object} Request context.
+ */
+function getRequestContext(req, normalizedEmail = '') {
+  return {
+    method: req?.method || 'UNKNOWN',
+    ip: getClientIp(req),
+    origin: req?.headers?.origin || null,
+    email: normalizedEmail || null,
+  };
+}
+
+/**
+ * Trims and normalizes user input.
+ * @param {unknown} value - Input value.
+ * @param {{lowercase?: boolean}} [options] - Sanitization options.
+ * @returns {string} Sanitized value.
+ */
+function sanitizeInput(value, options = {}) {
+  const text = typeof value === 'string'
+    ? value.trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+    : '';
+
+  return options.lowercase ? text.toLowerCase() : text;
+}
+
+export function normalizeOrigin(origin) {
+  if (typeof origin !== 'string' || !origin.trim()) {
+    return '';
+  }
+
+  try {
+    return new URL(origin.trim()).origin;
+  } catch {
+    return origin.trim().replace(/\/+$/, '');
+  }
+}
+
+export function getAllowedOrigins() {
+  return (process.env.ALLOWED_ORIGIN || '')
+    .split(',')
+    .map((origin) => {
+      try {
+        return new URL(origin.trim()).origin;
+      } catch {
+        return '';
+      }
+    })
+    .filter(Boolean);
+}
+
+/**
+ * Applies CORS headers and validates origin if allowlist is configured.
+ * @param {object} req - Vercel request object.
+ * @param {object} res - Vercel response object.
+ * @returns {boolean} True if request origin is allowed.
+ */
+function applyCors(req, res) {
+  const requestOrigin = normalizeOrigin(req?.headers?.origin);
+  const allowedOrigins = getAllowedOrigins();
+
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Vary', 'Origin');
+
+  if (!requestOrigin) {
+    return true;
+  }
+
+  if (allowedOrigins.length === 0 || allowedOrigins.includes(requestOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Enforces per-IP request limits inside a fixed one-hour window.
+ * @param {string} ip - Client IP.
+ * @returns {boolean} True if rate limit is exceeded.
+ */
+function isRateLimited(ip) {
+  const now = Date.now();
+  const validSince = now - RATE_LIMIT_WINDOW_MS;
+  for (const [knownIp, timestamps] of rateLimitByIp.entries()) {
+    const activeTimestamps = timestamps.filter((timestamp) => timestamp > validSince);
+    if (activeTimestamps.length === 0) {
+      rateLimitByIp.delete(knownIp);
+    } else if (activeTimestamps.length !== timestamps.length) {
+      rateLimitByIp.set(knownIp, activeTimestamps);
+    }
+  }
+
+  const recentRequests = rateLimitByIp.get(ip) || [];
+
+  if (recentRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
+    rateLimitByIp.set(ip, recentRequests);
+    return true;
+  }
+
+  recentRequests.push(now);
+  rateLimitByIp.set(ip, recentRequests);
+  return false;
+}
+
+/**
+ * Handles visitor registration and stores data in Supabase.
+ * @param {object} req - Vercel request object.
+ * @param {object} res - Vercel response object.
+ * @returns {Promise<object|void>} API response.
+ */
+export default async function handler(req, res) {
+  const context = getRequestContext(req);
+
+  if (!applyCors(req, res)) {
+    console.warn('Blocked register request due to disallowed origin', context);
+    return res.status(403).json({ success: false, error: 'Origin not allowed.' });
+  }
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  const missingSupabaseEnvVars = getMissingSupabaseEnvVars();
+  if (missingSupabaseEnvVars.length > 0) {
+    const errorMessage = getSupabaseConfigErrorMessage(missingSupabaseEnvVars);
+    console.error('Register API misconfiguration:', { ...context, missingSupabaseEnvVars });
+    return res.status(500).json({ success: false, error: errorMessage, missing_env_vars: missingSupabaseEnvVars });
+  }
+
+  const malformedSupabaseEnvVars = getMalformedSupabaseEnvVars();
+  if (malformedSupabaseEnvVars.length > 0) {
+    const errorMessage = getSupabaseMalformedConfigErrorMessage(malformedSupabaseEnvVars);
+    const malformedEnvVarNames = malformedSupabaseEnvVars.map((entry) => entry.envVarName);
+    console.error('Register API malformed configuration:', { ...context, malformedSupabaseEnvVars });
+    return res.status(500).json({ success: false, error: errorMessage, malformed_env_vars: malformedEnvVarNames });
+  }
+
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+    return res.status(405).json({ success: false, error: 'Method not allowed. Use POST.' });
   }
 
   const { name, email, phone, institution, purpose } = req.body || {};
+  const normalizedName = sanitizeInput(name);
+  const normalizedEmail = sanitizeInput(email, { lowercase: true });
+  const normalizedPhone = sanitizeInput(phone);
+  const normalizedInstitution = sanitizeInput(institution);
+  const normalizedPurpose = sanitizeInput(purpose);
+  const contextWithEmail = getRequestContext(req, normalizedEmail);
 
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required fields.' });
+  if (!normalizedName || !normalizedEmail) {
+    return res.status(400).json({ success: false, error: 'Name and email are required fields.' });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email address format.' });
+  if (
+    normalizedName.length > MAX_LENGTHS.name ||
+    normalizedEmail.length > MAX_LENGTHS.email ||
+    normalizedPhone.length > MAX_LENGTHS.phone ||
+    normalizedInstitution.length > MAX_LENGTHS.institution ||
+    normalizedPurpose.length > MAX_LENGTHS.purpose
+  ) {
+    return res.status(400).json({ success: false, error: 'One or more fields exceed allowed length.' });
   }
 
-  try {
+  if (
+    /[<>]/.test(normalizedName) ||
+    /[<>]/.test(normalizedEmail) ||
+    /[<>]/.test(normalizedPhone) ||
+    /[<>]/.test(normalizedInstitution) ||
+    /[<>]/.test(normalizedPurpose)
+  ) {
+    return res.status(400).json({ success: false, error: 'Invalid characters in input.' });
+  }
+
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
+    return res.status(400).json({ success: false, error: 'Invalid email address format.' });
+  }
+
+  if (isRateLimited(contextWithEmail.ip)) {
+    return res.status(429).json({ success: false, error: 'Too many registration attempts 001. Please try again later.' });
+  }
+
+try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const { data: existingRegistrations, error: duplicateCheckError } = await supabase
+      .from('registrations')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .limit(1);
+
+    if (duplicateCheckError) {
+      console.error('Supabase duplicate-email check error:', { ...contextWithEmail, duplicateCheckError });
+      if (isSupabaseConfigurationError(duplicateCheckError)) { return res.status(500).json({
+          success: false,
+          error: SUPABASE_CONFIG_INVALID_ERROR,
+        });
+      }
+      return res.status(500).json({ success: false, error: 'Database error during duplicate email check. Please try again.' });
+    }
+
+    if (Array.isArray(existingRegistrations) && existingRegistrations.length > 0) {
+      return res.status(409).json({ success: false, error: 'Email already registered.' });
+    }        
 
     const { data, error } = await supabase
       .from('registrations')
       .insert([
         {
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          phone: phone ? phone.trim() : null,
-          institution: institution ? institution.trim() : null,
-          purpose: purpose ? purpose.trim() : null,
+          name: normalizedName,
+          email: normalizedEmail,
+          phone: normalizedPhone || null,
+          institution: normalizedInstitution || null,
+          purpose: normalizedPurpose || null,
+ 
           registered_at: new Date().toISOString(),
         },
       ])
       .select('id, name, email, registered_at');
 
     if (error) {
-      console.error('Supabase insert error:', error);
-      return res.status(500).json({ error: 'Database error. Please try again.' });
+      console.error('Supabase register insert error:', { ...contextWithEmail, error });
+      if (isSupabaseConfigurationError(error)) {
+        return res.status(500).json({
+          success: false,
+          error: SUPABASE_CONFIG_INVALID_ERROR,
+        });
+      }
+      return res.status(500).json({ success: false, error: 'Database error 00. Please try again.' });
+    }
+
+    const registrationId = Array.isArray(data) && data.length > 0 ? data[0].id : null;
+    if (!registrationId) {
+      console.error('Supabase register insert returned empty data array', contextWithEmail);
+      return res.status(500).json({ success: false, error: 'Database error 01. Please try again.' });
     }
 
     return res.status(201).json({
       success: true,
-      message: `Thank you, ${name}! Your registration is successful.`,
-      registration_id: data[0].id,
+      message: `Thank you, ${normalizedName}! Your registration is successful.`,
+      registration_id: registrationId,
     });
   } catch (err) {
-    console.error('Unexpected error:', err);
-    return res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
+    console.error('Unexpected register API error:', { ...contextWithEmail, error: err });
+    return res.status(500).json({ success: false, error: 'An unexpected error occurred 02. Please try again.' });
   }
 }
