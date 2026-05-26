@@ -544,8 +544,32 @@ async function runTests() {
     assert(res._status === 503, 'Expected 503, got ' + res._status);
     assert(res._body.configuration.status === 'error', 'Expected configuration: error');
     assert(Array.isArray(res._body.configuration.missingEnvVars), 'Expected missingEnvVars array');
+    assert(Array.isArray(res._body.configuration.malformedEnvVars), 'Expected malformedEnvVars array');
     assert(res._body.configuration.missingEnvVars.includes('SUPABASE_URL'), 'Expected SUPABASE_URL in missing env vars');
+    assert(res._body.configuration.malformedEnvVars.length === 0, 'Expected no malformed env vars when env var is missing');
     process.env.SUPABASE_URL = previousUrl;
+  });
+
+  await test('returns 503 with malformed configuration details when Supabase env vars contain line breaks/whitespace/non-ASCII', async () => {
+    const previousUrl = process.env.SUPABASE_URL;
+    const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    try {
+      process.env.SUPABASE_URL = 'https://mock.supabase.co•';
+      process.env.SUPABASE_SERVICE_ROLE_KEY = ' mock-service-key\n';
+      const res = mockRes();
+      await healthHandler(mockReq('GET'), res);
+      assert(res._status === 503, 'Expected 503, got ' + res._status);
+      assert(res._body.api === 'degraded', 'Expected api: degraded');
+      assert(res._body.configuration.status === 'malformed', 'Expected configuration: malformed');
+      assert(Array.isArray(res._body.configuration.malformedEnvVars), 'Expected malformedEnvVars array');
+      assert(res._body.configuration.malformedEnvVars.includes('SUPABASE_URL'), 'Expected malformed SUPABASE_URL in response');
+      assert(res._body.configuration.malformedEnvVars.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Expected malformed SUPABASE_SERVICE_ROLE_KEY in response');
+      assert(res._body.error.toLowerCase().includes('remove leading/trailing whitespace'), 'Expected actionable malformed env guidance');
+      assert(res._body.error.includes('/api/health'), 'Expected /api/health redeploy recheck guidance');
+    } finally {
+      process.env.SUPABASE_URL = previousUrl;
+      process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
+    }
   });
 
   await test('returns 503 when Supabase connectivity checks fail', async () => {

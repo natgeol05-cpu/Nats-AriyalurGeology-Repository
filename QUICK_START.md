@@ -22,6 +22,8 @@ Expected:
 - `"database":"ok"`
 - `"storage":"ok"`
 
+If you get `503` with `"configuration":{"status":"malformed"...}`, re-enter the listed `malformedEnvVars` in Vercel as plain text (no leading/trailing spaces, line breaks, smart punctuation/bullets, or other non-ASCII characters), redeploy, then call `/api/health` again.
+
 ## Windows check command
 
 ```powershell
