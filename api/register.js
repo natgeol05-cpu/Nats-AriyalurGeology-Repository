@@ -86,6 +86,10 @@ function isSupabaseConfigurationError(error) {
 }
 
 function isDuplicateRegistrationError(error) {
+  if (!error) {
+    return false;
+  }
+
   if (error?.code === '23505') {
     return true;
   }
@@ -103,8 +107,7 @@ function isDuplicateRegistrationError(error) {
     value.includes('unique constraint')
   ));
   const hasEmailSignal = errorFields.some((value) => (
-    value.includes('email') ||
-    value.includes('registrations_email')
+    value.includes('email')
   ));
 
   return (

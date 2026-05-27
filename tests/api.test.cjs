@@ -410,7 +410,7 @@ async function runTests() {
     const res = mockRes();
     await registerHandler(mockReq('POST', {
       name: 'Test User',
-      email: 'duplicate-like@test.com',
+      email: 'submitted-email@test.com',
     }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.18' }), res);
     assert(res._status === 409, 'Expected 409, got ' + res._status);
     assert(res._body.error === 'Email already registered.', 'Expected duplicate email message');
