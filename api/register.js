@@ -94,9 +94,9 @@ function isDuplicateRegistrationError(error) {
     .filter(Boolean)
     .map((value) => value.toLowerCase());
 
-  const hasEmailSpecificDuplicateMessage = errorFields.some((value) => (
-    value.includes('email already registered') ||
-    value.includes('email already exists')
+  const hasEmailExistsDetail = errorFields.some((value) => (
+    value.includes('key (email)=') &&
+    value.includes('already exists')
   ));
   const hasDuplicateConstraintSignal = errorFields.some((value) => (
     value.includes('duplicate key') ||
@@ -108,8 +108,8 @@ function isDuplicateRegistrationError(error) {
   ));
 
   return (
-    hasEmailSpecificDuplicateMessage ||
-    (hasDuplicateConstraintSignal && (error?.status === 409 || hasEmailSignal))
+    hasEmailExistsDetail ||
+    (hasDuplicateConstraintSignal && hasEmailSignal)
   );
 }
 
