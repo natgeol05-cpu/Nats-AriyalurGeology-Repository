@@ -90,17 +90,26 @@ function isDuplicateRegistrationError(error) {
     return true;
   }
 
-  const errorText = [error?.message, error?.details, error?.hint]
+  const errorFields = [error?.message, error?.details, error?.hint]
     .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
+    .map((value) => value.toLowerCase());
+
+  const hasEmailSpecificDuplicateMessage = errorFields.some((value) => (
+    value.includes('email already registered') ||
+    value.includes('email already exists')
+  ));
+  const hasDuplicateConstraintSignal = errorFields.some((value) => (
+    value.includes('duplicate key') ||
+    value.includes('unique constraint')
+  ));
+  const hasEmailSignal = errorFields.some((value) => (
+    value.includes('email') ||
+    value.includes('registrations_email')
+  ));
 
   return (
-    error?.status === 409 ||
-    errorText.includes('duplicate key') ||
-    errorText.includes('already registered') ||
-    errorText.includes('already exists') ||
-    errorText.includes('unique constraint')
+    hasEmailSpecificDuplicateMessage ||
+    (hasDuplicateConstraintSignal && (error?.status === 409 || hasEmailSignal))
   );
 }
 

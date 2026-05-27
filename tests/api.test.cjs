@@ -404,7 +404,7 @@ async function runTests() {
   await test('returns 409 for duplicate-like insert errors without postgres code', async () => {
     supabaseMockConfig.insertError = {
       status: 409,
-      message: 'duplicate key value violates unique constraint "registrations_email_key"',
+      message: 'Email already registered',
     };
     updateConfig();
     const res = mockRes();
