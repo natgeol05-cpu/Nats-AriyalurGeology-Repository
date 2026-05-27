@@ -418,6 +418,83 @@ async function runTests() {
     updateConfig();
   });
 
+  await test('returns 409 for duplicate-like insert errors when postgres duplicate code is numeric', async () => {
+    supabaseMockConfig.insertError = {
+      code: 23505,
+      message: 'duplicate key value violates unique constraint "registrations_email_key"',
+    };
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test User',
+      email: 'duplicate-numeric@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.19' }), res);
+    assert(res._status === 409, 'Expected 409, got ' + res._status);
+    assert(res._body.error === 'Email already registered.', 'Expected duplicate email message');
+    supabaseMockConfig.insertError = null;
+    updateConfig();
+  });
+
+  await test('returns 409 for conflict-status duplicate errors with email-already-registered message', async () => {
+    supabaseMockConfig.insertError = {
+      status: 409,
+      message: 'Email already registered. Please sign in.',
+    };
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test User',
+      email: 'duplicate-conflict@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.20' }), res);
+    assert(res._status === 409, 'Expected 409, got ' + res._status);
+    assert(res._body.error === 'Email already registered.', 'Expected duplicate email message');
+    supabaseMockConfig.insertError = null;
+    updateConfig();
+  });
+
+  await test('logs structured insert diagnostics on non-duplicate insert failures', async () => {
+    supabaseMockConfig.insertError = {
+      code: '42P01',
+      status: 400,
+      message: 'relation "registrations" does not exist',
+      details: 'The table public.registrations was not found.',
+      hint: 'Run migrations on production database.',
+      secret: 'do-not-log-this',
+    };
+    updateConfig();
+
+    const originalConsoleError = console.error;
+    const consoleErrorCalls = [];
+    console.error = (...args) => {
+      consoleErrorCalls.push(args);
+    };
+
+    try {
+      const res = mockRes();
+      await registerHandler(mockReq('POST', {
+        name: 'Test User',
+        email: 'diagnostic@test.com',
+      }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.21' }), res);
+
+      assert(res._status === 500, 'Expected 500, got ' + res._status);
+      assert(res._body.error === 'Database error 00. Please try again.', 'Expected generic public insert failure message');
+
+      const insertLogCall = consoleErrorCalls.find((entry) => entry[0] === 'Supabase register insert error:');
+      assert(insertLogCall, 'Expected insert error log call');
+      assert(insertLogCall[1] && insertLogCall[1].insertError, 'Expected structured insertError diagnostics');
+      assert(insertLogCall[1].insertError.code === '42P01', 'Expected diagnostic code');
+      assert(insertLogCall[1].insertError.status === 400, 'Expected diagnostic status');
+      assert(insertLogCall[1].insertError.message === 'relation "registrations" does not exist', 'Expected diagnostic message');
+      assert(insertLogCall[1].insertError.details === 'The table public.registrations was not found.', 'Expected diagnostic details');
+      assert(insertLogCall[1].insertError.hint === 'Run migrations on production database.', 'Expected diagnostic hint');
+      assert(!('secret' in insertLogCall[1].insertError), 'Expected only safe diagnostic fields to be logged');
+    } finally {
+      console.error = originalConsoleError;
+      supabaseMockConfig.insertError = null;
+      updateConfig();
+    }
+  });
+
   // ════════════════════════════════════════════════════════════
   // /api/fossil-details
   // ════════════════════════════════════════════════════════════

@@ -72,3 +72,10 @@ curl -s https://your-project.vercel.app/api/health | jq
 4. Re-run `/api/health` and confirm:
    - `configuration.status` is `ok`
    - `configuration.malformedEnvVars` is empty
+
+## If `/api/health` is OK but registration returns `Database error 00`
+
+1. Trigger a registration request once, then open Vercel Function Logs for `/api/register`.
+2. Find the `Supabase register insert error` entry and check its structured diagnostics (`code`, `status`, `message`, `details`, `hint`).
+3. Use the diagnostics to confirm whether the live database has drifted from repo migrations (missing table/column/constraint), or whether a non-duplicate insert constraint is failing.
+4. If diagnostics show duplicate-email conflict details, ensure the deployment includes the latest `api/register.js` duplicate handling and redeploy.

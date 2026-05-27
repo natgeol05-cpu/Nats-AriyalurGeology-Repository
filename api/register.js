@@ -85,18 +85,35 @@ function isSupabaseConfigurationError(error) {
   );
 }
 
+function getSafeErrorDiagnostics(error) {
+  return {
+    code: error?.code ?? null,
+    status: typeof error?.status === 'number' ? error.status : null,
+    message: typeof error?.message === 'string' ? error.message : null,
+    details: typeof error?.details === 'string' ? error.details : null,
+    hint: typeof error?.hint === 'string' ? error.hint : null,
+  };
+}
+
 function isDuplicateRegistrationError(error) {
   if (!error) {
     return false;
   }
 
-  if (error?.code === '23505') {
+  const diagnostics = getSafeErrorDiagnostics(error);
+  const normalizedCode = diagnostics.code === null
+    ? ''
+    : String(diagnostics.code).trim().toLowerCase();
+
+  if (normalizedCode === '23505') {
     return true;
   }
 
-  const errorFields = [error?.message, error?.details, error?.hint]
+  const errorFields = [diagnostics.message, diagnostics.details, diagnostics.hint]
     .filter(Boolean)
     .map((value) => value.toLowerCase());
+  const combinedErrorText = errorFields.join(' ');
+  const isConflictStatus = diagnostics.status === 409 || normalizedCode === '409';
 
   const hasEmailExistsDetail = errorFields.some((value) => (
     /\bkey\s*\(email\)/.test(value) &&
@@ -109,12 +126,18 @@ function isDuplicateRegistrationError(error) {
   const hasEmailConstraintSignal = errorFields.some((value) => (
     /\bconstraint\b.*\bemail\b/.test(value) ||
     /\bemail\b.*\bconstraint\b/.test(value) ||
-    /\bkey\s*\(email\)/.test(value)
+    /\bkey\s*\(email\)/.test(value) ||
+    /\bregistrations?_email(_key|_idx)?\b/.test(value)
   ));
+  const hasEmailDuplicatePhrase = (
+    /\bemail\b.*\b(already exists|already registered|duplicate|must be unique)\b/.test(combinedErrorText) ||
+    /\b(already exists|already registered|duplicate|must be unique)\b.*\bemail\b/.test(combinedErrorText)
+  );
 
   return (
     hasEmailExistsDetail ||
-    (hasDuplicateConstraintSignal && hasEmailConstraintSignal)
+    (hasDuplicateConstraintSignal && hasEmailConstraintSignal) ||
+    (isConflictStatus && hasEmailDuplicatePhrase)
   );
 }
 
@@ -337,7 +360,11 @@ export default async function handler(req, res) {
       .select('id, name, email, registered_at');
 
     if (error) {
-      console.error('Supabase register insert error:', { ...contextWithEmail, error });
+      const insertErrorDiagnostics = getSafeErrorDiagnostics(error);
+      console.error('Supabase register insert error:', {
+        ...contextWithEmail,
+        insertError: insertErrorDiagnostics,
+      });
       if (isSupabaseConfigurationError(error)) {
         return res.status(500).json({
           success: false,
