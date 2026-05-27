@@ -85,6 +85,39 @@ function isSupabaseConfigurationError(error) {
   );
 }
 
+function isDuplicateRegistrationError(error) {
+  if (!error) {
+    return false;
+  }
+
+  if (error?.code === '23505') {
+    return true;
+  }
+
+  const errorFields = [error?.message, error?.details, error?.hint]
+    .filter(Boolean)
+    .map((value) => value.toLowerCase());
+
+  const hasEmailExistsDetail = errorFields.some((value) => (
+    /\bkey\s*\(email\)/.test(value) &&
+    value.includes('already exists')
+  ));
+  const hasDuplicateConstraintSignal = errorFields.some((value) => (
+    value.includes('duplicate key') ||
+    value.includes('unique constraint')
+  ));
+  const hasEmailConstraintSignal = errorFields.some((value) => (
+    /\bconstraint\b.*\bemail\b/.test(value) ||
+    /\bemail\b.*\bconstraint\b/.test(value) ||
+    /\bkey\s*\(email\)/.test(value)
+  ));
+
+  return (
+    hasEmailExistsDetail ||
+    (hasDuplicateConstraintSignal && hasEmailConstraintSignal)
+  );
+}
+
 /**
  * Gets a best-effort client IP from the request.
  * @param {object} req - Vercel request object.
@@ -284,30 +317,10 @@ export default async function handler(req, res) {
     return res.status(429).json({ success: false, error: 'Too many registration attempts 001. Please try again later.' });
   }
 
-try {
+  try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data: existingRegistrations, error: duplicateCheckError } = await supabase
-      .from('registrations')
-      .select('id')
-      .eq('email', normalizedEmail)
-      .limit(1);
-
-    if (duplicateCheckError) {
-      console.error('Supabase duplicate-email check error:', { ...contextWithEmail, duplicateCheckError });
-      if (isSupabaseConfigurationError(duplicateCheckError)) { return res.status(500).json({
-          success: false,
-          error: SUPABASE_CONFIG_INVALID_ERROR,
-        });
-      }
-      return res.status(500).json({ success: false, error: 'Database error during duplicate email check. Please try again.' });
-    }
-
-    if (Array.isArray(existingRegistrations) && existingRegistrations.length > 0) {
-      return res.status(409).json({ success: false, error: 'Email already registered.' });
-    }        
-
     const { data, error } = await supabase
       .from('registrations')
       .insert([
@@ -330,6 +343,9 @@ try {
           success: false,
           error: SUPABASE_CONFIG_INVALID_ERROR,
         });
+      }
+      if (isDuplicateRegistrationError(error)) {
+        return res.status(409).json({ success: false, error: 'Email already registered.' });
       }
       return res.status(500).json({ success: false, error: 'Database error 00. Please try again.' });
     }
