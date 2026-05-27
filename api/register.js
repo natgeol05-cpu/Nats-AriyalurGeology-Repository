@@ -101,7 +101,7 @@ function isDuplicateRegistrationError(error) {
   }
 
   const diagnostics = getSafeErrorDiagnostics(error);
-  const normalizedCode = diagnostics.code === null || diagnostics.code === undefined
+  const normalizedCode = diagnostics.code === null
     ? ''
     : String(diagnostics.code).trim().toLowerCase();
 

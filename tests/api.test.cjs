@@ -487,7 +487,7 @@ async function runTests() {
       assert(insertLogCall[1].insertError.message === 'relation "registrations" does not exist', 'Expected diagnostic message');
       assert(insertLogCall[1].insertError.details === 'The table public.registrations was not found.', 'Expected diagnostic details');
       assert(insertLogCall[1].insertError.hint === 'Run migrations on production database.', 'Expected diagnostic hint');
-      assert(!Object.prototype.hasOwnProperty.call(insertLogCall[1].insertError, 'secret'), 'Expected only safe diagnostic fields to be logged');
+      assert(!('secret' in insertLogCall[1].insertError), 'Expected only safe diagnostic fields to be logged');
     } finally {
       console.error = originalConsoleError;
       supabaseMockConfig.insertError = null;
