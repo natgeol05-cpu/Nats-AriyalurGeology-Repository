@@ -317,9 +317,10 @@ async function runTests() {
   });
 
   await test('returns 409 when email is already registered', async () => {
-    supabaseMockConfig.selectError = null;
-    supabaseMockConfig.selectData = [{ id: 'existing-registration-id' }];
-    supabaseMockConfig.insertError = null;
+    supabaseMockConfig.insertError = {
+      code: '23505',
+      message: 'duplicate key value violates unique constraint "registrations_email_key"',
+    };
     supabaseMockConfig.insertData = null;
     updateConfig();
     const res = mockRes();
@@ -327,7 +328,8 @@ async function runTests() {
       name: 'Test User', email: 'test@test.com',
     }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.11' }), res);
     assert(res._status === 409, 'Expected 409, got ' + res._status);
-    supabaseMockConfig.selectData = [];
+    assert(res._body.error === 'Email already registered.', 'Expected duplicate email message');
+    supabaseMockConfig.insertError = null;
     updateConfig();
   });
 
@@ -386,9 +388,7 @@ async function runTests() {
   });
 
   await test('returns 500 with actionable message when Supabase credentials are invalid', async () => {
-    supabaseMockConfig.insertError = null;
-    supabaseMockConfig.selectError = { status: 401, message: 'Invalid API key' };
-    supabaseMockConfig.selectData = [];
+    supabaseMockConfig.insertError = { status: 401, message: 'Invalid API key' };
     updateConfig();
     const res = mockRes();
     await registerHandler(mockReq('POST', {
@@ -397,7 +397,24 @@ async function runTests() {
     }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.15' }), res);
     assert(res._status === 500, 'Expected 500, got ' + res._status);
     assert(res._body.error.includes('Supabase credentials are invalid'), 'Expected actionable credential error');
-    supabaseMockConfig.selectError = null;
+    supabaseMockConfig.insertError = null;
+    updateConfig();
+  });
+
+  await test('returns 409 for duplicate-like insert errors without postgres code even when detail email differs', async () => {
+    supabaseMockConfig.insertError = {
+      status: 409,
+      details: 'Key (email)=(duplicate-like@test.com) already exists.',
+    };
+    updateConfig();
+    const res = mockRes();
+    await registerHandler(mockReq('POST', {
+      name: 'Test User',
+      email: 'submitted-email@test.com',
+    }, { origin: 'https://allowed.example', 'x-forwarded-for': '192.168.0.18' }), res);
+    assert(res._status === 409, 'Expected 409, got ' + res._status);
+    assert(res._body.error === 'Email already registered.', 'Expected duplicate email message');
+    supabaseMockConfig.insertError = null;
     updateConfig();
   });
 
