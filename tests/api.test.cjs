@@ -401,7 +401,7 @@ async function runTests() {
     updateConfig();
   });
 
-  await test('returns 409 for duplicate-like insert errors without postgres code', async () => {
+  await test('returns 409 for duplicate-like insert errors without postgres code even when detail email differs', async () => {
     supabaseMockConfig.insertError = {
       status: 409,
       details: 'Key (email)=(duplicate-like@test.com) already exists.',

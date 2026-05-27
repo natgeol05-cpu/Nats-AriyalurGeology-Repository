@@ -99,20 +99,22 @@ function isDuplicateRegistrationError(error) {
     .map((value) => value.toLowerCase());
 
   const hasEmailExistsDetail = errorFields.some((value) => (
-    value.includes('key (email)=') &&
+    /\bkey\s*\(email\)/.test(value) &&
     value.includes('already exists')
   ));
   const hasDuplicateConstraintSignal = errorFields.some((value) => (
     value.includes('duplicate key') ||
     value.includes('unique constraint')
   ));
-  const hasEmailSignal = errorFields.some((value) => (
-    value.includes('email')
+  const hasEmailConstraintSignal = errorFields.some((value) => (
+    /\bconstraint\b.*\bemail\b/.test(value) ||
+    /\bemail\b.*\bconstraint\b/.test(value) ||
+    /\bkey\s*\(email\)/.test(value)
   ));
 
   return (
     hasEmailExistsDetail ||
-    (hasDuplicateConstraintSignal && hasEmailSignal)
+    (hasDuplicateConstraintSignal && hasEmailConstraintSignal)
   );
 }
 
