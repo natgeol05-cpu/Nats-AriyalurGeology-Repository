@@ -31,7 +31,7 @@
       line-height: 1.35;
     }
 
-    /* --- Compact Top Header --- */
+    /* ---------- TOP BAR ---------- */
     .topbar {
       max-width: 1280px;
       margin: 0 auto 8px;
@@ -43,7 +43,7 @@
 
     .topbar-row {
       display: grid;
-      grid-template-columns: 44px 1fr 44px;
+      grid-template-columns: 40px 1fr 40px;
       align-items: center;
       gap: 8px;
     }
@@ -56,8 +56,8 @@
     }
 
     .arrow-img {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       object-fit: contain;
       display: block;
     }
@@ -71,7 +71,7 @@
       margin: 0;
       color: var(--heading-blue);
       font-size: clamp(0.95rem, 2.3vw, 1.2rem);
-      line-height: 1.25;
+      line-height: 1.2;
       font-weight: 700;
     }
 
@@ -83,27 +83,36 @@
       font-weight: 600;
     }
 
+    /* Top buttons: same line, left & right */
     .topbar-actions {
       margin-top: 8px;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .topbar-actions a {
+      text-decoration: none;
+      flex: 0 1 auto;
     }
 
     .nav-btn,
     .footer-btn {
-      width: 100%;
-      min-height: 38px;
+      min-height: 34px;
+      height: 34px;
       border-radius: 999px;
       border: 1px solid var(--btn-border);
       background: #ffffff;
       color: #1f2d3d;
       font-weight: 700;
-      font-size: 0.9rem;
-      padding: 7px 12px;
+      font-size: 0.82rem;
+      padding: 0 12px;
       cursor: pointer;
       transition: all 0.2s ease;
-      text-align: center;
+      white-space: nowrap;
+      min-width: 150px;
     }
 
     .nav-btn:hover,
@@ -128,7 +137,7 @@
 
     .grid-container {
       display: grid;
-      grid-template-columns: 1fr; /* mobile first */
+      grid-template-columns: 1fr;
       gap: 14px;
       width: 100%;
       max-width: 1280px;
@@ -187,55 +196,36 @@
       line-height: 1.45;
     }
 
+    /* Bottom buttons: same line, left & right */
     .button-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
       margin: 10px auto 20px;
       width: 100%;
-      max-width: 740px;
+      max-width: 1280px;
+      flex-wrap: nowrap;
     }
 
     .button-container a {
-      flex: 1 1 260px;
-      display: flex;
-      justify-content: center;
       text-decoration: none;
+      flex: 0 1 auto;
     }
 
     .footer-btn {
       color: var(--heading-blue);
       font-weight: 800;
-      font-size: 1rem;
-      min-height: 44px;
+      font-size: 0.84rem;
+      min-width: 150px;
+      height: 34px;
+      min-height: 34px;
+      padding: 0 12px;
     }
 
     @media (min-width: 600px) {
       .grid-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 700px) {
-      .topbar {
-        padding: 8px 12px;
-      }
-
-      .topbar-actions {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 8px;
-      }
-
-      .nav-btn {
-        min-height: 40px;
-        font-size: 0.92rem;
-      }
-
-      .arrow-img {
-        width: 36px;
-        height: 36px;
       }
     }
 
@@ -245,23 +235,7 @@
       }
 
       .topbar-title {
-        font-size: 1.1rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .topbar-row {
-        grid-template-columns: 52px 1fr 52px;
-      }
-
-      .arrow-img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .topbar-actions {
-        max-width: 760px;
-        margin: 8px auto 0;
+        font-size: 1.08rem;
       }
     }
 
@@ -274,6 +248,25 @@
     @media (hover: hover) and (pointer: fine) {
       .item:hover {
         transform: scale(1.02);
+      }
+    }
+
+    /* Mobile behavior: still same row but compact */
+    @media (max-width: 420px) {
+      .nav-btn,
+      .footer-btn {
+        min-width: 138px;
+        font-size: 0.76rem;
+        padding: 0 8px;
+      }
+
+      .topbar-row {
+        grid-template-columns: 32px 1fr 32px;
+      }
+
+      .arrow-img {
+        width: 24px;
+        height: 24px;
       }
     }
   </style>
@@ -300,7 +293,7 @@
         <button type="button" class="nav-btn">Back to Main Menu</button>
       </a>
       <a href="AriyalurIndustries.html">
-        <button type="button" class="nav-btn">Go to Next Item in Menu</button>
+        <button type="button" class="nav-btn">Go to Next Item</button>
       </a>
     </div>
   </header>
@@ -485,7 +478,7 @@
 
   <div class="button-container">
     <a href="FeedBackGoogleSheetData.html">
-      <button type="button" class="footer-btn">Give Your Feedback</button>
+      <button type="button" class="footer-btn">Give Feedback</button>
     </a>
     <a href="AriyalurGeologyPage.html">
       <button type="button" class="footer-btn">Back to Main Menu</button>
