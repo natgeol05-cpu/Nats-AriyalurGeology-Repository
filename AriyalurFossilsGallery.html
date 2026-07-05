@@ -1,324 +1,414 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariyalur Fossils Gallery</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ariyalur Fossils Gallery</title>
 
-    <style>
-     .grid-container {
-            display: grid; 
-            margin: 10px; margin-bottom: 40px;
-            height: 850px; width: 1280px; 
-            margin: auto; height: 2250px;
-            border: 3px  solid brown;
-            background-color: aquamarine;
-            column-gap: 25px; row-gap: 10px;
-            grid-template-columns: auto auto auto auto;  
-            justify-content: center;
-            align-items:  center;
-            }  
-        
-            .title-div {
-                column-gap: 20px;
-                text-align: center;
-            }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        image {
-                display: flex;  
-                text-align: auto;
-            }
+    :root {
+      --page-bg: #ffffff;
+      --grid-bg: aquamarine;
+      --card-bg: #ffffff;
+      --card-border: brown;
+      --heading-blue: #0047ab;
+      --heading-brown: #7a2f00;
+      --link-blue: #003399;
+      --btn-border: #666;
+      --btn-hover: goldenrod;
+    }
 
-        .item {
-                border: 10px solid brown;
-                height: 260px; width: 280px;
-                border-radius: 20px; 
-                text-align: center;
-                background-color: white;
-                transition: transform 2s;                  
-            }
+    body {
+      margin: 0;
+      padding: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--page-bg);
+      overflow-x: hidden;
+      line-height: 1.35;
+    }
 
-        .item16 {
-                border: 10px solid brown;
-                height: 260px; width: 100px;
-                border-radius: 20px; 
-                text-align: center;
-                background-color: white;
-                transition: transform 2s;                  
-            }
+    .title-div {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 auto 10px;
+      max-width: 1280px;
+      text-align: center;
+    }
 
-        img {
-            height: 170px; width: 240px;
-            }
+    .title-div h3 {
+      flex: 1 1 260px;
+      margin: 8px 0;
+      color: var(--heading-blue);
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
 
-        .img16 {
-            height: 170px; width: 100px;
-        }
+    .arrow-img {
+      width: 64px;
+      height: auto;
+      max-width: 100%;
+      display: block;
+    }
 
-        /* .item:hover {
-            transform: scale(2.5);
-            transition-duration: 2s;
-            } */
+    .nav-btn,
+    .footer-btn {
+      display: inline-block;
+      width: 100%;
+      max-width: 320px;
+      min-height: 44px;
+      border-radius: 20px;
+      border: 1px solid var(--btn-border);
+      background: #fff;
+      color: #111;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      cursor: pointer;
+      text-align: center;
+    }
 
-       .browse-button {
-            color: solid black;
-            width: 250px; height: 30px;
-            border-radius: 20px;
-            display: inline-block;  
-            font-weight: bold;
-        }
+    .nav-btn:hover,
+    .footer-btn:hover {
+      background-color: var(--btn-hover);
+      color: #fff;
+    }
 
-        .gallery-button {
-            color: solid black;
-            width: 250px; height: 30px;
-            border-radius: 20px;
-            display: inline-block;              
-        }
+    h2 {
+      color: var(--heading-blue);
+      text-align: center;
+      margin: 4px 0 0;
+    }
 
-        .gallery-button:hover {
-            background-color: goldenrod;
-            color: white;
-            height: 60px;
-        }
+    h4 {
+      color: var(--heading-brown);
+      text-align: center;
+      margin: 6px 0 12px;
+      font-weight: 700;
+    }
 
-        button {
-            color: solid black;
-            height: 50px; width: 250px;
-            border-radius: 20px;
-            display: inline-block;               
-        }
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr; /* mobile first */
+      gap: 14px;
+      width: 100%;
+      max-width: 1280px;
+      margin: 10px auto 20px;
+      padding: 12px;
+      border: 3px solid var(--card-border);
+      background-color: var(--grid-bg);
+      align-items: stretch;
+    }
 
-        button:hover {
-            background-color: goldenrod;
-            color: white;
-            height: 60px;
-        }
+    .item {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 5px solid var(--card-border);
+      border-radius: 16px;
+      background-color: var(--card-bg);
+      padding: 8px;
+      text-align: center;
+      min-height: 255px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
 
-        .button-container {
-                display: inline-flex;
-                gap: 60px;
-                align-self: center;
-                justify-content: center;
-                margin-left: 450px;
-        }
+    .item img {
+      width: 100%;
+      max-width: 240px;
+      height: auto;
+      margin: 8px auto;
+      display: block;
+      border-radius: 8px;
+      object-fit: contain;
+    }
 
+    .desc-link {
+      display: inline-block;
+      margin-top: 6px;
+      text-decoration: none;
+      color: var(--link-blue);
+      font-weight: 700;
+      line-height: 1.35;
+      font-size: 0.95rem;
+    }
 
-        h2 {
-            color: blue;  text-align: center;
-            margin-bottom: 0;
-        }
-         
-        h3 {
-            color: blue; margin: auto;
-            text-align: center;
-        }
+    .desc-link:hover {
+      text-decoration: underline;
+    }
 
-        h4 {
-            color:brown;
-            text-align: center;
-            margin-top: 0;
-        }
+    .credit {
+      text-align: center;
+      margin: 12px auto 8px;
+      max-width: 1000px;
+      padding: 0 8px;
+      line-height: 1.45;
+    }
 
-        h5 {
-            text-align: center;
-            margin-top: 0;
-        }
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 10px auto 20px;
+      width: 100%;
+      max-width: 740px;
+    }
 
-    </style>
+    .button-container a {
+      flex: 1 1 260px;
+      display: flex;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .footer-btn {
+      color: var(--heading-blue);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    @media (min-width: 600px) {
+      .grid-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 768px) {
+      .grid-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .title-div h3 {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .grid-container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .item:hover {
+        transform: scale(1.02);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="title-div" style="display: flex;">        
-        <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-        <a href="AriyalurGeologyPage.html">  
-            <button type="browse-button" >  Click here To Go Back to Main  Menu</button></a> 
+  <div class="title-div">
+    <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
 
-        <h3>Geology of Ariyalur Web Site<br> Browse Gallery Specimens</h3>  
+    <a href="AriyalurGeologyPage.html">
+      <button type="button" class="nav-btn">Click here To Go Back to Main Menu</button>
+    </a>
 
-        <a href="AriyalurIndustries.html">
-            <button id="button"> Click Here To Go to Next Item in Menu</button></a> 
-        <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px" >    
-    </div>
-        
-    <h2>Ariyalur Fossils Gallery</h2>
-    <h4 style="margin-bottom: 0%;">(" A picture is worth thousand words ")</h4>
+    <h3>Geology of Ariyalur Web Site<br />Browse Gallery Specimens</h3>
 
-    <div class="grid-container">
-   
-        <div class="item" id="box1">Rastellum pectinata
-            <img  src="Rastellum - Bivalve Watermarked.jpg" alt="image" title="Rastellum - bivalve"           
-            <iframe><gallery-button> <a href="DescRastellum.html">Mollusca - Bivalvia<br>Click for Description
-            </a></button></iframe>  
-        </div>
+    <a href="AriyalurIndustries.html">
+      <button type="button" class="nav-btn">Click Here To Go to Next Item in Menu</button>
+    </a>
 
-        <div class="item" id="box2">Lucina - bivalve
-            <img class="img"  src="Lucina-(Bivalve) Watermarked.jpg" alt="Image" title="Lucina - bivalve"  
-            <iframe><gallery-button> <a href="DescLucinabivalve.html">Mollusca - Bivalvia<br>Click for Description           
-            </a></button></iframe>
-        </div>
+    <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+  </div>
 
-        <div class="item" id="box3"> Trigonoarca abrupta  <img class="img"  src="Trigonoarca abrupta Watermarked.jpg" alt="Image" title="Trigonoarca"
-            <iframe><gallery-button> <a href="DescTrigonoarca abrupta.html">Mollusca - Bivalvia<br>Click for Description                            
-            </a></button></iframe> 
-        </div>
+  <h2>Ariyalur Fossils Gallery</h2>
+  <h4>("A picture is worth a thousand words")</h4>
 
-        <div class="item" id="box4">Calycoceras asiaticum <img class="img"  src="Calycoceras asiaticum Watermarked.jpg" alt="Image" title="Calycoceras asiaticum"
-            <iframe><gallery-button> <a href="DescCalycoceras.html"> Mollusca - Cephalopada<br>Click for Description            
-            </a></button></iframe> 
-        </div>
-
-       <div class="item" id="box5">Ammonite_suture 
-            <img src="Ammonite_suture titled with size.jpg" alt="sutures" title="Broken Part of Ammonites to show Stures" Ammonites sutures 
-                <iframe><gallery-button> <a href="DescAmmonitesSuture.html">
-            Mollusca - Cephalopada<br>Click for Description
-            </a></button></iframe>  
-        </div>
-
-         <div class="item" id="box6">Belemnite 
-            <img class="img"  src="Belemnite Fossil Watermarked.jpg" alt="Image" title="Belemnite"
-                <iframe><gallery-button> <a href="DescBelemnite.html">
-            Mollusca - Cephalopada<br>Click for Description
-        </a></button></iframe> 
-        </div>
-
-        <div class="item" id="box7">Nerina - Gastropod
-            <img class="img"  src="Nerinea - Gastropod watermarked.jpg"  alt="Image" title="Nerina - Gastropod" 
-            <iframe><gallery-button> <a href="DescNerinaGastropod.html">
-            Mollusca - Gastropoda<br>Click for Description
-            </a></button></iframe>  
-        </div>
-
-        <div class="item" id="box8">Gongrochanus Echinoidea
-            <img class="img"  src="Gongrochanus--echinoid Watermarked.jpg" alt="Image"title="Gongrochanus - echnoid"
-                <iframe><gallery-button> <a href="DescGongrochanusEchinoidea.html">Echinodermata -  Echinoidea<br>Click for Description
-            </a></button></iframe>    
-        </div>
-
-            <div class="item" id="box9">Cyclolites arbiculus <img class="img"  src="Cyclolites orbiculus.jpg" alt="Image" title="Belemnite"
-        <iframe><gallery-button> <a href="DescCyclolites orbiculus.html"> Cnidaria - Hexacorallia<br>Click for Description
-        </a></button></iframe>
-        </div>
-
-        <div class="item" id="box10">Ichthyosaurian vertebra 
-            <img class="img"  src="Ichthyosaurian vertebra (Marine reptile) Watermarked.jpg" alt="Image" title="Ichthyosaurian vertegra (Marine reptile)"
-        <iframe><gallery-button> <a href="DescIchthyosaurianVertebra.html">Chordata - Vertebrata<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box11">Plant Fossil
-            <img class="img" src="Ptilophyllum (Upper Gondwana plant) Watermarked.jpg" alt="Plant Fossil" title="Ptillophyllum" 
-            <iframe><gallery-button> <a href="DescPlantFossil.html">Tracheophytes-Bennettitales<br>Click for Description</a></button></iframe>  
-        </div> 
-
-        <div class="item" id="box12">Fossil Wood
-            <img class="img"  src="Fossil_Wood from Karai Badlands Watermarked.jpg" alt="Image" title="Fossil Wood"
-            <iframe><gallery-button> <a href="DescFossilWood.html">Plant-Coniferophytes<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box13">Inoceramus goldfussianus<img class="img"  src="Inoceramus goldfussini.JPG" 
-            alt="Image" title="Inoceramus goldfussianus"
-            <iframe><gallery-button> <a href="DescInoceramusGoldfussianus.html">Mollusca - Bivalvia<br>Click for Description</a></button></iframe> 
-        </div>
-
-         <div class="item" id="box14">Kossimaticeras<img class="img"  src="Kossimaticeras.JPG"
-            alt="Image" title="Kossimaticeras"
-            <iframe><gallery-button> <a href="DescKossimaticeras.html">Mollusca - Cephalopada<br>Click for Description</a></button></iframe> 
-         </div>          
-
-        <div class="item" id="box15" style="font-size: 20px;">Sphenoceramus (inoceramids)<img class="img"  src="Sphenoceramus (inoceramids).JPG"
-            alt="Image" title="Sphenoceramus (inoceramids)"
-            <iframe><gallery-button> <a href="DescSphenoceramus.html">Mollusca - Bivalvia<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box16">Mariella bergeri<img class="img"  src="Mariella bergeri.JPG"
-            alt="Image" title="Mariella bergeri"
-            <iframe><gallery-button> <a href="DescMariellaBergeri.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>       
-
-        <div class="item" id="box17">Eubaculites vaginia<img class="img"  src="Eubaculites vaginia.JPG"
-            alt="Image" title="Eubaculites vaginia"
-            <iframe><gallery-button> <a href="DescEubaculitesVaginia.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box18">Turritella ventricosa<img class="img"  src="Turritella ventricosa.JPG"
-            alt="Image" title="Turritella ventricosa"
-            <iframe><gallery-button> <a href="DescTurritellaVentricosa.html">Mollusca - Gastropoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box19">Micraster Echinoidea<img class="img"  src="Micraster (Ariyalur Group).JPG"
-            alt="Image" title="Micraster"
-            <iframe><gallery-button> <a href="DescMicraster.html">Echinodermata-Echinoidea<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box20">Marsupites<img class="img"  src="Marsupites (Echinoidea).JPG"
-            alt="Image" title="Marsupites"
-            <iframe><gallery-button> <a href="DescMarsupites.html">Echinodermata-Echinoidea<br>Click for Description</a></button></iframe> 
-            </div>
-
-        <div class="item" id="box21">Scaphites kingeanus<img class="img"  src="Scaphites of Ariyalur.jpg"
-            alt="Image" title="Scaphites"
-            <iframe><gallery-button> <a href="DescScaphites.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-            </div>
-
-        <div class="item" id="box22">Natilus danicus(hercoglossa)
-            <img class="img"  src="Nautilus danicus (hercoglossa).JPG"
-            alt="Image" title="Natilus danicus (hercoglossa)"
-            <iframe><gallery-button> <a href="DescNautilusDanicus.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box23" style="font-size: 20px;">Pachydesmoceras pachydiscoide
-            <img class="img"  src="Pachydesmoceras pachydiscoide Matsumoto.jpg"
-            alt="Image" title="Pachydesmoceras pachydiscoide"
-            <iframe><gallery-button> <a href="DescPachydesmocerasPachydiscoide.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box24" style="font-size: 20px;">Damesites sugata
-            <img class="img"  src="Damesites sugata (Forbes).jpg"
-            alt="Image" title="Damesites sugata"
-            <iframe><gallery-button> <a href="DescDamesitesSugata.html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box25" style="font-size: 20px;">Lewesiceras anapadense (Kossmat)
-            <img class="img"  src="Lewesiceras anapadense (Kossmat).jpg"
-            alt="Image" title="Lewesiceras anapadense (Kossmat)"
-            <iframe><gallery-button> <a href="DescLewesicerasAnapadense(Kossmat).html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box26" style="font-size: 20px;">Romaniceras deverianum (d’Orbigny)
-            <img class="img"  src="Romaniceras deverianum (d’Orbigny).jpg"
-            alt="Image" title="Romaniceras deverianum (d’Orbigny)"
-            <iframe><gallery-button> <a href="DescRomanicerasDeverianum(d’Orbigny).html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box27" style="font-size: 20px;">Peroniceras dravidicum (Kossmat) (d’Orbigny)
-            <img class="img"  src="Peroniceras dravidicum (Kossmat).jpg"
-            alt="Image" title="Peroniceras dravidicum (Kossmat)"
-            <iframe><gallery-button> <a href="DescPeronicerasDravidicum(Kossmat).html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-
-        <div class="item" id="box28" style="font-size: 20px;">Mammites conciliatum (Stoliczka)
-            <img class="img"  src="Mammites conciliatum (Stoliczka).jpg"
-            alt="Image" title="Mammites conciliatum (Stoliczka)"
-            <iframe><gallery-button> <a href="DescMammitesConciliatum(Stoliczka).html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
-        </div>
-      
+  <div class="grid-container">
+    <div class="item" id="box1">
+      Rastellum pectinata
+      <img src="Rastellum - Bivalve Watermarked.jpg" alt="Rastellum pectinata" title="Rastellum - bivalve" />
+      <a class="desc-link" href="DescRastellum.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
 
-    <h5 style="text-align: center; margin-bottom: 0px;">First three rows photos are taken by R. Natesan, an Alumni of Presidency College, Chennai.<br>
-                                    Other photos are from Dr K Ayyasami. </h5>
-
-    <div class="button-container">
-        <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
-                    Give Your Feedback</button></a>            
-        <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;" id="browse-button" >
-                    Back to Main  Menu</button></a>     
+    <div class="item" id="box2">
+      Lucina - bivalve
+      <img src="Lucina-(Bivalve) Watermarked.jpg" alt="Lucina - bivalve" title="Lucina - bivalve" />
+      <a class="desc-link" href="DescLucinabivalve.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
 
-</body>  
+    <div class="item" id="box3">
+      Trigonoarca abrupta
+      <img src="Trigonoarca abrupta Watermarked.jpg" alt="Trigonoarca abrupta" title="Trigonoarca abrupta" />
+      <a class="desc-link" href="DescTrigonoarca abrupta.html">Mollusca - Bivalvia<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box4">
+      Calycoceras asiaticum
+      <img src="Calycoceras asiaticum Watermarked.jpg" alt="Calycoceras asiaticum" title="Calycoceras asiaticum" />
+      <a class="desc-link" href="DescCalycoceras.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box5">
+      Ammonite_suture
+      <img src="Ammonite_suture titled with size.jpg" alt="Ammonite sutures" title="Ammonite sutures" />
+      <a class="desc-link" href="DescAmmonitesSuture.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box6">
+      Belemnite
+      <img src="Belemnite Fossil Watermarked.jpg" alt="Belemnite" title="Belemnite" />
+      <a class="desc-link" href="DescBelemnite.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box7">
+      Nerinea - Gastropod
+      <img src="Nerinea - Gastropod watermarked.jpg" alt="Nerinea - Gastropod" title="Nerinea - Gastropod" />
+      <a class="desc-link" href="DescNerinaGastropod.html">Mollusca - Gastropoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box8">
+      Gongrochanus Echinoidea
+      <img src="Gongrochanus--echinoid Watermarked.jpg" alt="Gongrochanus Echinoidea" title="Gongrochanus - echinoid" />
+      <a class="desc-link" href="DescGongrochanusEchinoidea.html">Echinodermata - Echinoidea<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box9">
+      Cyclolites orbiculus
+      <img src="Cyclolites orbiculus.jpg" alt="Cyclolites orbiculus" title="Cyclolites orbiculus" />
+      <a class="desc-link" href="DescCyclolites orbiculus.html">Cnidaria - Hexacorallia<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box10">
+      Ichthyosaurian vertebra
+      <img src="Ichthyosaurian vertebra (Marine reptile) Watermarked.jpg" alt="Ichthyosaurian vertebra" title="Ichthyosaurian vertebra (Marine reptile)" />
+      <a class="desc-link" href="DescIchthyosaurianVertebra.html">Chordata - Vertebrata<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box11">
+      Plant Fossil
+      <img src="Ptilophyllum (Upper Gondwana plant) Watermarked.jpg" alt="Plant Fossil" title="Ptilophyllum" />
+      <a class="desc-link" href="DescPlantFossil.html">Tracheophytes - Bennettitales<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box12">
+      Fossil Wood
+      <img src="Fossil_Wood from Karai Badlands Watermarked.jpg" alt="Fossil Wood" title="Fossil Wood" />
+      <a class="desc-link" href="DescFossilWood.html">Plant - Coniferophytes<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box13">
+      Inoceramus goldfussianus
+      <img src="Inoceramus goldfussini.JPG" alt="Inoceramus goldfussianus" title="Inoceramus goldfussianus" />
+      <a class="desc-link" href="DescInoceramusGoldfussianus.html">Mollusca - Bivalvia<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box14">
+      Kossimaticeras
+      <img src="Kossimaticeras.JPG" alt="Kossimaticeras" title="Kossimaticeras" />
+      <a class="desc-link" href="DescKossimaticeras.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box15" style="font-size: 20px;">
+      Sphenoceramus (inoceramids)
+      <img src="Sphenoceramus (inoceramids).JPG" alt="Sphenoceramus (inoceramids)" title="Sphenoceramus (inoceramids)" />
+      <a class="desc-link" href="DescSphenoceramus.html">Mollusca - Bivalvia<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box16">
+      Mariella bergeri
+      <img src="Mariella bergeri.JPG" alt="Mariella bergeri" title="Mariella bergeri" />
+      <a class="desc-link" href="DescMariellaBergeri.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box17">
+      Eubaculites vaginia
+      <img src="Eubaculites vaginia.JPG" alt="Eubaculites vaginia" title="Eubaculites vaginia" />
+      <a class="desc-link" href="DescEubaculitesVaginia.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box18">
+      Turritella ventricosa
+      <img src="Turritella ventricosa.JPG" alt="Turritella ventricosa" title="Turritella ventricosa" />
+      <a class="desc-link" href="DescTurritellaVentricosa.html">Mollusca - Gastropoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box19">
+      Micraster Echinoidea
+      <img src="Micraster (Ariyalur Group).JPG" alt="Micraster" title="Micraster" />
+      <a class="desc-link" href="DescMicraster.html">Echinodermata - Echinoidea<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box20">
+      Marsupites
+      <img src="Marsupites (Echinoidea).JPG" alt="Marsupites" title="Marsupites" />
+      <a class="desc-link" href="DescMarsupites.html">Echinodermata - Echinoidea<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box21">
+      Scaphites kingeanus
+      <img src="Scaphites of Ariyalur.jpg" alt="Scaphites kingeanus" title="Scaphites kingeanus" />
+      <a class="desc-link" href="DescScaphites.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box22">
+      Nautilus danicus (Hercoglossa)
+      <img src="Nautilus danicus (hercoglossa).JPG" alt="Nautilus danicus (Hercoglossa)" title="Nautilus danicus (Hercoglossa)" />
+      <a class="desc-link" href="DescNautilusDanicus.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box23" style="font-size: 20px;">
+      Pachydesmoceras pachydiscoide
+      <img src="Pachydesmoceras pachydiscoide Matsumoto.jpg" alt="Pachydesmoceras pachydiscoide" title="Pachydesmoceras pachydiscoide" />
+      <a class="desc-link" href="DescPachydesmocerasPachydiscoide.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box24" style="font-size: 20px;">
+      Damesites sugata
+      <img src="Damesites sugata (Forbes).jpg" alt="Damesites sugata" title="Damesites sugata" />
+      <a class="desc-link" href="DescDamesitesSugata.html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box25" style="font-size: 20px;">
+      Lewesiceras anapadense (Kossmat)
+      <img src="Lewesiceras anapadense (Kossmat).jpg" alt="Lewesiceras anapadense (Kossmat)" title="Lewesiceras anapadense (Kossmat)" />
+      <a class="desc-link" href="DescLewesicerasAnapadense(Kossmat).html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box26" style="font-size: 20px;">
+      Romaniceras deverianum (d’Orbigny)
+      <img src="Romaniceras deverianum (d’Orbigny).jpg" alt="Romaniceras deverianum (d’Orbigny)" title="Romaniceras deverianum (d’Orbigny)" />
+      <a class="desc-link" href="DescRomanicerasDeverianum(d’Orbigny).html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box27" style="font-size: 20px;">
+      Peroniceras dravidicum (Kossmat)
+      <img src="Peroniceras dravidicum (Kossmat).jpg" alt="Peroniceras dravidicum (Kossmat)" title="Peroniceras dravidicum (Kossmat)" />
+      <a class="desc-link" href="DescPeronicerasDravidicum(Kossmat).html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+
+    <div class="item" id="box28" style="font-size: 20px;">
+      Mammites conciliatum (Stoliczka)
+      <img src="Mammites conciliatum (Stoliczka).jpg" alt="Mammites conciliatum (Stoliczka)" title="Mammites conciliatum (Stoliczka)" />
+      <a class="desc-link" href="DescMammitesConciliatum(Stoliczka).html">Mollusca - Cephalopoda<br />Click for Description</a>
+    </div>
+  </div>
+
+  <p class="credit">
+    Photos in the first three rows were taken by R. Natesan, an alumnus of Presidency College, Chennai.<br />
+    The other photos are from Dr K. Ayyasami.
+  </p>
+
+  <div class="button-container">
+    <a href="FeedBackGoogleSheetData.html">
+      <button type="button" class="footer-btn">Give Your Feedback</button>
+    </a>
+    <a href="AriyalurGeologyPage.html">
+      <button type="button" class="footer-btn">Back to Main Menu</button>
+    </a>
+  </div>
+</body>
 </html>
-
-
-
-
-
-
 
