@@ -11,10 +11,10 @@
     }
 
     :root {
-      --page-bg: #ffffff;
-      --grid-bg: aquamarine;
-      --card-bg: #ffffff;
-      --card-border: brown;
+      --page-bg: #fffdf8;
+      --grid-bg: #d8f3e8;
+      --card-bg: #fffbe6;
+      --card-border: #9a5a2d;
       --heading-blue: #0047ab;
       --heading-brown: #7a2f00;
       --link-blue: #003399;
@@ -31,7 +31,6 @@
       line-height: 1.35;
     }
 
-    /* ---------- TOP BAR ---------- */
     .topbar {
       max-width: 1280px;
       margin: 0 auto 8px;
@@ -83,7 +82,6 @@
       font-weight: 600;
     }
 
-    /* Top buttons: same line, left & right */
     .topbar-actions {
       margin-top: 8px;
       display: flex;
@@ -146,13 +144,14 @@
       border: 3px solid var(--card-border);
       background-color: var(--grid-bg);
       align-items: stretch;
+      border-radius: 10px;
     }
 
     .item {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 5px solid var(--card-border);
+      border: 4px solid var(--card-border);
       border-radius: 16px;
       background-color: var(--card-bg);
       padding: 8px;
@@ -161,7 +160,8 @@
       overflow-wrap: anywhere;
       word-break: break-word;
       font-weight: 600;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 6px rgba(80, 40, 10, 0.08);
     }
 
     .item img {
@@ -194,9 +194,9 @@
       max-width: 1000px;
       padding: 0 8px;
       line-height: 1.45;
+      color: #4e3c2c;
     }
 
-    /* Bottom buttons: same line, left & right */
     .button-container {
       display: flex;
       justify-content: space-between;
@@ -248,10 +248,10 @@
     @media (hover: hover) and (pointer: fine) {
       .item:hover {
         transform: scale(1.02);
+        box-shadow: 0 6px 14px rgba(80, 40, 10, 0.16);
       }
     }
 
-    /* Mobile behavior: still same row but compact */
     @media (max-width: 420px) {
       .nav-btn,
       .footer-btn {
@@ -307,163 +307,136 @@
       <img src="Rastellum - Bivalve Watermarked.jpg" alt="Rastellum pectinata" title="Rastellum - bivalve" />
       <a class="desc-link" href="DescRastellum.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box2">
       Lucina - bivalve
       <img src="Lucina-(Bivalve) Watermarked.jpg" alt="Lucina - bivalve" title="Lucina - bivalve" />
       <a class="desc-link" href="DescLucinabivalve.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box3">
       Trigonoarca abrupta
       <img src="Trigonoarca abrupta Watermarked.jpg" alt="Trigonoarca abrupta" title="Trigonoarca abrupta" />
       <a class="desc-link" href="DescTrigonoarca abrupta.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box4">
       Calycoceras asiaticum
       <img src="Calycoceras asiaticum Watermarked.jpg" alt="Calycoceras asiaticum" title="Calycoceras asiaticum" />
       <a class="desc-link" href="DescCalycoceras.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box5">
       Ammonite_suture
       <img src="Ammonite_suture titled with size.jpg" alt="Ammonite sutures" title="Ammonite sutures" />
       <a class="desc-link" href="DescAmmonitesSuture.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box6">
       Belemnite
       <img src="Belemnite Fossil Watermarked.jpg" alt="Belemnite" title="Belemnite" />
       <a class="desc-link" href="DescBelemnite.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box7">
       Nerinea - Gastropod
       <img src="Nerinea - Gastropod watermarked.jpg" alt="Nerinea - Gastropod" title="Nerinea - Gastropod" />
       <a class="desc-link" href="DescNerinaGastropod.html">Mollusca - Gastropoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box8">
       Gongrochanus Echinoidea
       <img src="Gongrochanus--echinoid Watermarked.jpg" alt="Gongrochanus Echinoidea" title="Gongrochanus - echinoid" />
       <a class="desc-link" href="DescGongrochanusEchinoidea.html">Echinodermata - Echinoidea<br />Click for Description</a>
     </div>
-
     <div class="item" id="box9">
       Cyclolites orbiculus
       <img src="Cyclolites orbiculus.jpg" alt="Cyclolites orbiculus" title="Cyclolites orbiculus" />
       <a class="desc-link" href="DescCyclolites orbiculus.html">Cnidaria - Hexacorallia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box10">
       Ichthyosaurian vertebra
       <img src="Ichthyosaurian vertebra (Marine reptile) Watermarked.jpg" alt="Ichthyosaurian vertebra" title="Ichthyosaurian vertebra (Marine reptile)" />
       <a class="desc-link" href="DescIchthyosaurianVertebra.html">Chordata - Vertebrata<br />Click for Description</a>
     </div>
-
     <div class="item" id="box11">
       Plant Fossil
       <img src="Ptilophyllum (Upper Gondwana plant) Watermarked.jpg" alt="Plant Fossil" title="Ptilophyllum" />
       <a class="desc-link" href="DescPlantFossil.html">Tracheophytes - Bennettitales<br />Click for Description</a>
     </div>
-
     <div class="item" id="box12">
       Fossil Wood
       <img src="Fossil_Wood from Karai Badlands Watermarked.jpg" alt="Fossil Wood" title="Fossil Wood" />
       <a class="desc-link" href="DescFossilWood.html">Plant - Coniferophytes<br />Click for Description</a>
     </div>
-
     <div class="item" id="box13">
       Inoceramus goldfussianus
       <img src="Inoceramus goldfussini.JPG" alt="Inoceramus goldfussianus" title="Inoceramus goldfussianus" />
       <a class="desc-link" href="DescInoceramusGoldfussianus.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box14">
       Kossimaticeras
       <img src="Kossimaticeras.JPG" alt="Kossimaticeras" title="Kossimaticeras" />
       <a class="desc-link" href="DescKossimaticeras.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box15" style="font-size: 20px;">
       Sphenoceramus (inoceramids)
       <img src="Sphenoceramus (inoceramids).JPG" alt="Sphenoceramus (inoceramids)" title="Sphenoceramus (inoceramids)" />
       <a class="desc-link" href="DescSphenoceramus.html">Mollusca - Bivalvia<br />Click for Description</a>
     </div>
-
     <div class="item" id="box16">
       Mariella bergeri
       <img src="Mariella bergeri.JPG" alt="Mariella bergeri" title="Mariella bergeri" />
       <a class="desc-link" href="DescMariellaBergeri.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box17">
       Eubaculites vaginia
       <img src="Eubaculites vaginia.JPG" alt="Eubaculites vaginia" title="Eubaculites vaginia" />
       <a class="desc-link" href="DescEubaculitesVaginia.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box18">
       Turritella ventricosa
       <img src="Turritella ventricosa.JPG" alt="Turritella ventricosa" title="Turritella ventricosa" />
       <a class="desc-link" href="DescTurritellaVentricosa.html">Mollusca - Gastropoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box19">
       Micraster Echinoidea
       <img src="Micraster (Ariyalur Group).JPG" alt="Micraster" title="Micraster" />
       <a class="desc-link" href="DescMicraster.html">Echinodermata - Echinoidea<br />Click for Description</a>
     </div>
-
     <div class="item" id="box20">
       Marsupites
       <img src="Marsupites (Echinoidea).JPG" alt="Marsupites" title="Marsupites" />
       <a class="desc-link" href="DescMarsupites.html">Echinodermata - Echinoidea<br />Click for Description</a>
     </div>
-
     <div class="item" id="box21">
       Scaphites kingeanus
       <img src="Scaphites of Ariyalur.jpg" alt="Scaphites kingeanus" title="Scaphites kingeanus" />
       <a class="desc-link" href="DescScaphites.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box22">
       Nautilus danicus (Hercoglossa)
       <img src="Nautilus danicus (hercoglossa).JPG" alt="Nautilus danicus (Hercoglossa)" title="Nautilus danicus (Hercoglossa)" />
       <a class="desc-link" href="DescNautilusDanicus.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box23" style="font-size: 20px;">
       Pachydesmoceras pachydiscoide
       <img src="Pachydesmoceras pachydiscoide Matsumoto.jpg" alt="Pachydesmoceras pachydiscoide" title="Pachydesmoceras pachydiscoide" />
       <a class="desc-link" href="DescPachydesmocerasPachydiscoide.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box24" style="font-size: 20px;">
       Damesites sugata
       <img src="Damesites sugata (Forbes).jpg" alt="Damesites sugata" title="Damesites sugata" />
       <a class="desc-link" href="DescDamesitesSugata.html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box25" style="font-size: 20px;">
       Lewesiceras anapadense (Kossmat)
       <img src="Lewesiceras anapadense (Kossmat).jpg" alt="Lewesiceras anapadense (Kossmat)" title="Lewesiceras anapadense (Kossmat)" />
       <a class="desc-link" href="DescLewesicerasAnapadense(Kossmat).html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box26" style="font-size: 20px;">
       Romaniceras deverianum (d’Orbigny)
       <img src="Romaniceras deverianum (d’Orbigny).jpg" alt="Romaniceras deverianum (d’Orbigny)" title="Romaniceras deverianum (d’Orbigny)" />
       <a class="desc-link" href="DescRomanicerasDeverianum(d’Orbigny).html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box27" style="font-size: 20px;">
       Peroniceras dravidicum (Kossmat)
       <img src="Peroniceras dravidicum (Kossmat).jpg" alt="Peroniceras dravidicum (Kossmat)" title="Peroniceras dravidicum (Kossmat)" />
       <a class="desc-link" href="DescPeronicerasDravidicum(Kossmat).html">Mollusca - Cephalopoda<br />Click for Description</a>
     </div>
-
     <div class="item" id="box28" style="font-size: 20px;">
       Mammites conciliatum (Stoliczka)
       <img src="Mammites conciliatum (Stoliczka).jpg" alt="Mammites conciliatum (Stoliczka)" title="Mammites conciliatum (Stoliczka)" />
