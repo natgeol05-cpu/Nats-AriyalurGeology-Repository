@@ -6,206 +6,148 @@
   <title>Ariyalur Fossils Gallery</title>
 
   <style>
-    * {
-      box-sizing: border-box;
+  /* --- TOP HEADER IMPROVEMENT --- */
+  .topbar {
+    max-width: 1280px;
+    margin: 0 auto 8px;
+    padding: 8px 10px;
+    border: 2px solid #c47a44;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fff8ef 0%, #ffe9d4 100%);
+  }
+
+  .topbar-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .arrow-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .arrow-img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+  }
+
+  .topbar-center {
+    text-align: center;
+    min-width: 0;
+  }
+
+  .topbar-title {
+    margin: 0;
+    color: #0047ab;
+    font-size: clamp(0.95rem, 2.3vw, 1.2rem);
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .topbar-subtitle {
+    margin: 2px 0 0;
+    color: #7a2f00;
+    font-size: clamp(0.78rem, 1.9vw, 0.95rem);
+    line-height: 1.2;
+    font-weight: 600;
+  }
+
+  .topbar-actions {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .nav-btn {
+    width: 100%;
+    min-height: 38px;
+    border-radius: 999px;
+    border: 1px solid #8a8a8a;
+    background: #ffffff;
+    color: #1f2d3d;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .nav-btn:hover {
+    background: #e0a800;
+    color: #fff;
+    border-color: #e0a800;
+  }
+
+  @media (min-width: 700px) {
+    .topbar {
+      padding: 8px 12px;
     }
 
-    :root {
-      --page-bg: #ffffff;
-      --grid-bg: aquamarine;
-      --card-bg: #ffffff;
-      --card-border: brown;
-      --heading-blue: #0047ab;
-      --heading-brown: #7a2f00;
-      --link-blue: #003399;
-      --btn-border: #666;
-      --btn-hover: goldenrod;
-    }
-
-    body {
-      margin: 0;
-      padding: 10px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--page-bg);
-      overflow-x: hidden;
-      line-height: 1.35;
-    }
-
-    .title-div {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+    .topbar-actions {
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin: 0 auto 10px;
-      max-width: 1280px;
-      text-align: center;
+      margin-top: 8px;
     }
 
-    .title-div h3 {
-      flex: 1 1 260px;
-      margin: 8px 0;
-      color: var(--heading-blue);
-      font-size: 1.05rem;
-      line-height: 1.35;
+    .nav-btn {
+      min-height: 40px;
+      font-size: 0.92rem;
     }
 
     .arrow-img {
-      width: 64px;
-      height: auto;
-      max-width: 100%;
-      display: block;
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .topbar-row {
+      grid-template-columns: 52px 1fr 52px;
     }
 
-    .nav-btn,
-    .footer-btn {
-      display: inline-block;
-      width: 100%;
-      max-width: 320px;
-      min-height: 44px;
-      border-radius: 20px;
-      border: 1px solid var(--btn-border);
-      background: #fff;
-      color: #111;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-align: center;
+    .arrow-img {
+      width: 40px;
+      height: 40px;
     }
 
-    .nav-btn:hover,
-    .footer-btn:hover {
-      background-color: var(--btn-hover);
-      color: #fff;
+    .topbar-actions {
+      max-width: 760px;
+      margin: 8px auto 0;
     }
+  }
+</style>
 
-    h2 {
-      color: var(--heading-blue);
-      text-align: center;
-      margin: 4px 0 0;
-    }
+<!-- Replace old title-div block with this -->
+<header class="topbar">
+  <div class="topbar-row">
+    <a class="arrow-link" href="AriyalurGeologyPage.html" aria-label="Back to Main Menu">
+      <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
+    </a>
 
-    h4 {
-      color: var(--heading-brown);
-      text-align: center;
-      margin: 6px 0 12px;
-      font-weight: 700;
-    }
+    <div class="topbar-center">
+      <p class="topbar-title">Geology of Ariyalur Website</p>
+      <p class="topbar-subtitle">Browse Gallery Specimens</p>
+    </div>
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr; /* mobile first */
-      gap: 14px;
-      width: 100%;
-      max-width: 1280px;
-      margin: 10px auto 20px;
-      padding: 12px;
-      border: 3px solid var(--card-border);
-      background-color: var(--grid-bg);
-      align-items: stretch;
-    }
+    <a class="arrow-link" href="AriyalurIndustries.html" aria-label="Go to Next Item in Menu">
+      <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+    </a>
+  </div>
 
-    .item {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 5px solid var(--card-border);
-      border-radius: 16px;
-      background-color: var(--card-bg);
-      padding: 8px;
-      text-align: center;
-      min-height: 255px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      font-weight: 600;
-      transition: transform 0.2s ease;
-    }
-
-    .item img {
-      width: 100%;
-      max-width: 240px;
-      height: auto;
-      margin: 8px auto;
-      display: block;
-      border-radius: 8px;
-      object-fit: contain;
-    }
-
-    .desc-link {
-      display: inline-block;
-      margin-top: 6px;
-      text-decoration: none;
-      color: var(--link-blue);
-      font-weight: 700;
-      line-height: 1.35;
-      font-size: 0.95rem;
-    }
-
-    .desc-link:hover {
-      text-decoration: underline;
-    }
-
-    .credit {
-      text-align: center;
-      margin: 12px auto 8px;
-      max-width: 1000px;
-      padding: 0 8px;
-      line-height: 1.45;
-    }
-
-    .button-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin: 10px auto 20px;
-      width: 100%;
-      max-width: 740px;
-    }
-
-    .button-container a {
-      flex: 1 1 260px;
-      display: flex;
-      justify-content: center;
-      text-decoration: none;
-    }
-
-    .footer-btn {
-      color: var(--heading-blue);
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    @media (min-width: 600px) {
-      .grid-container {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 768px) {
-      .grid-container {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .title-div h3 {
-        font-size: 1.1rem;
-      }
-    }
-
-    @media (min-width: 1100px) {
-      .grid-container {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .item:hover {
-        transform: scale(1.02);
-      }
-    }
-  </style>
-</head>
+  <div class="topbar-actions">
+    <a href="AriyalurGeologyPage.html">
+      <button type="button" class="nav-btn">Back to Main Menu</button>
+    </a>
+    <a href="AriyalurIndustries.html">
+      <button type="button" class="nav-btn">Go to Next Item in Menu</button>
+    </a>
+  </div>
+</header>
 <body>
   <div class="title-div">
     <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
