@@ -1,198 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home webpage for Ariyalur area geology</title>
-    <style>
-        .grid {
-            display: grid; border: 1px solid black;
-            margin: auto; padding: 20px;            
-            gap: 20px; background-color: aquamarine;
-            grid-template-columns: 310px auto 310px;
-            grid-template-rows: 250px auto 250px;
-            grid-template-rows:auto;
-            column-gap: 10px; row-gap: 3px;
-            justify-content: flex-start;
-            align-items: center;                 
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ariyalur Geology Page</title>
 
-        .item {
-            border: 1px solid blue;  height: auto;
-            border-radius: 20px; text-align: center;
-            background-color: white; 
-        }
+  <style>
+    :root{
+      --bg:#fffdf8;
+      --panel:#ffffff;
+      --soft-green:#d8f3e8;
+      --text:#2f2418;
+      --blue:#2457b3;
+      --blue2:#3a72d8;
+      --border:#d7c19a;
+      --shadow:0 2px 10px rgba(0,0,0,.08);
+    }
 
-        img { 
-            height: 165px;  width: 280px;    
-            } 
+    *{ box-sizing:border-box; min-width:0; }
 
-        .item:hover {
-            transform: scale(1.5);
-            transition-duration: 2s;
-            }
+    html, body{
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+      margin:0;
+      padding:0;
+    }
 
-        #box1 {
-            height:200px;
-            border: 15px;
-        }    
-       
-        #box2 {
-               transform: none; 
-               overflow: auto;  
-               height: 130px; 
-            } 
-        #box3 {
-            width:280px;
-            height: 190;
-        }    
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
 
-        #box4 {
-            text-align: left; padding-top: 50px;
-            transform: none;  
-            height: 375px;
-            background-color: #F79B72;
-            }
+    .page{
+      width:min(1120px, 94%);
+      margin:0 auto;
+      padding:10px 0 24px;
+    }
 
-        #box5 {         
-            transform: none;  padding: 10px;
-            background-color: lightgoldenrodyellow;   
-            height: 400px; overflow: auto;
-            grid-column-start: 2;
-            grid-column-end: 4;
-            }
+    .top-strip{
+      background:var(--soft-green);
+      border:1px solid #99c8b4;
+      border-radius:14px;
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      text-align:center;
+      max-width:100%;
+    }
 
-        #box6 {
-            align-self: end;
-           
-        }
+    .top-strip img{
+      width:90px;
+      height:44px;
+      object-fit:contain;
+      max-width:100%;
+    }
 
-        #box7{
-            transform: none;  font-style: color="Blue";
-            background-color: bisque;
-            grid-column-start: 2;
-            grid-column-end: 3; grid-row-start: 3;
-            align-self: end;  overflow: auto;
-             }
+    h1{
+      margin:10px 0 4px;
+      text-align:center;
+      color:#0047ab;
+      font-size:clamp(1.35rem, 2.5vw, 2rem);
+      line-height:1.2;
+    }
 
-        #box8 {
-            width: max-content 300px;
-            grid-column-start: 3;
-            align-self: end;
-        }
+    .subtitle{
+      text-align:center;
+      margin:0 0 14px;
+      color:#7a2f00;
+      font-weight:700;
+      font-size:clamp(.95rem, 1.8vw, 1.08rem);
+      padding:0 8px;
+    }
 
-        h2 {
-            color: brown;
-        }
+    .button-row{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      margin:12px auto 16px;
+      max-width:100%;
+      padding:0 8px;
+    }
 
-        h3 {
-            color: blue;
-            text-align: center;
-        }
+    .nav-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:36px;
+      padding:7px 12px;
+      min-width:150px;
+      max-width:100%;
+      border-radius:999px;
+      text-decoration:none;
+      border:1px solid var(--blue);
+      background:linear-gradient(180deg,#eaf2ff 0%,#cfe0ff 100%);
+      color:#0f2f6b;
+      font-weight:700;
+      font-size:.83rem;
+      white-space:normal;
+      text-align:center;
+      box-shadow:0 1px 3px rgba(20,50,110,.2);
+      transition:all .22s ease;
+    }
 
-        .curved-button  {
-            border-radius: 20px; 
-            color: solid black;
-            height: 30px; width: 250px;
-            border-radius: 20px;
-            display: inline-block;             
-        }
-   
-        #curved-button:hover{
-            background-color: goldenrod;
-            color: white;
-        }
+    .nav-btn:hover{
+      background:linear-gradient(180deg,var(--blue2) 0%,var(--blue) 100%);
+      color:#fff;
+      transform:translateY(-1px);
+      box-shadow:0 5px 12px rgba(27,70,143,.25);
+    }
 
-    </style>
+    .nav-btn:focus-visible{
+      outline:3px solid #2f66cc;
+      outline-offset:2px;
+      box-shadow:0 0 0 4px rgba(47,102,204,.2);
+    }
 
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12, minmax(0, 1fr));
+      gap:14px;
+      margin-top:10px;
+      max-width:100%;
+      padding:0 2px;
+    }
+
+    .card{
+      grid-column:span 12;
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-left:5px solid var(--blue2);
+      border-radius:14px;
+      padding:12px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      max-width:100%;
+    }
+
+    .card h2{
+      margin:0 0 8px;
+      color:#153a84;
+      font-size:1.05rem;
+      text-align:center;
+      overflow-wrap:anywhere;
+    }
+
+    .card p,
+    .card li,
+    h1,h2,h3,h4,p,li,a,span,div{
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+
+    .card ul{
+      margin:8px 0 0 18px;
+      padding:0;
+    }
+
+    .card li{ margin-bottom:6px; }
+
+    img, video, iframe, table{
+      max-width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .media{
+      width:100%;
+      border-radius:10px;
+      margin:8px auto 0;
+    }
+
+    @media (min-width:700px){
+      .card.span-6{ grid-column:span 6; }
+      .card.span-4{ grid-column:span 4; }
+      .card.span-8{ grid-column:span 8; }
+    }
+
+    @media (max-width:768px){
+      .page{
+        width:100%;
+        padding:8px 8px 18px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+        gap:12px;
+      }
+
+      .card{
+        padding:10px;
+        border-radius:12px;
+      }
+
+      .top-strip img{
+        width:72px;
+        height:36px;
+      }
+
+      .nav-btn{
+        min-width:130px;
+        font-size:.8rem;
+        min-height:34px;
+      }
+    }
+
+    @media (max-width:420px){
+      .nav-btn{
+        min-width:116px;
+        font-size:.76rem;
+        padding:7px 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h2 style="text-align: center;"> Welcome to Ariyalur Fossils Web Site</h2>
+  <main class="page">
 
-    <div class="grid">
-        <div class="item" id="box1" > Rastellum - bivalve
-            <img  src="Rastellum - Bivalve Watermarked.jpg" alt="Restellum" title="Rastellum - Bivalve">
-        </div>
+    <section class="top-strip">
+      <img src="Arrow Left Very Small Amber.jpg" alt="Left arrow" />
+      <a class="nav-btn" href="index.html">Home</a>
+      <a class="nav-btn" href="AriyalurFossilsGallery.html">Fossils Gallery</a>
+      <a class="nav-btn" href="AriyalurIndustries.html">Industries</a>
+      <img src="Arrow Right Very Small Amber.jpg" alt="Right arrow" />
+    </section>
 
-        <div class="item" id="box2">
-            <h2>Detailed Geology of Ariyalur</h2>
-            <h3>Cretaceous Fossil Sites in Cauvery Basin</h3>
-        </div>
+    <h1>Geology of Ariyalur</h1>
+    <p class="subtitle">Overview of formations, fossils, industries, and educational resources</p>
 
-        <div class="item" id="box3"> Ammonite_suture
-            <img src="Ammonite_suture titled with size.jpg" alt="Ammonites sutures" title="Ammonite_suture">
-        </div>
+    <section class="button-row">
+      <a class="nav-btn" href="AriyalurGeologyMap.html">Geology Map</a>
+      <a class="nav-btn" href="AriyalurStratigraphy.html">Stratigraphy</a>
+      <a class="nav-btn" href="FeedBackGoogleSheetData.html">Give Feedback</a>
+    </section>
 
-        <div class="item" id="box4" style="margin-top: 0px;"> || ----- Browsing Menu ----- ||
-            <ul style="margin-top: 0px;">
-                <li><a href="AriyalurLocationMap.html">Ariyalur Location</a></li>
-                <li><a href="AriyalurGeologyMap.html">Geological Map</a></li>
+    <section class="grid">
+      <article class="card span-8">
+        <h2>About Ariyalur Basin</h2>
+        <p>
+          Ariyalur is one of Tamil Nadu’s key geological regions, known for Cretaceous sedimentary formations,
+          fossil-bearing beds, limestone resources, and educational importance for earth science learners.
+        </p>
+        <p>
+          This page provides access to major geology topics, fossil records, industrial geology references,
+          and quick links to related sections of the website.
+        </p>
+      </article>
 
-                <li><a href="AriyalurStratigraphy.html">Stratigraphy</a></li>
-                <li><a href ="AriyalurLithography.html">Lithostratigraphy</a></li>
+      <article class="card span-4">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="AriyalurFossilsGallery.html">Fossils Gallery</a></li>
+          <li><a href="AriyalurIndustries.html">Industries in Ariyalur</a></li>
+          <li><a href="AriyalurGeologyMap.html">Geology Map</a></li>
+          <li><a href="FeedBackGoogleSheetData.html">Feedback</a></li>
+        </ul>
+      </article>
 
-                <li><a href="AriyalurFossilSites.html"> Fossil Sites</a></li>
-                <li><a href ="AriyalurBiozones.html"> Biozones</a></li>  
+      <article class="card span-6">
+        <h2>Highlights</h2>
+        <ul>
+          <li>Fossil-rich stratigraphic units</li>
+          <li>Cement-grade limestone distribution</li>
+          <li>Educational geology reference content</li>
+          <li>Student-friendly navigation across topics</li>
+        </ul>
+      </article>
 
-                <li><a href ="AriyalurFossilsGallery.html"> Fossils Gallery</a></li>
-                <li><a href ="AriyalurIndustries.html"> Industries</a>
-            </ul> 
-            <p> 
-                <button class="curved-button" style="margin-left: 25px; font-size: 15px;"> <a href="index1.html">Back To Welcome Page </a></button>          
-                <br>
-                <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href="FeedBackGoogleSheetData.html">Give Your Feedback</a></button>    
-                <br>
-                <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href="AriyalurListOfToposheets.html"> Village Names in Toposheets</a></button>  
-                <br>
-                <!-- <button class="curved-button" style="margin-left: 25px;"><a href="FormForYourFossilsDetails.html"> Upload Your Fossil</a></button>   -->
+      <article class="card span-6">
+        <h2>Contact</h2>
+        <p>For doubts and suggestions:</p>
+        <p><strong>natgeol05@gmail.com</strong></p>
+      </article>
+    </section>
 
-                <button class="curved-button" style="margin-left: 25px; font-size: 15px;"><a href="RegistrationForm.html"> Form for Registration</a></button>
+    <section class="button-row" style="margin-top:16px;">
+      <a class="nav-btn" href="AriyalurFossilsGallery.html">Go to Fossils Gallery</a>
+      <a class="nav-btn" href="AriyalurIndustries.html">Go to Industries Page</a>
+      <a class="nav-btn" href="index.html">Back to Home</a>
+    </section>
 
-                <button class="curved-button" style="margin-left: 25px; font-size: 15px;"> <a href="UploadFossilImageAndDetails.html">Upload Fossil Image &amp; Details</a></button>
-            </p>  
-        </div>
-
-        <div class="item" id="box5" style="font-size:18px;">Introduction to a Fossil Sites in Ariyalur
-            <p></p> The Cretaceous rocks are exposed in Ariyalur area in South India.<br> 
-            These rocks formations are grouped into four namely, the Niniyur, 
-            Ariyalur, Trichinopoly, and Uttatur, groups. </p>
-
-            <p> Outcrops of these groups are seen in Ariyalur and in its surounding areas.<br> 
-                In these outcrops we find fossils like Ammonites, Cephalopods, Bivalues, Gastropods, Echinoids, Plant fossils, Corals etc. </p>
-
-            <p> This area was and is continuously visited and studied by many eminent geologists. <br>
-                Many foreign geologists have also come here and studied/explored the geology of this area.<br>
-                For students studying geology, this area is a must-visit localty.<br>
-                Many colleges are conducting study tours to impart field experience for their students.</p>      
-
-            <p>In the Menu Bar on the left side has various menu items to view web pages.<br> 
-            By Clicking on the items, the relevent web page will open for you to explore.</p>
-            The contents in these webpages are only for educational purpose.<br> 
-            Most of it are incorporated from different webpages offering free downloads ie. from public domins.
-            <P> 
-            For any doubt or clarification, do no hesitate to contact us. (details below).<br> 
-            <p> This website is developed with the help and continues encouragement of Dr Ayyasami, Dr Bala Gowtham and others.<br>
-             I especially thank them for their ready cooperation and guidence.</p>
-        </div>
-
-        <div class="item" id="box6">Reptile caudal vertebra
-            <img src="Ichthyosaurian vertebra (Marine reptile) Watermarked.jpg" alt="Ichthyosaurian vertebra" title="Ichthyosaurian vertebra">
-        </div>
-        
-        <div class="item" id="box7" style="color: blue; font-size: 20px;">Contact Details 
-            <br>Email: natgeolo5@gmail.com<p>
-            People who inspired me to create this Website are:<br>
-            1. Dr K Ayyaswami DyDG GSI (Retd.)<br>
-            2. Dr B Gowtham HOD, Dept. of Geology,  Arts College, Coimabatore, Tamilnadu, India.<br>
-            3. D Charles, Faculty from Presidency College, Chennai, India.              
-        </div>
-
-        <div class="item" id="box8">Field Tools for geologists
-            <img src="Geologist's Field Tools.jpg" alt="Plant Fossil" title="Ptillophyllum">
-        </div>              
-    </div>      
-        
+  </main>
 </body>
 </html>
-
-
