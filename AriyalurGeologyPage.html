@@ -8,12 +8,19 @@
   <style>
     :root{
       --bg:#fffdf8;
-      --panel:#ffffff;
-      --soft-green:#d8f3e8;
       --text:#2f2418;
+
+      --soft-green:#d8f3e8;
       --blue:#2457b3;
       --blue2:#3a72d8;
-      --border:#d7c19a;
+
+      /* Pleasant light box palette */
+      --card-1:#fffaf0;   /* warm cream */
+      --card-2:#f3fbff;   /* very light sky */
+      --card-3:#f6fff5;   /* very light mint */
+      --card-4:#fff7fb;   /* very light rose */
+
+      --border:#d9c8a7;
       --shadow:0 2px 10px rgba(0,0,0,.08);
     }
 
@@ -43,7 +50,6 @@
       padding:10px 0 24px;
     }
 
-    /* ===== Top all-buttons row ===== */
     .top-strip{
       background:var(--soft-green);
       border:1px solid #99c8b4;
@@ -58,8 +64,8 @@
     }
 
     .top-strip--all{
-      flex-wrap:nowrap;     /* keep single line on larger screens */
-      overflow-x:auto;      /* safety if width gets tight */
+      flex-wrap:nowrap;
+      overflow-x:auto;
       scrollbar-width:thin;
     }
 
@@ -138,7 +144,6 @@
 
     .card{
       grid-column:span 12;
-      background:var(--panel);
       border:1px solid var(--border);
       border-left:5px solid var(--blue2);
       border-radius:14px;
@@ -146,6 +151,18 @@
       box-shadow:var(--shadow);
       overflow:hidden;
       max-width:100%;
+      transition:transform .18s ease, box-shadow .2s ease;
+    }
+
+    /* Pleasant light colors per box */
+    .card:nth-of-type(1){ background:var(--card-1); }
+    .card:nth-of-type(2){ background:var(--card-2); }
+    .card:nth-of-type(3){ background:var(--card-3); }
+    .card:nth-of-type(4){ background:var(--card-4); }
+
+    .card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(36,87,179,.14);
     }
 
     .card h2{
@@ -194,7 +211,6 @@
         padding:8px 8px 18px;
       }
 
-      /* allow wrap on mobile */
       .top-strip--all{
         flex-wrap:wrap;
         overflow-x:visible;
@@ -228,7 +244,6 @@
 <body>
   <main class="page">
 
-    <!-- All top buttons in one line (desktop/tablet) -->
     <section class="top-strip top-strip--all">
       <a class="nav-btn" href="index.html">Home</a>
       <a class="nav-btn" href="AriyalurFossilsGallery.html">Fossils Gallery</a>
