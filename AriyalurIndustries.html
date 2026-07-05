@@ -1,253 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Description for Ariyalur Industries</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Industries in Ariyalur</title>
 
-    <style>
+  <style>
+    :root {
+      --page-bg: #fffdf8;
+      --grid-bg: #d8f3e8;
+      --card-bg: #fff7ea;
+      --card-border: #d5b88d;
+      --accent-blue: #2457b3;
+      --accent-blue-2: #3a72d8;
+      --text-dark: #2f2418;
+    }
 
-        div { 
-            display: flex;    
-            align-items: center;  
-            margin: auto;       
-        }  
+    * { box-sizing: border-box; }
 
-        .title-div {
-                column-gap: 20px;
-                background-color: rgb(189, 241, 189);
-            }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--text-dark);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
 
-         button {
-            color: solid black;
-            height: 50px; width: 250px;
-            border-radius: 20px;
-            display: inline-block;            
-        }
+    .title-div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background-color: #bdf1bd;
+      padding: 8px 12px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
 
-        #button:hover {
-            background-color: goldenrod;
-            color: white;
-        }
+    .title-div img {
+      width: 100px;
+      height: 50px;
+      object-fit: contain;
+    }
 
-        .button-container {
-            display: inline-flex;
-            gap: 60px;
-            align-self: center;
-            justify-content: center;
-        }
+    .button-container {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 14px auto 18px;
+      width: min(1100px, 95%);
+    }
 
-        browse-button {
-            color: solid blue;
-            height: 60px; width: 300px;
-            border-radius: 20px;
-            display: inline-block;  
-         }
+    /* Navigation links styled as buttons */
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      height: 34px;
+      min-width: 170px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-blue);
+      background: linear-gradient(180deg, #eaf2ff 0%, #cfe0ff 100%);
+      color: #0f2f6b;
+      font-weight: 700;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(20, 50, 110, 0.2);
+      transition: background 0.25s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease, transform 0.12s ease;
+    }
 
-        #browse-button:hover {
-             background-color: goldenrod;
-             color: white;
-        }
-        
-        h2 {
-            color: blue; text-align: center;
-            text-align: center;
-            margin-bottom: 1px;
-            margin-top: 0px;
-        }
-        h3 {
-            color: brown;
-            text-align: center;
-            margin-top: 0px;
-            margin-bottom: 0px;
-        }
-        h4 {
-            margin: 40px;
-            text-align: center;
-        }        
+    .nav-btn:hover {
+      background: linear-gradient(180deg, var(--accent-blue-2) 0%, var(--accent-blue) 100%);
+      color: #fff;
+      border-color: #1f4fa3;
+      box-shadow: 0 4px 10px rgba(27, 70, 143, 0.28);
+      transform: translateY(-1px);
+    }
 
-        .grid {
-            display: block; border: 1px solid black;
-            margin: auto; padding: 10px; max-width: 1085px;
-            gap: 20px; background-color: lightgreen
-            /* grid-template-columns: 310px auto 310px; */
-             grid-template-columns: auto auto ;
-            /* grid-template-rows: 250px auto 250px; */
-            grid-template-rows: auto auto auto;
-            grid-template-rows:auto;
-            column-gap: 0px; row-gap: 20px;
+    .nav-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(27, 70, 143, 0.22);
+    }
 
-            justify-content: flex-start;
-            align-items: center;                     
-            
-        }       
-        
-        .item {
-            border: 5px solid blue;  height: 200px; 
-            border-radius: 20px; text-align: center;
-            background-color: white; width: 300px;
-            justify-content: flex-start;  margin:  20px;
-            align-items: center;
-            margin-top: 0px;
-           }
+    .nav-btn:focus-visible {
+      outline: 3px solid #2f66cc;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgba(47, 102, 204, 0.22);
+    }
 
-        #box1 {
-              background-color: bisque;
-              max-width: 100%;  max-height: 100%;
-              padding: 0px;
-            }
+    .nav-btn:focus:not(:focus-visible) {
+      outline: none;
+    }
 
-        #box2 {
-              background-color:lightgray;
-              width: auto; height: auto; padding: 1px;
-              text-align: center;
-              column-gap: 10px;
-            }
+    h2 {
+      color: #0047ab;
+      text-align: center;
+      margin: 10px 8px 4px;
+    }
 
-        #box3 {
-            background-color: #FFF4A4;
-            width: auto;  height: auto;
-            padding: 10px;
-            column-gap: 10px;
-            margin-top: 0px;
-        }
+    h3 {
+      color: #7a2f00;
+      text-align: center;
+      margin: 0 10px 8px;
+      font-weight: 700;
+    }
 
-        #box4 {
-            width: 1000px;  height: 600px;
-              padding: 20px
-        }
+    .alert-red {
+      color: #b00000;
+      margin: 2px 10px 14px;
+    }
 
-        #box5 {
-            background-color:antiquewhite;
-            width: auto; height: 50px; 
-            margin: auto; 
-            justify-content: center;
-        }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      width: min(1100px, 95%);
+      margin: 12px auto 18px;
+      padding: 14px;
+      border: 1px solid #8fb89d;
+      border-radius: 14px;
+      background-color: var(--grid-bg);
+      align-items: stretch;
+    }
 
-        #box6 {
-             width:auto; height: auto;
-             margin: auto; background-color: #CAE8BD;
-             text-align: center;
-             padding: 5px;
-             justify-content: center;
-        }
+    .item {
+      border: 1px solid var(--card-border);
+      border-left: 5px solid #2f66cc;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fffdf7 0%, var(--card-bg) 100%);
+      padding: 12px;
+      min-height: 120px;
+      margin: 0;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(55, 35, 10, 0.1);
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      overflow-wrap: anywhere;
+    }
 
-        #box7 {
-            height: auto;
-            width: auto;
-            padding: 10px;
-            text-align: center;
-        }
+    .item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(31, 79, 163, 0.16);
+      border-color: #cdb07f;
+    }
 
-        #box8 {
-            text-align: center;
-            background-color: rgb(241, 241, 10);
-            width: auto; height: auto;
-            margin-bottom: 0px;
-        }   
+    .item h4 {
+      margin: 0 0 8px;
+      color: #153a84;
+      text-align: center;
+    }
 
-        img { 
-            max-height: 485px;  max-width: 840px;    
-            } 
-       
-    </style>
+    #box8 { background: #fff6bf; }
+    #box1 { background: #fff4e8; }
+    #box2 { background: #f4f4f4; }
+    #box3 { background: #fff4a4; }
+    #box5 { background: antiquewhite; text-align: center; }
+    #box6 { background: #cae8bd; text-align: center; }
+    #box7 { background: #fffef8; }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      margin: 8px auto 0;
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin-bottom: 8px; }
+
+    p { margin: 6px 0; }
+
+    @media (max-width: 640px) {
+      .button-container { gap: 10px; }
+      .nav-btn { min-width: 135px; }
+      .grid { gap: 12px; padding: 10px; }
+      .item { padding: 10px; border-radius: 12px; }
+      .title-div img { width: 80px; height: 40px; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="title-div">
-        
-        <input type="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="100px" height="50px">
-            <a href="AriyalurGeologyPage.html">
-            <button id="button"> Click Here To Go Back to Main Menu</button></a> 
-                
-                <h3 style="margin: auto;">Geology of Ariyalur Web Site<br> Browse Menu Items</h3> 
+  <div class="title-div">
+    <img src="Arrow Left Very Small Amber.jpg" alt="Left arrow">
 
-            <a href="AriyalurGeologyPage.html">
-            <button id="button"> End of Web Page. || Back to Main Menu</button></a>
-        <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="50px"> </a> 
+    <a class="nav-btn" href="AriyalurGeologyPage.html">Back to Main Menu</a>
+
+    <h3 style="margin:0;">Geology of Ariyalur Web Site<br>Browse Menu Items</h3>
+
+    <a class="nav-btn" href="AriyalurGeologyPage.html">End of Page | Main Menu</a>
+
+    <img src="Arrow Right Very Small Amber.jpg" alt="Right arrow">
+  </div>
+
+  <h2>Industries in Ariyalur</h2>
+  <h3>The major industries relevant to Geologists are mainly Limestone Quarries and Cement Factories.</h3>
+
+  <div class="grid">
+    <div class="item" id="box8">
+      <h4>Limestone Quarries in Tamil Nadu</h4>
+      <p>
+        Limestone quarries are present in several districts in Tamil Nadu, with notable reserves in
+        Salem, Tiruchirappalli, Ariyalur, Perambalur, and Thoothukudi.
+        Fossiliferous limestone is found in Tiruchirappalli, Ariyalur, Perambalur, and Thoothukudi districts.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="alert-red">The total reserve of fossiliferous limestone is estimated at 670 million tonnes.</h3>
+
+  <div class="grid">
+
+    <div class="item" id="box1">
+      <h4>Limestone Quarries in Ariyalur</h4>
+      <ul>
+        <li>Kallankurichi Limestone Kankar Quarry: Public consultation held for expansion.</li>
+        <li>Pudupalayam village: Opposition raised over environmental impacts.</li>
+        <li>Ramco Cements: Limestone mining using conventional and non-conventional methods.</li>
+        <li>Alathiyur block: Part of Sendurai Taluk limestone belt under exploration.</li>
+        <li>Periakurichi Block: Preliminary exploration proposal submitted to NMET.</li>
+        <li>Periapurichi area: Dalmia Cement holds a mining lease; sedimentary limestone deposit.</li>
+        <li>Ariyalur and Sendurai Taluks: Presence of cement-grade limestone.</li>
+      </ul>
+      <p><em>Data from public domain. For up-to-date details, refer to official online sources.</em></p>
     </div>
 
-    <h2> Industries in Ariyalur</h2>
-
-    <h3> The major industries relevent to Geologist are mainly Limestone Quaries and Cement Factories.</h3>
-
-    <div class="grid">    
-        <P class="item" id="box8" style="font-size: 18px;"> 
-            Limestone Quarries in Tamilnadu<br>
-            Limestone quarries are present in several districts in Tamil Nadu, with notable reserves<br> 
-            in areas like Salem, Tiruchirappalli, Ariyalur, Perambalur, and Thoothukudi.<br> 
-            Specifically, fossiliferous limestone, a major type of limestone, is found in Tiruchirappalli,<br> 
-            Ariyalur, Perambalur, and Thoothukudi districts. </P>
+    <div class="item" id="box7">
+      <h4>Cement Production in Tamil Nadu (Company-wise)</h4>
+      <p>
+        Major producers include Tamil Nadu Cements Corporation Ltd, Zuari Cement Ltd,
+        UltraTech Cement Ltd, Dhandapani Cements (P) Ltd, The India Cements Ltd, and others.
+        These companies operate multiple plants across the state, including Ariyalur and nearby regions.
+      </p>
     </div>
 
-    <h3 style="color: red;"> The total reserve of fossiliferous limestone is estimated at 670 million tonnes. </h3> 
-
-    <div class="grid">
-
-        <div class="item" id="box1" style="font-size: 20px;"> <p>Limestone quarries in Ariyalur:</p>        
-            <p style="text-align: center;" >    
-                •	Kallankurichi Limestone Kankar Quarry:A public consultation meeting was held for the expansion of this quarry.  <br><br>
-                •	Pudupalayam village: Residents and environmentalists opposed the proposed limestone mining by TNCC, citing potential environmental impacts.<br>  <br>
-                •	Ramco Simmons Limited: This company owns and operates limestone mines in the area, using both conventional and non-conventional mining methods. <br> <br>
-                •	Alathiyur block: This block is part of the limestone belt in Sendurai Taluk and is currently being explored for limestone resources. <br> <br>
-                •	Periakurichi Block: A proposal for preliminary exploration of limestone in this block was submitted to the National Mineral Exploration Trust. <br> <br> 
-                •	Periapurichi area: Dalmia Cement Bharat Limited holds a mining lease in this area, with the limestone deposit being of sedimentary origin. <br> <br>                 
-                •	Ariyalur and Sendurai Taluks: Limestone of cement-grade quality has been found in these areas.  <br>  </p>
-
-            <p> Data from public domin.<br> For uptodate details about these quarries go to online</p>
+    <div class="item" id="box2">
+      <h4>Major Cement Producers</h4>
+      <ul>
+        <li>Tamil Nadu Cements Corporation Ltd (TANCEM): Ariyalur and Alangulam.</li>
+        <li>Zuari Cement Ltd: Athipattu plant (PPC and OPC).</li>
+        <li>UltraTech Cement Ltd: Reddipalayam and Arakkonam plants.</li>
+        <li>Dhandapani Cements (P) Ltd: Thathamangalam plant.</li>
+        <li>The India Cements Ltd: Narnamalpuram plant.</li>
+        <li>Chettinad Cement: Ariyalur, Karikkali, and Puliyur plants.</li>
+      </ul>
+      <p><em>Data from public domain. For up-to-date details, refer to official online sources.</em></p>
     </div>
 
-    <div class="item" id="box7" style="font-size: 18px"> 
-        Cement Production in TN company wise<br>
-        In  Tamil Nadu, the major cement producers include Tamil Nadu Cements Corporation Ltd, Zuari Cement Ltd, <br>
-        UltraTech Cement Ltd, Dhandapani Cements (P) Ltd, and The India Cements Ltd, among others.<br> 
-        These companies operate multiple plants across the state,  including locations in Ariyalur, Ponneri,<br> 
-        and other areas. Tamil Nadu Cements Corporation Ltd (TANCEM) has plants in Alangulam and Ariyalur.
+    <div class="item" id="box3">
+      <h4>Cement Manufacturing Process</h4>
+      <p>
+        Cement manufacturing is a multi-step process: raw materials (limestone and clay) are mined,
+        crushed, mixed, and heated in a kiln to form clinker. The clinker is then finely ground and
+        blended with gypsum to produce cement.
+      </p>
+      <p><strong>Process diagram:</strong></p>
+      <img src="Cement Making Process.jpg" alt="Cement Making Process Diagram">
     </div>
 
-    <div class="item" id="box2" style="font-size: 18px;"> The major Cement Producers :<br>
-
-        <p style="text-align: center;">  
-            •	Tamil Nadu Cements Corporation Ltd: Operates plants in Ariyalur and Alangulam, producing Ordinary Portland Cement and Portland Pozzolana Cement.<br> 
-        •	Zuari Cement Ltd: Has a plant in Athipattu, producing Portland Cement (PPC) and Ordinary Portland Cement (OPC). <br>
-        •	UltraTech Cement Ltd: Operates plants in Reddipalayam and Arakkonam, producing Ordinary Portland Cement and Portland Pozzolana Cement. <br>
-        •	Dhandapani Cements (P) Ltd: Has a plant in Thathamangalam, producing OPC and PPC. <br>
-        •	The India Cements Ltd: Operates a plant in Narnamalpuram, producing cement. <br>
-        •	Chettinad Cement Corporation: Has multiple plants in Tamil Nadu, including Ariyalur, Karikkali, and Puliyur. <br><br>
-        Tamil Nadu Cement Corporation Limited (TANCEM) has 2 cement plants: Alangulam Cement Works and Ariyalur Cement Works. Alangulam Cement Works: Location – Alangulam, Virudhunagar, Virudhunagar District. </p>
-        <p> Data from public domin. For upto date details go online</p>
- </div>   
-   
-    <div class="item" id="box3" style="font-size: 20px;" >Cement manufacturing Process<br>
-
-        Cement making is a multi-step process that begins with raw materials like limestone and clay being mined and crushed, then mixed and heated in a kiln to form clinker.<br> 
-        The clinker is then ground into a fine powder and combined with gypsum<br> to create the final cement product. <p>
-        <p >   View the Process diagram below</p>
-    </div>
-    <div class="item" id="box1"> Cement Maufacturing Process
-            <img  src="Cement Making Process.jpg" alt="Restellum" title="Rastellum - Bivalve">
-        </div>
-    <div class="item" id="box5" style="align-items: center;"> NB: The data from public domin. Purly used for educational purpose. Commercial use not permitted.
+    <div class="item" id="box5">
+      NB: Data is from public domain and used purely for educational purposes.
+      Commercial use is not permitted.
     </div>
 
-    <div class="item" id="box6"">Contact Details for doubts and feedbacks    :
-        <p  >  natgeol05@gmail.com</p>
+    <div class="item" id="box6">
+      Contact for doubts and feedback:<br>
+      <strong>natgeol05@gmail.com</strong>
     </div>
+  </div>
 
-    <div class="button-container">
-            <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
-                    Give Your Feedback</button></a> 
-            <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
-            <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
-                    Back to Main  Menu</button></a>         
-        </div>
-</div>
+  <div class="button-container">
+    <a class="nav-btn" href="FeedBackGoogleSheetData.html">Give Your Feedback</a>
+    <a class="nav-btn" href="AriyalurFossilsGallery.html">Back to Gallery Page</a>
+    <a class="nav-btn" href="AriyalurGeologyPage.html">Back to Main Menu</a>
+  </div>
 
 </body>
 </html>
-
-
