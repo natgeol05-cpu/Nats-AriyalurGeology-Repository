@@ -61,6 +61,7 @@
   margin:10px auto 12px;
   max-width:100%;
 }
+
 .top-nav a{
   display:inline-flex;
   align-items:center;
@@ -81,38 +82,42 @@
   transition:all .22s ease;
   flex:0 0 auto;
 }
+
 .top-nav a:hover{
   background:linear-gradient(180deg,#3a72d8 0%,#2457b3 100%);
   color:#fff;
   transform:translateY(-1px);
   box-shadow:0 5px 12px rgba(27,70,143,.25);
 }
+
 .top-nav a:focus-visible{
   outline:3px solid #2f66cc;
   outline-offset:2px;
   box-shadow:0 0 0 4px rgba(47,102,204,.2);
 }
+
 @media (max-width:768px){
-  .top-nav{ flex-wrap:wrap; overflow-x:visible; }
-  .top-nav a{ min-width:124px; font-size:.76rem; }
+  .top-nav{
+    flex-wrap:wrap;
+    overflow-x:visible;
+  }
+  .top-nav a{
+    min-width:124px;
+    font-size:.76rem;
+  }
 }
+
 @media (max-width:420px){
-  .top-nav a{ min-width:116px; font-size:.74rem; padding:0 8px; }
-}    
+  .top-nav a{
+    min-width:116px;
+    font-size:.74rem;
+    padding:0 8px;
+  }
+}
     </style>    
 </head>
 <body>
-
-<section class="top-nav">
-  <a href="index.html">Home</a>
-  <a href="AriyalurGeologyPage.html">Geology</a>
-  <a href="AriyalureLocationMap.html">Ariyalur Location</a>
-  <a href="AriyalurGeologyMap.html">Geology Map</a>
-  <a href="AriyalurStratigraphy.html">Stratigraphy</a>
-  <a href="AriyalurBiozones.html">Biozone</a>
-  <a href="FeedBackGoogleSheetData.html">Give Feedback</a>
-</section>
-    
+  
   <div class="title-div" style="display: flex;">
 
        <input type="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="100px" height="60px">
