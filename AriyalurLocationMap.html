@@ -46,7 +46,64 @@
             max-height: 100%;
         }  
 
-    <section class="top-nav">
+.top-nav{
+  background:#d8f3e8;
+  border:1px solid #99c8b4;
+  border-radius:14px;
+  padding:10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  scrollbar-width:thin;
+  margin:10px auto 12px;
+  max-width:100%;
+}
+.top-nav a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:34px;
+  min-width:132px;
+  padding:0 10px;
+  border-radius:999px;
+  text-decoration:none;
+  border:1px solid #2457b3;
+  background:linear-gradient(180deg,#eaf2ff 0%,#cfe0ff 100%);
+  color:#0f2f6b;
+  font-weight:700;
+  font-size:.78rem;
+  white-space:nowrap;
+  text-align:center;
+  box-shadow:0 1px 3px rgba(20,50,110,.2);
+  transition:all .22s ease;
+  flex:0 0 auto;
+}
+.top-nav a:hover{
+  background:linear-gradient(180deg,#3a72d8 0%,#2457b3 100%);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 5px 12px rgba(27,70,143,.25);
+}
+.top-nav a:focus-visible{
+  outline:3px solid #2f66cc;
+  outline-offset:2px;
+  box-shadow:0 0 0 4px rgba(47,102,204,.2);
+}
+@media (max-width:768px){
+  .top-nav{ flex-wrap:wrap; overflow-x:visible; }
+  .top-nav a{ min-width:124px; font-size:.76rem; }
+}
+@media (max-width:420px){
+  .top-nav a{ min-width:116px; font-size:.74rem; padding:0 8px; }
+}    
+    </style>    
+</head>
+<body>
+
+<section class="top-nav">
   <a href="index.html">Home</a>
   <a href="AriyalurGeologyPage.html">Geology</a>
   <a href="AriyalureLocationMap.html">Ariyalur Location</a>
@@ -55,9 +112,6 @@
   <a href="AriyalurBiozones.html">Biozone</a>
   <a href="FeedBackGoogleSheetData.html">Give Feedback</a>
 </section>
-    </style>    
-</head>
-<body>
     
   <div class="title-div" style="display: flex;">
 
