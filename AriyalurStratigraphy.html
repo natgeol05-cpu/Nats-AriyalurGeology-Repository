@@ -4,83 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ariyalur Stratigraphy</title>
+
     <style>
-        div {
-            display: flex;    
-            align-items: center;  
-            margin: auto;       
+        :root {
+          --heading-blue: #0047ab;
+          --heading-brown: #7a2f00;
+          --btn-border: #8a8a8a;
+          --btn-hover: goldenrod;
         }
 
-        .title-div {
-            column-gap: 20px;
-            text-align: center;
+        .topbar {
+          max-width: 1280px;
+          margin: 0 auto 8px;
+          padding: 8px 10px;
+          border: 2px solid #c47a44;
+          border-radius: 14px;
+          background: linear-gradient(180deg, #fff8ef 0%, #ffe9d4 100%);
         }
 
-         /* #Image:hover {
-            transform: scale(1.1);
-            transition-duration: 2s;
-        }  */
+        .topbar-row {
+          display: grid;
+          grid-template-columns: 40px 1fr 40px;
+          align-items: center;
+          gap: 8px;
+        }
 
-        Image {
-            margin-left: 200px;
+        .arrow-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+        }
+
+        .arrow-img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .topbar-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          min-width: 0;
+        }
+
+        .topbar-title {
+          margin: 0;
+          color: var(--heading-blue);
+          font-size: clamp(0.95rem, 2.3vw, 1.2rem);
+          line-height: 1.2;
+          font-weight: 700;
+        }
+
+        .topbar-subtitle {
+          margin: 2px 0 0;
+          color: var(--heading-brown);
+          font-size: clamp(0.78rem, 1.9vw, 0.95rem);
+          line-height: 1.2;
+          font-weight: 600;
+        }
+
+        .topbar-actions {
+          margin-top: 8px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: nowrap;
+        }
+
+        .topbar-actions a {
+          text-decoration: none;
+          flex: 0 1 auto;
+        }
+
+        .nav-btn,
+        .footer-btn {
+          min-height: 34px;
+          height: 34px;
+          border-radius: 999px;
+          border: 1px solid var(--btn-border);
+          background: #ffffff;
+          color: #1f2d3d;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          min-width: 150px;
+        }
+
+        .nav-btn:hover,
+        .footer-btn:hover {
+          background: var(--btn-hover);
+          color: #fff;
+          border-color: var(--btn-hover);
         }
 
         h2 {
-            color: blue;
-            text-align: center;
-            margin-bottom: 0px;
+          color: blue;
+          text-align: center;
+          margin-bottom: 0px;
         }
 
         h3 {
-            color: blue;
+          color: blue;
         }
 
         h4 {
-            color: brown;           
+          color: brown;
         }
 
-        button {
-            color: solid black;
-            height: 50px; width: 250px;
-            border-radius: 20px;
-            display: inline-block            
+        img {
+          max-height: 100%;
+          max-width: 100%;
         }
-       
-         #button:hover {
-            background-color: goldenrod;
-            color: white;
-        }
-
-        img { 
-            max-height: 100%;
-            max-width: 100%;   
-            } 
-      
-    </style>    
+    </style>
 </head>
+
 <body>
-   
-    <div class="title-div">
-        
-        <input type="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="100px" height="50px">
+    <header class="topbar">
+      <div class="topbar-row">
+        <a class="arrow-link" href="AriyalurGeologyMap.html" aria-label="Back to Previous Item in Menu">
+          <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
+        </a>
+
+        <div class="topbar-center">
+          <p class="topbar-title">Geology of Ariyalur Website</p>
+          <p class="topbar-subtitle">You are Browsing Quick Link Item</p>
+        </div>
+
+        <a class="arrow-link" href="AriyalurLithography.html" aria-label="Go to Next Item in Menu">
+          <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+        </a>
+      </div>
+
+      <div class="topbar-actions">
         <a href="AriyalurGeologyPage.html">
-            <button id="button"> Click Here To Go Back to Main Menu</button></a> 
-            
-            <h3 style="margin: auto;">Geology of Ariyalur Web Site<br> Browse Menu Items</h3> 
-
+          <button type="button" class="nav-btn">Back to Main Menu</button>
+        </a>
         <a href="AriyalurLithography.html">
-            <button id="button"> Click Here To Go to Next Item in Menu</button></a>
-        <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="50px"> </a> 
-    </div>
+          <button type="button" class="nav-btn">Go to Next Item</button>
+        </a>
+      </div>
+    </header>
 
-    <h2>Stratigraphy of Ariyalur</h2>  
- 
-    <center><img src="Stratigraphy of ariyalur.jpg" id="Image" 
-            height="900px" width="600" border="5px" title="Map of Ariyalur"> </center> 
+    <h2>Stratigraphy of Ariyalur</h2>
+
+    <center><img src="Stratigraphy of ariyalur.jpg" id="Image"
+            height="900px" width="600" border="5px" title="Map of Ariyalur"></center>
 
     <p style="text-align: center; margin-top: 0px;">Ref: Field Instructional Tour. An handout by Dept. of Geology, Presidency Collegae, Chennai - 600 005</p>
-
 </body>
 </html>
-
-
