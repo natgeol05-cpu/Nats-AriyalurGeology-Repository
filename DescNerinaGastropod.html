@@ -5,10 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Description for Fossil Nerina - Gastropod </title>
 <style>
+
+        :root {
+          --heading-blue: #0047ab;
+          --heading-brown: #7a2f00;
+          --btn-border: #8a8a8a;
+          --btn-hover: goldenrod;
+        }
+
+        .topbar {
+          max-width: 1280px;
+          margin: 0 auto 8px;
+          padding: 8px 10px;
+          border: 2px solid #c47a44;
+          border-radius: 14px;
+          background: linear-gradient(180deg, #fff8ef 0%, #ffe9d4 100%);
+        }
+
+        .topbar-row {
+          display: grid;
+          grid-template-columns: 40px 1fr 40px;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .arrow-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+        }
+
+        .arrow-img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .topbar-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          min-width: 0;
+        }
+
+        .topbar-title {
+          margin: 0;
+          color: var(--heading-blue);
+          font-size: clamp(0.95rem, 2.3vw, 1.4rem);
+          line-height: 1.2;
+          font-weight: 900;
+        }
+
+        .topbar-subtitle {
+          margin: 2px 0 0;
+          color: var(--heading-brown);
+          font-size: clamp(0.78rem, 1.9vw, 1.2rem);
+          line-height: 1.2;
+          font-weight: 800;
+        }
+
+        .topbar-actions {
+          margin-top: 8px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: nowrap;
+        }
+
+        .topbar-actions a {
+          text-decoration: none;
+          flex: 0 1 auto;
+        }
+
+        .nav-btn,
+        .footer-btn {
+          min-height: 34px;
+          height: 34px;
+          border-radius: 999px;
+          border: 1px solid var(--btn-border);
+          background: #ffffff;
+          color: #1f2d3d;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          min-width: 150px;
+        }
+
+        .nav-btn:hover,
+        .footer-btn:hover {
+          background: var(--btn-hover);
+          color: #fff;
+          border-color: var(--btn-hover);
+        }
+
+        h2 {
+          color: blue;
+          text-align: center;
+          margin-bottom: 0px;
+        }        
         .grid {
             display: grid;
             border: 2px crimson; margin: auto;
-            height: 1050px; width: auto;
+            height: 950px; width: auto;
             background-color: aquamarine;             
         }
 
@@ -104,10 +209,8 @@
             background-color: #DDF6D2;
         }
 
-        #box4  {
-            color: blue
-            font-size: 20px;
-            font-weight: bolder;
+        #box5 {
+           background-color: #FB9E3A;
         }
 
         img {
@@ -118,50 +221,61 @@
         img:hover {
             transform: scale(1.8);
             transition-duration: 2s;
-            }
+            }        
         
-        #box5 {
-           background-color: #FB9E3A;
-        }
-
     </style>
 </head>
 <body>
+
+<header class="topbar">
+    <div class="topbar-row">
+      <a class="arrow-link" href="DescBelemnite" aria-label="To Previous Item in Gallery">
+        <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
+      </a>
+
+      <div class="topbar-center">
+        <p class="topbar-title">Geology of Ariyalur Website</p>
+        <p class="topbar-subtitle">Browse Gallery Specimens</p>
+      </div>
+
+      <a class="arrow-link" href="DescGongrochanusEchinoidea.html" aria-label="To Next Item in Galleryu">
+        <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+      </a>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="DescBelemnite.html">
+        <button type="button" class="nav-btn">To Previous Item in Gallery</button>
+      </a>
+      <a href="DescGongrochanusEchinoidea.html">
+        <button type="button" class="nav-btn">To Next Item in Gallery</button>
+      </a>
+    </div>
+  </header>
+
     <div class="grid">
-        <div class="title-container" style="display: flex;">
-            <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-            <a href="DescAmmonitesSuture.html">
-                <button id="button"> Click here To Go Back to Previous Specimen</button></a> 
-
-            <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
-
-            <a href="DescGongrochanusEchinoidea.html">
-                <button id="button"> Click Here To Go to Next Item in Gallery</button></a> 
-            <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="100px" height="60px" >    
-        </div>
 
         <div class="item" id="box1">
             <h2> Nerina - Gastropod</h2>
         </div>
 
-        <div class="fixed-div" id="box2">
-
+        <div class="fixed-div" style="margin-top: 0px;" id="box2">
             <h4> For Enlarged View place cursor over the images</h4>
 
-            <img height="220" src="Nerinea Gastropod watermarked.JPG">
+            <img height="220" src="Nerinea - Gastropod watermarked.png">
             <img height="220" src="Nerina Scientific Classification.jpg" > 
             <img height="220px" src="Positional terminology for a Gastropod Shells.jpg">
             <img height="220px" src="Nerina from Italy.jpg">
         </div>
 
         <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
-             Name: Gastropod<br>
+            Name: Gastropod<br>
             Genus; Nerina <br>
             Species: New species not described till date <br>
             Formation: Ninniyur Formation <br>
             Locality: Sendurai <br>
             Classification: Molusca - Gastropoda - Family:Nerineoidea<br>
-            Age: Temporal range: Jurassic–Cretaceous.<p>      
+            Age: Temporal range: Jurassic–Cretaceous.<p>   
 
             <article>
                 Nerinea is an extinct genus of fossil sea snails, marine gastropod molluscs in the clade Heterobranchia. Nerinea.,<br> 
@@ -170,13 +284,15 @@
                 Notice the well defined Sutures and Main whorl.<br>
 
                 <hr style="height: 4px; background-color: maroon;">  
-                
-                Ref 01: https://https://en.wikipedia.org/wiki/Nerinea <br>
-                Ref 02: https://www.digitalatlasofancientlife.org/learn/mollusca/gastropoda/
+
+                Ref: https://https://en.wikipedia.org/wiki/Nerinea <br>
+                Ref:https://www.digitalatlasofancientlife.org/learn/mollusca/gastropoda/
             </article>
         </div>
 
-        <div class="item" id="box4">For detailed information read the references given above especially for UPSC exams. </div>
+        <div class="item" id="box4" style="margin-bottom: 0px; height: 26px;">
+            For detailed information read the references given above especially for UPSC exams. 
+        </div>
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
@@ -193,11 +309,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
