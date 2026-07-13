@@ -5,6 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Description for Fossil Wood</title>
 <style>
+
+        :root {
+          --heading-blue: #0047ab;
+          --heading-brown: #7a2f00;
+          --btn-border: #8a8a8a;
+          --btn-hover: goldenrod;
+        }
+
+        .topbar {
+          max-width: 1280px;
+          margin: 0 auto 8px;
+          padding: 8px 10px;
+          border: 2px solid #c47a44;
+          border-radius: 14px;
+          background: linear-gradient(180deg, #fff8ef 0%, #ffe9d4 100%);
+        }
+
+        .topbar-row {
+          display: grid;
+          grid-template-columns: 40px 1fr 40px;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .arrow-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+        }
+
+        .arrow-img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .topbar-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          min-width: 0;
+        }
+
+        .topbar-title {
+          margin: 0;
+          color: var(--heading-blue);
+          font-size: clamp(0.95rem, 2.3vw, 1.4rem);
+          line-height: 1.2;
+          font-weight: 900;
+        }
+
+        .topbar-subtitle {
+          margin: 2px 0 0;
+          color: var(--heading-brown);
+          font-size: clamp(0.78rem, 1.9vw, 1.2rem);
+          line-height: 1.2;
+          font-weight: 800;
+        }
+
+        .topbar-actions {
+          margin-top: 8px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: nowrap;
+        }
+
+        .topbar-actions a {
+          text-decoration: none;
+          flex: 0 1 auto;
+        }
+
+        .nav-btn,
+        .footer-btn {
+          min-height: 34px;
+          height: 34px;
+          border-radius: 999px;
+          border: 1px solid var(--btn-border);
+          background: #ffffff;
+          color: #1f2d3d;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          min-width: 150px;
+        }
+
+        .nav-btn:hover,
+        .footer-btn:hover {
+          background: var(--btn-hover);
+          color: #fff;
+          border-color: var(--btn-hover);
+        }
+
+        h2 {
+          color: blue;
+          text-align: center;
+          margin-bottom: 0px;
+        }        
+
         .grid {
             display: grid;
             border: 5px crimson; margin: auto;
@@ -121,8 +227,34 @@
     </style>
 </head>
 <body>
+
+<header class="topbar">
+    <div class="topbar-row">
+      <a class="arrow-link" href="DescPlantFossil.html" aria-label="To Previous Item in Gallery">
+        <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
+      </a>
+
+      <div class="topbar-center">
+        <p class="topbar-title">Geology of Ariyalur Website</p>
+        <p class="topbar-subtitle">Browse Gallery Specimens</p>
+      </div>
+
+      <a class="arrow-link" href="DescInoceramusGoldfussianus.html" aria-label="To Next Item in Gallery">
+        <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+      </a>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="DescPlantFossil.html">
+        <button type="button" class="nav-btn">To Previous Item in Gallery</button>
+      </a>
+      <a href="DescInoceramusGoldfussianus.html">
+        <button type="button" class="nav-btn">To Next Item in Gallery</button>
+      </a>
+    </div>
+  </header>    
     <div class="grid">
-        <div class="title-container" style="display: flex;">
+        <!-- <div class="title-container" style="display: flex;">
             <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
             <a href="DescPlantFossil.html">
                 <button id="button"> Click To Go Back to Previous Specimen</button></a> 
@@ -132,7 +264,7 @@
             <a href="DescInoceramusGoldfussianus.html">
                 <button id="button"> Click Here To Go to Next Item in Gallery</button></a>
             <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
-        </div>
+        </div> -->
 
         <div class="item" id="box1">
             <h2> Fossil Wood</h2>
@@ -146,7 +278,7 @@
             <img height="200"src="Classification of Wood Fossil.jpg"> 
         </div>
 
-        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 22px;"><h3>Description</h3>
             Name: Fossil Wood (part of the trunk) <br>
             Group: Conifer (because of the long tree trunk seen in Sattanur, uttattur Group) <br>
             Genus and Species: unknown <br>
@@ -175,9 +307,9 @@
                 and Saradamangalam,[5] all located within 10 kilometres (6.2 mi) of Sathanur.<p>
                 For detailed information read the references given below, especially for UPSC exams.
                 <br>
-    
+
                 <hr style="height: 4px; background-color: maroon;">  
-                    
+
                 Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<br>
                 Ref: 02 https://https://perambalur.nic.in/tourist-place/fossil-tree<br>
                 Ref: 03 https://www.ias.ac.in/article/fulltext/jess/132/0116 (Dr Ayyasami's name repeatedly mentioned)<br> 
@@ -208,6 +340,3 @@
 
 </body>
 </html>
-
-
-
