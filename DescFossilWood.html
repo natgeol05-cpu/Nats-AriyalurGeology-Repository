@@ -98,11 +98,13 @@
           min-width: 150px;
         }
 
-        .nav-btn:hover,
+       nav-btn:hover,
         .footer-btn:hover {
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
 
         h2 {
@@ -110,13 +112,6 @@
           text-align: center;
           margin-bottom: 0px;
         }        
-
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
-            background-color: aquamarine;             
-        }
 
         .title-container {
             display: flex;
@@ -142,9 +137,9 @@
              
         }
 
-         button {
-            color:  black;
-            height: 60px; width: 300px;
+          button {
+            color: solid black;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -162,9 +157,8 @@
             justify-content: center;
         }
 
-        browse-button {
-            color: solid black;
-            height: 60px; width: 300px;
+        browse-button {            
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -172,7 +166,10 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
+
 
         /* Name of Fossil specimen */
         h2 {
@@ -253,19 +250,7 @@
       </a>
     </div>
   </header>    
-    <div class="grid">
-        <!-- <div class="title-container" style="display: flex;">
-            <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-            <a href="DescPlantFossil.html">
-                <button id="button"> Click To Go Back to Previous Specimen</button></a> 
-
-            <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
-
-            <a href="DescInoceramusGoldfussianus.html">
-                <button id="button"> Click Here To Go to Next Item in Gallery</button></a>
-            <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
-        </div> -->
-
+        
         <div class="item" id="box1">
             <h2> Fossil Wood</h2>
         </div>
@@ -327,16 +312,14 @@
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
         </div>
-    </div>   
-
 </body>
 </html>
