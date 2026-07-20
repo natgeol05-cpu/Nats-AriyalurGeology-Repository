@@ -103,7 +103,10 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
+
 
         h2 {
           color: blue;
@@ -143,7 +146,7 @@
 
         button {
             color: solid black;
-            height: 60px; width: 300px;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -154,15 +157,14 @@
         }
 
         .button-container {
-            display: inline-flex;
+            display: flex;
             gap: 60px;
-            align-self: center;
-            justify-content: center;
+            align-items: center;
+            justify-content: center;            
         }
 
-        browse-button {
-            color: solid black;
-            height: 60px; width: 300px;
+        browse-button {            
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -170,6 +172,8 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
 
         /* Name of Fossil specimen */
@@ -225,7 +229,7 @@
 </head>
 <body>
 
-    <header class="topbar">
+<header class="topbar">
     <div class="topbar-row">
       <a class="arrow-link" href="DescCyclolites orbiculus.html" aria-label="To Previous Item in Gallery">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
@@ -250,7 +254,6 @@
       </a>
     </div>
   </header>
-
 
         <div class="item" id="box1">
             <h2> Ichthyosaurian vertebra (Marine reptile)</h2>
@@ -316,20 +319,15 @@
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
-        </div>
-    </div>        
-
-        <!-- <div class="item" id="box4">For more information go online </div>         -->
-    </div>      
-
+        </div>    
 </body>
 </html>
 
