@@ -103,13 +103,17 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
+
 
         h2 {
           color: blue;
           text-align: center;
           margin-bottom: 0px;
-        }        
+        }    
+
         .grid {
             display: grid;
             border: 2px crimson; margin: auto;
@@ -153,7 +157,7 @@
 
         button {
             color: solid black;
-            height: 60px; width: 300px;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -165,23 +169,26 @@
         }
 
         .button-container {
-            display: inline-flex;
+            display: flex;
             gap: 60px;
-            align-self: center;
-            justify-content: center;
+            align-items: center;
+            justify-content: center;            
         }
 
-        browse-button {
-            color: solid black;
+        browse-button {            
             height: 60px; width: 300px;
             border-radius: 20px;
-            display: inline-block;  
+            display: flex;  
+            justify-content: center;             
          }
 
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
+
 
        /* Name of Fossil specimen */
         h2 {
@@ -256,6 +263,7 @@
       <a class="arrow-link" href="DescTrigonoarca abrupta.html" aria-label="Back to Main Menu">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
       </a>
+    </div>
 
       <div class="topbar-center">
         <p class="topbar-title">Geology of Ariyalur Website</p>
@@ -269,7 +277,7 @@
 
     <div class="topbar-actions">
       <a href="DescTrigonoarca abrupta.html">
-        <button type="button" class="nav-btn">Back to Previous Item in Gallery</button>
+        <button type="button" class="nav-btn">Go to Previous Item in Gallery</button>
       </a>
       <a href="DescAmmonitesSuture.html">
         <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
@@ -357,24 +365,28 @@
         <img height="385" src="Worlds Largest Ammonites in German Museum.JPG">
 
         <a href="Ammonites Brief Largest in the World.htm">
-            <button id="button"> Click for more information about largest Ammonites</button></a> 
+            <button id="button">Information about largest Ammonites</button></a> 
     </div>        
   
-    <div class="item" id="box4">For more information refer to links given above </div>
+    <div class="item" id="box4">For more information refer to links given above </div><p>
     <!-- <h4> For Enlarged View place cursor over the images</h4> -->
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bold;"  id="browse-button" >Give Your Feedback</button></a> 
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
+                    Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bold;" id="browse-button"> Click Here To Go Back to Gallery Page </button>/a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                    Back to Main  Menu</button></a>         
         </div>
-    </div>   
-
 </body>
 </html>
+
+
+
 
 
 
