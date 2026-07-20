@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Description for Fossil Wood</title>
-<style>
+    <title>Description of Fossil Gongrochanus--echinoid </title>
+    <style>
 
         :root {
           --heading-blue: #0047ab;
@@ -103,6 +103,8 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
 
         h2 {
@@ -110,14 +112,7 @@
           text-align: center;
           margin-bottom: 0px;
         }        
-
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
-            background-color: aquamarine;             
-        }
-
+       
         .title-container {
             display: flex;
             align-items: center;         
@@ -126,32 +121,29 @@
             column-gap: 20px;           
         } 
 
-        .fixed-div {
+        .fixed-div{
             position: sticky;
-            top: 0; /* This makes it stick to the top when scrolled */
-            width: 100%; /* Ensures it spans the full width */
-            text-align: center; /*To place images/text in the center of div */
-            padding-top: 2px; /* To place a gap on top */
-            z-index: 1000; /*Ensures it stays above other content */
+            top: 0; left: 0; width: 100%;
+            padding-top: 10px;
+            z-index: 1000;
         }
 
         .item {                      
             border: solid brown;  border-radius: 20px;
             margin: 10px; padding: 5px;
             text-align: center; background-color: lightyellow;
-             
+        
         }
 
-         button {
-            color:  black;
-            height: 60px; width: 300px;
+        button {
+            color: solid black;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
         }
 
         #button:hover {
             background-color: goldenrod;
-            height: 60px;
             color: white;
         }
 
@@ -162,8 +154,7 @@
             justify-content: center;
         }
 
-        browse-button {
-            color: solid black;
+        browse-button {            
             height: 60px; width: 300px;
             border-radius: 20px;
             display: inline-block;  
@@ -172,6 +163,8 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
 
         /* Name of Fossil specimen */
@@ -197,10 +190,10 @@
             text-align: center;
             font-size: 20px;
         }
-
-
+            
         #box1 {
            background-color:beige;
+           text-align: center;
         }
 
         #box2 {
@@ -216,7 +209,7 @@
         }
 
         img:hover {
-            transform: scale(1.8);
+            transform: scale(2);
             transition-duration: 2s;
             }
         
@@ -230,7 +223,7 @@
 
 <header class="topbar">
     <div class="topbar-row">
-      <a class="arrow-link" href="DescPlantFossil.html" aria-label="To Previous Item in Gallery">
+      <a class="arrow-link" href="DescNerinaGastropod.html" aria-label="To Previous Item in Gallery">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
       </a>
 
@@ -239,104 +232,96 @@
         <p class="topbar-subtitle">Browse Gallery Specimens</p>
       </div>
 
-      <a class="arrow-link" href="DescInoceramusGoldfussianus.html" aria-label="To Next Item in Gallery">
+      <a class="arrow-link" href="DescCyclolites orbiculus.html" aria-label="To Next Item in Gallery">
         <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
       </a>
     </div>
 
     <div class="topbar-actions">
-      <a href="DescPlantFossil.html">
+      <a href="DescNerinaGastropod.html">
         <button type="button" class="nav-btn">To Previous Item in Gallery</button>
       </a>
-      <a href="DescInoceramusGoldfussianus.html">
+      <a href="DescCyclolites orbiculus.html">
         <button type="button" class="nav-btn">To Next Item in Gallery</button>
       </a>
     </div>
-  </header>    
-    <div class="grid">
-        <!-- <div class="title-container" style="display: flex;">
-            <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-            <a href="DescPlantFossil.html">
-                <button id="button"> Click To Go Back to Previous Specimen</button></a> 
-
-            <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
-
-            <a href="DescInoceramusGoldfussianus.html">
-                <button id="button"> Click Here To Go to Next Item in Gallery</button></a>
-            <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
-        </div> -->
-
+  </header>
+      
         <div class="item" id="box1">
-            <h2> Fossil Wood</h2>
+            <h2> Gongrochanus - Echinoidea</h2>
         </div>
-        
-        <div class="fixed-div" id="box2">
-            
+      
+        <div class="fixed-div" id="box2" style="text-align: center;">
+                
         <h4> For Enlarged View place cursor over the images</h4>
-        
-            <img height="200" src="Fossil_Wood from Karai Badlands Watermarked.jpg">
-            <img height="200"src="Classification of Wood Fossil.jpg"> 
-        </div>
 
-        <div class="item" id="box3" style="font-size: 22px;"><h3>Description</h3>
-            Name: Fossil Wood (part of the trunk) <br>
-            Group: Conifer (because of the long tree trunk seen in Sattanur, uttattur Group) <br>
-            Genus and Species: unknown <br>
-            Formation: Karai Formation <br>
-            Locality: Karai <br> 
-            Classification: Single Cone coniferous  <p>
+            <img height="170" src="Gongrochanus--echinoid Watermarked.jpg">
+            <img height="170" src="Gongrochanus Systematic Description.jpg" > 
+            <!-- <img height="170px"  src="Rastellum from Medagascar.jpg"></div> -->
+
+        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
             <article>
-                Ariyalur in Tamil Nadu, India, is known for its rich fossil deposits, including fossilized wood <br>
-                dating back to the Cretaceous period. This area, once submerged under the sea, <br>
-                reveals a wealth of ancient life, with fossilized wood found alongside other marine fossils.<br> 
-                The National Fossil Wood Park in nearby Sathanur, Perambalur district, is a key location<br> 
-                for viewing these fossilized trees, some over 18 meters long. (images below).  <p>
-
-                The fossilized wood found here is primarily coniferous, remnants of a time when these trees<br> 
-                dominated the land. The Sathanur Petrified Tree Educational Center includes a museum<br> 
-                with displays of fossils and information about the region's geological history. 
+                Name: Star fish and sand dollar <br>
+                Genus: Gongrochanus (formerly Stigmatophygus)<br>
+                Species: elatus <br>
+                Formation: Kallankurichchi Formations <br>
+                Locality: Kallankurichchi <br>
+                Classification: Echinodermata - Echinoidea - Family: Fujasidae Lambert Genus: Congrochanus kier<br>
+                Age: approximately 62 to 72 million years ago. <p> 
+           
+                The specimens of Gongrochanus described here come from the Ottakovil Formation of Ariyalur Group.
+                <br> Recently a few specimens of this genus have also been collected from the<br> 
+                Kallankurichchi Formation of the same Group from near Kallankurichchi. Ref: 01.
                 <p>
-                In Karai Badlands, the red clays are abound in fossilwood.<br> This outcrop continues
-                in eastern direction for about 2 km up to Kulakkanattam.
-                <p>
-                Feartures: Wood structure is seen on the specimen. It is possible that the internal structures are also preserved.<p>
-                The petrified tree trunk is believed to be over 120 million years old, and is considered<br> 
-                to be evidence for the presence of a sea during the Cretaceous period in this area.<br> 
-                This fossil is of a conifer, measures around 18 meters long and a geological treasure. <br>
-                Similar fossilized tree trunks have been found in nearby Varagur, Anaipadi, Alundalippur,<br> 
-                and Saradamangalam,[5] all located within 10 kilometres (6.2 mi) of Sathanur.<p>
-                For detailed information read the references given below, especially for UPSC exams.
-                <br>
+                Gongrochanus is a fossil genus of cassiduloid echinoids (sea urchins) from the Late Jurassic<br> 
+                and Cretaceous periods, known from specimens found in South America and India.<br> 
+                These ancient sea urchins belonged to the class Echinoidea, which also includes<br> 
+                modern sea urchins, but Gongrochanus represents a now-extinct lineage. <p>
 
-                <hr style="height: 4px; background-color: maroon;">  
+                Fossil Genus: Gongrochanus is a fossil group, meaning it is only known from<br> 
+                preserved remains, not living creatures. <p>
 
-                Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<br>
-                Ref: 02 https://https://perambalur.nic.in/tourist-place/fossil-tree<br>
-                Ref: 03 https://www.ias.ac.in/article/fulltext/jess/132/0116 (Dr Ayyasami's name repeatedly mentioned)<br> 
-                Ref 04: https://en.wikipedia.org/wiki/National_Fossil_Wood_Park,_Sathanur#
+                Cassiduloid: It belongs to the cassiduloid group of echinoids, which are a type of<br> 
+                irregular sea urchin characterized by their generally flattened, heart-shaped, or<br> 
+                oval bodies and sometimes possessing distinct frontal ambulacra.<p>
+
+                Features: More or less elliptical with ambulacra at level with the test (shell).<br>
+                          [Note the difference with a Micraster given in the fossils gallery webpage in this website] <p>
+
+                Fossil Record: Species of Gongrochanus have been identified in Late Jurassic and<br> 
+                Late Cretaceous deposits, indicating a long history of existence. <p>
+
+                Geographic Distribution: Fossils of Gongrochanus have been found in both<br> South America (Argentina) and India. <p> 
+
+                Echinoderms: As an echinoid, Gongrochanus is an echinoderm, a group of marine<br> 
+                invertebrates that also includes starfish, sea cucumbers, and sand dollars. <p>
+
+                In Ref: 02 - Gives more details about this Gunus Congrochanus kier by DK Srivastava in his Journal -<br>
+                A new Species of Cassiduiloid Gongrochanus kier, 1962 from the Late Cretaceous (Maastrichtian) rocks of the Ariyalur area,<br>
+                Tamilnadu, India. It is really interesting <p>   
+
+                For detailed information read the references given below, especially for UPSC exams.<br>    
+                
+                <hr style="height: 4px; background-color: maroon;">      
+
+                Ref 01: Proc. Indian Acad. ScL (Anim. ScL), Vol. 92, Number 3, May 1983, pp. 431-246. e Printed in India. <br>
+                Ref 02: https://palaeontologicalsociety.in/vol48/v3.pdf - a Journal by DK Srivastava. <br>
+                Ref 03: https://en.wikipedia.org/wiki/Echinoderm
             </article>
         </div>
 
-        <div class="item" id="box5">
-            <h4> For Enlarged View place cursor over the images</h4>
-            <img height="220" src="Sattanur Fossilwood 1946 photo Titled.jpg"> 
-            <img height="220px" src="Fossil Tree Middle Body at Sathanur.jpeg"><br> Fossil Tree Trunk at National Fossil Wood Park, Sathanur.
-        </div>
-
-        <div class="item" id="box4">For more information refer to links given above </div>
+        <div class="item" id="box4">For more information go online to Ref: 01 and Ref: 02.</div>
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
         </div>
-    </div>   
-
-</body>
+ </body>
 </html>
