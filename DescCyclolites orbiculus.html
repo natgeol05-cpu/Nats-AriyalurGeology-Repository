@@ -103,7 +103,10 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
+
 
         h2 {
           color: blue;
@@ -143,7 +146,7 @@
 
         button {
             color: solid black;
-            height: 60px; width: 300px;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -154,14 +157,14 @@
         }
 
         .button-container {
-            display: inline-flex;
+            display: flex;
             gap: 60px;
-            align-self: center;
+            align-items: center;
             justify-content: center;
         }
 
-        browse-button {
-            color: solid black;
+
+        browse-button {            
             height: 60px; width: 300px;
             border-radius: 20px;
             display: inline-block;  
@@ -170,7 +173,10 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
+
 
        /* Name of Fossil specimen */
         h2 {
@@ -227,7 +233,7 @@
 
 <header class="topbar">
     <div class="topbar-row">
-      <a class="arrow-link" href="DescGongrochanusEchinoidea.html" aria-label="To Previous Item in Gallery">
+      <a class="arrow-link" href="DescGongrochanusEchinoidea.html" aria-label="Back to Main Menu">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
       </a>
 
@@ -236,20 +242,22 @@
         <p class="topbar-subtitle">Browse Gallery Specimens</p>
       </div>
 
-      <a class="arrow-link" href="DescIchthyosaurianVertebra.html" aria-label="To Next Item in Gallery">
+  
+      <a class="arrow-link" href="DescIchthyosaurianVertebra.html" aria-label="Go to Next Item in Menu">
         <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
       </a>
     </div>
 
     <div class="topbar-actions">
       <a href="DescGongrochanusEchinoidea.html">
-        <button type="button" class="nav-btn">To Previous Item in Gallery</button>
+        <button type="button" class="nav-btn">Go to Previous Item in Gallery</button>
       </a>
       <a href="DescIchthyosaurianVertebra.html">
-        <button type="button" class="nav-btn">To Next Item in Gallery</button>
+        <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
       </a>
     </div>
   </header>
+
 
         <div class="item" id="box1">
             <h2> Cyclolites orbiculus - corals.</h2>
@@ -312,15 +320,15 @@
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
-        </div>        
+        </div>
     </div>   
 
 </body>
