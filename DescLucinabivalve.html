@@ -103,55 +103,49 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
 
         h2 {
           color: blue;
           text-align: center;
           margin-bottom: 0px;
-        }        
-
-
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1100px; width: auto;
-            background-color: aquamarine;             
-        }
-
-         .title-container {
-            display: flex;
+        }    
+     
+        .title-container {
+            display: inline-flex;
             align-items: center;         
             border: 1px;
             margin: auto;  
-            column-gap: 20px;           
+            column-gap: 20px;          
         } 
 
-         .fixed-div{
-            position: sticky;
+        .fixed-div{
+            position: sticky; 
             top: 0; /* This makes it stick to the top when scrolled */
             width: 100%; /* Ensures it spans the full width */
             text-align: center; /*To place images/text in the center of div */
             padding-top: 2px; /* To place a gap on top */
             z-index: 1000; /*Ensures it stays above other content */
-        }
+        }        
 
         .item {                      
             border: solid brown;  border-radius: 20px;
-            padding: 5px;
-            text-align: center; background-color: lightyellow;
-          }
+            padding: 5px; 
+            text-align: center; background-color: lightyellow;            
+        }
 
         button {
             color: solid black;
-            height: 60px; width: 300px;
+            height: 60px; width: 200px;
             border-radius: 20px;
             display: inline-block;            
         }
 
         #button:hover {
             background-color: goldenrod;
-            color: white; height: 60px;
+            color: white; height: 60px;            
         }
 
         .button-container {
@@ -171,6 +165,8 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
         
        /* Name of Fossil specimem */
@@ -230,7 +226,7 @@
     
 <header class="topbar">
     <div class="topbar-row">
-      <a class="arrow-link" href="AriyalurGeologyPage.html" aria-label="Back to Main Menu">
+      <a class="arrow-link" href="DescRastellum.html" aria-label="Back to Main Menu">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
       </a>
 
@@ -239,26 +235,25 @@
         <p class="topbar-subtitle">Browse Gallery Specimens</p>
       </div>
 
+  
       <a class="arrow-link" href="DescTrigonoarca abrupta.html" aria-label="Go to Next Item in Menu">
         <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
       </a>
     </div>
 
     <div class="topbar-actions">
-      <a href="AriyalurGeologyPage.html">
-        <button type="button" class="nav-btn">Back to Main Menu</button>
+      <a href="DescRastellum.html">
+        <button type="button" class="nav-btn">Go to Previous Item in Gallery</button>
       </a>
       <a href="DescTrigonoarca abrupta.html">
         <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
       </a>
     </div>
   </header>
-
-    <div class="grid">
     
-    <div class="item" id="box1">
-            <h2> Lucina - bivalve</h2>
-    </div>
+        <div class="item" id="box1">
+                <h2> Lucina - bivalve</h2>
+        </div>
 
         <h4> For Enlarged View place cursor over the images</h4>
 
@@ -301,12 +296,14 @@
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bold;"  id="browse-button" >Give Your Feedback</button></a> 
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
+                    Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bold;" id="browse-button"> Click Here To Go Back to Gallery Page </button>/a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
-        </div>
-       
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                    Back to Main  Menu</button></a>         
+        </div>       
 </body>
 </html>
