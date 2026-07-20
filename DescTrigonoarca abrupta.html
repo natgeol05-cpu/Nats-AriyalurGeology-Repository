@@ -102,6 +102,8 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
 
         h2 {
@@ -109,14 +111,13 @@
           text-align: center;
           margin-bottom: 0px;
         }        
-
     
-        .grid {
+        /* .grid {
             display: grid;
             border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
+            height: 950px; width: auto;
             background-color: aquamarine;             
-            }
+            } */
 
         .title-container {
             display: flex;
@@ -147,7 +148,7 @@
 
         button {
             color: solid black;
-            height: 60px; width: 300px;
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;            
             }
@@ -164,17 +165,19 @@
             justify-content: center;
             }
 
-        browse-button {
-            color: solid black;
+        browse-button {            
             height: 60px; width: 300px;
             border-radius: 20px;
             display: inline-block;  
-            }
+         }
 
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
+
 
         /* Name of Fossil specimem */
         h2 {
@@ -257,15 +260,13 @@
 
     <div class="topbar-actions">
       <a href="DescLucinabivalve.html">
-        <button type="button" class="nav-btn">Back to Previous Item in Gallery</button>
+        <button type="button" class="nav-btn">Go to Previous Item in Gallery</button>
       </a>
       <a href="DescCalycoceras.html">
         <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
       </a>
     </div>
-  </header>
-
-    <div class="grid">        
+  </header>  
     
         <div class="item"  id="box1" >
             <h2> Trigonoarca abrupta - bivalve</h2>
@@ -310,13 +311,14 @@
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bold;"  id="browse-button" >Give Your Feedback</button></a> 
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
+                    Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bold;" id="browse-button"> Click Here To Go Back to Gallery Page </button>/a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                    Back to Main  Menu</button></a>         
         </div>
-    </div>   
-
 </body>
 </html>
