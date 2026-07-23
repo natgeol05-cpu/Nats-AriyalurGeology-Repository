@@ -138,26 +138,29 @@
 
         button {
             color: solid black;
-            height: 60px; width: 200px;
+            height: 40px; max-width: 200px;
             border-radius: 20px;
             display: inline-block;            
         }
 
         #button:hover {
             background-color: goldenrod;
-            color: white; height: 60px;            
+            color: white;
         }
 
         .button-container {
-            display: inline-flex;
-            gap: 60px;
-            align-self: center;
+            display: flex;
+            margin-top: 10px;
+            gap: 20px;
+            align-items: center;
             justify-content: center;
-            /* margin-left: 0px; */
         }
 
-        browse-button {            
-            height: 60px; width: 300px;
+        browse-button {  
+            display:flex;
+            justify-content:center;   
+            align-items:center;   
+            height: 60px; max-width: 240px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -168,8 +171,8 @@
              transform: scale(1.25);
              transition-duration: 0.2s;
         }
-        
-       /* Name of Fossil specimem */
+
+       /* Name of Fossil specimen */
         h2 {
             color: chocolate;         
             margin-top: 0; 
@@ -294,15 +297,15 @@
         
         <div class="item" id="box4">For detailed information read the references given above, especially for UPSC exams. </div>      
 
-        <div class="button-container">
+        <div class="button-container" style="display: flex; justify-content: center; align-items: center;">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bold; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                <button style= "color: blue; font-weight: bold; font-size: 16px;"   id="browse-button"> 
                   Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bold; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
         </div>       
 </body>
