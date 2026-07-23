@@ -148,7 +148,7 @@
 
         button {
             color: solid black;
-            height: 60px; width: 210px;
+            height: 40px; max-width: 240px;
             border-radius: 20px;
             display: inline-block;            
             }
@@ -160,13 +160,14 @@
 
         .button-container {
             display: inline-flex;
-            gap: 60px;
-            align-self: center;
+            margin-top: 10px;
+            gap: 20px;
+            align-items: center;
             justify-content: center;
-            }
+        }
 
         browse-button {            
-            height: 60px; width: 300px;
+            height: 60px; width: 20px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -177,7 +178,6 @@
              transform: scale(1.25);
              transition-duration: 0.2s;
         }
-
 
         /* Name of Fossil specimem */
         h2 {
@@ -234,9 +234,8 @@
         img:hover {
             transform: scale(2);
             transition-duration: 2s;
-            }      
-      
-
+            }
+ 
     </style>
 </head>
 <body>
@@ -277,7 +276,6 @@
         <div class="fixed-div" id="box2">
             <img height="200" src="Trigonoarca abrupta Watermarked.jpg">
             <img height="200" src="Trigonoarca abrupta Scientiffic classification.jpg" > 
-            <!-- <img height="300px" src="Rastellum from Medagascar.jpg"> -->
         </div>
 
         <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
@@ -309,9 +307,9 @@
 
         <div class="item" id="box4" style="margin-top: 0px; margin-bottom: 0px;">For more information go online </div>
 
-        <div class="button-container">
+        <div class="button-container" style="display: flex; justify-content: center; align-items: center;">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"  id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
                 <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
