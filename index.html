@@ -208,6 +208,19 @@
             transform: scale(1.04);
         }
 
+        .img-icons {
+            display: flex;
+            margin: 45px;
+            /* gap: 10px; */
+            width: 150px;
+            height: auto;
+        }
+
+        .img-icons:hover {
+            transform: scale(1.7);
+            transition: transform 2s;
+        }
+
         button {
             border-radius: 20px;
             border: 1px solid #1f4a8a;
@@ -346,7 +359,11 @@
     <main>
         <section class="section" id="about" aria-labelledby="about-heading">
             <div class="hero-icon-wrap">
-                <img class="hero-icon" src="Icon 01.jpeg" alt="Geology icon image">
+                <!-- <img class="hero-icon" src="Icon 01.jpeg" alt="Geology icon image"> -->
+                <div class="icons" >
+                <img class="img-icons" style="float: left;"  src="Spread Knowledge 111KB.png">
+                <img class="img-icons" style="float: right;" src="Knowledge is Divine Gift 109KB.png">
+        </div>
             </div>
             <p class="hero-icon-caption">Geology learning resources for students</p>
 
@@ -439,7 +456,8 @@
                     <div class="box">
                         <h3 style="margin-bottom: 0; color: blue;">Enter your Fossil's details and Upload images</h3>
                         <button><a style="font-size: 18px; font-weight: bold;"
-                                href="UploadFossilImageAndDetails.html">Enter Fossil Details</a></button>
+                                href="UploadFossilImageAndDetails.html">Enter Fossil Details</a>
+                        </button>
                     </div>
                 </div>
             </div>
