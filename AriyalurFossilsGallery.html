@@ -117,14 +117,15 @@
         }
  
         .grid-container {
-            display: grid; 
+            display: grid; grid-auto-flow: row; flex-wrap: wrap;
+            position:relative;
             margin: 5px; margin-bottom: 10px; margin-left: 10px; margin-right: 10px; 
-            max-height: 100%; max-width:100%;
+            max-height: 100%; max-width:100%; min-height: 100vh; display: grid;
             min-width: 0;
             margin: auto; height: 100%; max-width: 100%;        
             column-gap: 10px; row-gap: 0px;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust the minimum width as needed */
-            gap: 10px; /* Adjust the gap between items as needed */
+            gap: 3px; /* Adjust the gap between items as needed */
             justify-content: center;
             align-items:  center;
             flex-wrap: wrap;
@@ -194,13 +195,20 @@
             height: 60px;
         }
 
-        .button-container {
-                display: inline-flex;
-                gap: 60px;
-                align-self: center;
-                justify-content: center;
-                margin-left: 450px;
-        }
+       .grid-container {
+            display: grid; grid-auto-flow: row; flex-wrap: wrap;
+            position:relative;
+            margin: 5px; margin-bottom: 10px; margin-left: 10px; margin-right: 10px; 
+            max-height: 100%; max-width:100%; min-height: 100vh; display: grid;
+            min-width: 0;
+            margin: auto; height: 100%; max-width: 100%;        
+            column-gap: 10px; row-gap: 0px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust the minimum width as needed */
+            gap: 3px; /* Adjust the gap between items as needed */
+            justify-content: center;
+            align-items:  center;
+            flex-wrap: wrap;
+            }  
 
         h2 {
             color: blue; 
@@ -416,12 +424,11 @@
             alt="Image" title="Mammites conciliatum (Stoliczka)"
             <iframe><gallery-button> <a href="DescMammitesConciliatum(Stoliczka).html">Mollusca - Cephalopoda<br>Click for Description</a></button></iframe> 
         </div>      
-    </div>
 
     <h5 style="text-align: center; margin-bottom: 0px;">First three rows photos are taken by R. Natesan, an Alumni of Presidency College, Chennai.<br>
                                     Other photos are from Dr K Ayyasami. </h5>
 
-    <div class="button-container">
+    <div class="button-container" style="display: flex; justify-content: center; align-items: flex-center;">
         <a href="FeedBackGoogleSheetData.html">
                 <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
                     Give Your Feedback</button></a>            
