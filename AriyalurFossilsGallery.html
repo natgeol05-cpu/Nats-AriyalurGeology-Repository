@@ -1,3 +1,4 @@
+Prog Code for AriyalurFossilsGallery.html
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
@@ -110,22 +111,26 @@
           margin-bottom: 0px;
         }        
 
-        img {
+                img {
           max-height: 100%;
           max-width: 100%;
         }
  
         .grid-container {
             display: grid; 
-            margin: 10px; margin-bottom: 40px;
-            max-height: 100%; max-width: 100%; 
-            margin: auto; height: 2100px;
+            margin: 5px; margin-bottom: 10px;
+            max-height: auto; max-width:100%;
+            min-width: 0;
+            margin: auto; height: 2250px; max-width: 1250px;
             border: 3px  solid brown;
             background-color: aquamarine;
-            column-gap: 20px; row-gap: 3px;
-            grid-template-columns: auto auto auto auto;  
+            column-gap: 10px; row-gap: 0px;
+            /* grid-template-columns: auto auto auto auto;   */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust the minimum width as needed */
+            gap: 10px; /* Adjust the gap between items as needed */
             justify-content: center;
             align-items:  center;
+            flex-wrap: wrap;
             }  
         
             .title-div {
@@ -140,13 +145,15 @@
 
         .item {
                 border: 10px solid brown;
-                height: 260px; width: 280px;
+                height: 250px; width: 260px;
                 border-radius: 20px; 
+                font-size: 20px; color:var(--heading-blue);
+                font-weight: bold; text-align: center;
                 text-align: center;
                 background-color: lightyellow;
                 transition: transform 2s;                  
             }
-
+       
         .item16 {
                 border: 10px solid brown;
                 height: 260px; width: 100px;
@@ -209,7 +216,6 @@
         h3 {
             color: brown;            
         }
-
 
         h4 {
             color:brown;
@@ -426,8 +432,9 @@
                 <button style= "color: blue; font-weight: bolder; font-size: 18px;" id="browse-button" >
                     Back to Main  Menu</button></a>     
     </div>
-
+   
 </body>  
 </html>
+
 
 
