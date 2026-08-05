@@ -116,7 +116,7 @@
         .grid {
             display: grid;
             border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
+            height: 1050px; max-width: 1300;
             background-color: aquamarine;             
         }
 
@@ -129,18 +129,19 @@
         } 
 
         .fixed-div{
-            position: sticky; 
+            position: sticky;          
             top: 0; /* This makes it stick to the top when scrolled */
-            width: 100%; /* Ensures it spans the full width */
+            max-width: 100%; /* Ensures it spans the full width */
             text-align: center; /*To place images/text in the center of div */
             padding-top: 2px; /* To place a gap on top */
             z-index: 1000; /*Ensures it stays above other content */
-        }        
+          }        
 
         .item {                      
             border: solid brown;  border-radius: 20px;
             padding: 5px; 
-            text-align: center; background-color: lightyellow;            
+            text-align: center; background-color: lightyellow; 
+            max-width: 1300px; margin: auto;           
         }
 
         button {
@@ -205,11 +206,13 @@
 
         #box1 {
            background-color: lightcoral;
+           max-width: 1300px; height: 50px;
         }
 
         #box2 {
             background-color: bisque;
-        }
+            max-width: 1300;
+         }
 
         #box3 {
             background-color: #DDF6D2;
@@ -259,18 +262,19 @@
     </div>
   </header>
 
-        <div class="item" id="Box1" >
+        <div class="item" id="Box1" style="margin-bottom: 5px;">
            <h2> Rastellum - bivalve </h2>
         </div>
 
-        <h4> For Enlarged View place cursor over the images</h4>
+        <div class="item" id="box2" style="margin-bottom: 5px;">
 
-        <div class="fixed-div" id="box2">
+            <h4> For Enlarged View place cursor over the images</h4>
+
             <img height="200"   src="Rastellum - Bivalve Watermarked.jpg">
             <img height="200"   src="Rastellum Scientific classification.jpg" > 
             <img height="200px" src="Rastellum from Medagascar.jpg"></div>
 
-        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 20px; margin-bottom: 5px;"><h3>Description</h3>
             <article>
                 Name: Rastellum <br>
                 Species: pectinata<br>
@@ -309,7 +313,7 @@
                 <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
                 <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
-        </div>
-    </div>    
+        </div>  
+      </div>      
 </body>  
 </html>
