@@ -103,6 +103,8 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
         }
 
         h2 {
@@ -110,13 +112,7 @@
           text-align: center;
           margin-bottom: 0px;
         }        
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
-            background-color: aquamarine;             
-        }
-
+       
         .title-container {
             display: flex;
             align-items: center;         
@@ -138,12 +134,12 @@
             border: solid brown;  border-radius: 20px;
             margin: 10px; padding: 5px;
             text-align: center; background-color: lightyellow;
-             
+            max-width: 1300px; margin: auto;
         }
 
          button {
-            color:  black;
-            height: 60px; width: 300px;
+            color: solid black;
+            height: 40px; max-width: 240px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -155,15 +151,14 @@
         }
 
         .button-container {
-            display: inline-flex;
-            gap: 60px;
-            align-self: center;
-            justify-content: center;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;            
         }
 
-        browse-button {
-            color: solid black;
-            height: 60px; width: 300px;
+        browse-button {            
+            height: 60px; width: 210px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -171,8 +166,9 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.4s;
         }
-
         /* Name of Fossil specimen */
         h2 {
             color: chocolate;         
@@ -215,7 +211,7 @@
         }
 
         img:hover {
-            transform: scale(1.8);
+            transform: scale(1.25);
             transition-duration: 2s;
             }
         
@@ -253,18 +249,18 @@
     </div>
   </header>     
 
-        <div class="item" id="box1">
+        <div class="item" id="box1" style="margin-bottom: 5px;">
             <h2> Sphenoceramus</h2>
         </div>
         
-        <div class="fixed-div" id="box2">            
+        <div class="item" id="box2" style="margin-bottom: 5px;">            
             <h4> For Enlarged View place cursor over the images</h4>
         
             <img height="200" src="Sphenoceramus (inoceramids).JPG">
             <img height="200"src="Sphenoceramus Scientific Classification.jpg">
         </div>
 
-        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 20px; margin-bottom: 5px;"><h3>Description</h3>
             Name: Clam or Shell <br>
             Genus: Sphenoceramus<br>
             Species: New or undescribed <br>
@@ -307,21 +303,20 @@
             </article>
         </div>
 
-        <div class="item" id="box4">For more information refer to links given above </div>
+        <div class="item" id="box4" style="margin-bottom: 5px;">For more information refer to links given above </div>
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
         </div>
     </div>   
-
 </body>
 </html>
 
