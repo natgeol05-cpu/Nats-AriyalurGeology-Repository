@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Description for Fossil Rastellum - Bivalve</title>
+    <title>Description for Fossil Lucina - Bivalve</title>
 
-    <style>
+<style>
         :root {
           --heading-blue: #0047ab;
           --heading-brown: #7a2f00;
@@ -103,8 +103,6 @@
           background: var(--btn-hover);
           color: #fff;
           border-color: var(--btn-hover);
-          transform:scale(1.1);
-          transition-duration: 0.3s;
         }
 
         h2 {
@@ -113,62 +111,51 @@
           margin-bottom: 0px;
         }        
 
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1050px; max-width: 1300;
-            background-color: aquamarine;             
-        }
-
         .title-container {
             display: inline-flex;
             align-items: center;         
             border: 1px;
             margin: auto;  
-            column-gap: 20px;          
+            column-gap: 20px;           
         } 
 
-        .fixed-div{
-            position: sticky;          
+         .fixed-div{
+            /* position: sticky; */
             top: 0; /* This makes it stick to the top when scrolled */
-            max-width: 100%; /* Ensures it spans the full width */
+            width: 100%; /* Ensures it spans the full width */
             text-align: center; /*To place images/text in the center of div */
             padding-top: 2px; /* To place a gap on top */
             z-index: 1000; /*Ensures it stays above other content */
-          }        
+        }
 
         .item {                      
             border: solid brown;  border-radius: 20px;
-            padding: 5px; 
-            text-align: center; background-color: lightyellow; 
-            max-width: 1300px; margin: auto;           
-        }
+            padding: 5px;
+            text-align: center; background-color: lightyellow;
+          }
 
-        button {
+         button {
             color: solid black;
             height: 40px; max-width: 240px;
             border-radius: 20px;
             display: inline-block;            
-        }
+            }
 
         #button:hover {
             background-color: goldenrod;
             color: white;
-        }
+            }
 
         .button-container {
             display: inline-flex;
             margin-top: 10px;
             gap: 20px;
-            align-self: center;
+            align-items: center;
             justify-content: center;
         }
 
-        browse-button {  
-            display:flex;
-            justify-content:center;   
-            align-items:center;   
-            height: 40px; max-width: 240px;
+        browse-button {            
+            height: 60px; width: 20px;
             border-radius: 20px;
             display: inline-block;  
          }
@@ -180,7 +167,12 @@
              transition-duration: 0.2s;
         }
 
-       /* Name of Fossil specimen */
+        #browse-button:hover {
+             background-color: goldenrod;
+             color: white;
+        }
+        
+       /* Name of Fossil specimem */
         h2 {
             color: chocolate;         
             margin-top: 0; 
@@ -205,19 +197,17 @@
         }
 
         #box1 {
-           background-color: lightcoral;
-           max-width: 1300px; height: 50px;
+           background-color:lightsteelblue;             
         }
 
         #box2 {
-            background-color: bisque;
-            max-width: 1300;
-         }
+            background-color: bisque;   
+       }
 
         #box3 {
             background-color: #DDF6D2;
         }
-        
+
         img {
             padding: 10px;
             display: inline-flex;
@@ -234,9 +224,10 @@
 
     </style>
 </head>
+
 <body>
-  
-  <header class="topbar">
+    
+<header class="topbar">
     <div class="topbar-row">
       <a class="arrow-link" href="AriyalurGeologyPage.html" aria-label="Back to Main Menu">
         <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
@@ -247,73 +238,76 @@
         <p class="topbar-subtitle">Browse Gallery Specimens</p>
       </div>
 
-      <a class="arrow-link" href="DescLucinabivalve.html" aria-label="Go to Next Item in Menu">
+      <a class="arrow-link" href="DescTrigonoarca abrupta.html" aria-label="Go to Next Item in Menu">
         <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
       </a>
     </div>
 
     <div class="topbar-actions">
-      <a href="AriyalurGeologyPage.html">
+      <a href="DescRastellum.html">
         <button type="button" class="nav-btn">Back to Main Menu</button>
       </a>
-      <a href="DescLucinabivalve.html">
+      <a href="DescTrigonoarca abrupta.html">
         <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
       </a>
     </div>
   </header>
 
-        <div class="item" id="Box1" style="margin-bottom: 5px;">
-           <h2> Rastellum - bivalve </h2>
+    <div class="grid">
+    
+    <div class="item" id="box1">
+            <h2> Lucina - bivalve</h2>
+    </div>
+
+        <h4> For Enlarged View place cursor over the images</h4>
+
+        <div class="fixed-div" id="box2">
+            <img height="200" src="Lucina-(Bivalve) Watermarked.jpg">
+            <img height="200" src="Lucina Scientific Classification.jpg" > 
+            <img height="200px" src="Lucina from Italy.jpg">
         </div>
 
-        <div class="item" id="box2" style="margin-bottom: 5px;">
-
-            <h4> For Enlarged View place cursor over the images</h4>
-
-            <img height="200"   src="Rastellum - Bivalve Watermarked.jpg">
-            <img height="200"   src="Rastellum Scientific classification.jpg" > 
-            <img height="200px" src="Rastellum from Medagascar.jpg"></div>
-
-        <div class="item" id="box3" style="font-size: 20px; margin-bottom: 5px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
             <article>
-                Name: Rastellum <br>
-                Species: pectinata<br>
-                Formation: Kallankurichchi Formation <br>
-                Locality: Ottakkoil   <br>
-                Classification: Mollusca - Bivalvia -Ostreida - Arctostreidae<br>
-                Age: Range: from 161.2 to 66.043 million years ago  <p>
+                Name: Lucina - bivalve <br>
+                Species: percrassa<br>
+                Formation: Ninniyur <br>
+                Locality: Niniyur <br>
+                Classification: Mollusca - Bivalvia -Lucinida - Genus: Lucina<br>
+                Age: Range: from 388.1 to 0.012 million years ago  <p>
+                Lucina is a genus of saltwater clams, marine bivalve molluscs.<br>
+                Fossils of Lucina are found in marine strata from the Devonian until<br> 
+                the Quaternary (age range: from 388.1 to 0.012 million years ago). <br>
+<br>
+                The members of the genus Lucina, as other members of the family Lucinidae, <br>
+                are found in muddy sand or gravel at or below low tide mark.<p> 
+                    
+                They have characteristically rounded shells with forward-facing projections. <br>
+                The valves are flattened and etched with concentric rings.<br> 
+                Each valve bears two cardinal and two plate-like lateral teeth.<p> 
+                    
+                These molluscs do not have siphons but the extremely long foot makes a channel<br> 
+                which is then lined with slime and serves for the intake and expulsion of water.<p>
 
-                Fossils of Rastellum are found from the Middle Jurassic until the Late Cretaceous<br>
-                (age range: from 161.2 to 66.043 million years ago.).<br>
-                They are present in the Cretaceous marine strata throughout the world,<br> 
-                including in Ariyalur at Ottakkoil. <br>
-                <br>
-                The shells of molluscs of Rastellum species can reach a length of about 10 cm (3.9 in).<br> 
-                These oysters had a narrow-valved, tubular shell, which was composed of regularly<br> 
-                alternating sharp ridges and deep folds. <br>
-                The vulnerable commissure (along which the valves meet) was sunk.<p>
-                Lifestyle:
+                <hr style="height: 4px; background-color: maroon;">      
 
-                This genus inhabited warm waters, where it cemented itself<br> 
-                with the pointed vertebrae to shells or corals.<br> 
-                Oysters belonging to the genus Rastellum were stationary epifaunal suspension feeders.<br>
-
-                <hr style="height: 4px; background-color: maroon;">  
-
-                Ref: https://en.wikipedia.org/wiki/Rastellum
+                Ref: https://en.wikipedia.org/wiki/Lucina_(bivalve)<br>
+                Ref: 02 https://www.ias.ac.in/article/fulltext/jess/132/0116<br> (Dr Ayyasami's name repeatedly mentioned)
             </article>
-       </div>
-       
-       <div class="item" id="box4">For more information go online </div>
+        </div>
+        
+        <div class="item" id="box4">For detailed information read the references given above, especially for UPSC exams. </div>      
 
-      <div class="button-container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="button-container" style="display: flex; justify-content: center; align-items: center;">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bold;"  id="browse-button" >Give Your Feedback</button></a> 
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"  id="browse-button">
+                    Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bold;" id="browse-button">Back to Main  Menu</button></a>         
-        </div>  
-      </div>      
-</body>  
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                    Back to Main  Menu</button></a>         
+        </div>       
+</body>
 </html>
