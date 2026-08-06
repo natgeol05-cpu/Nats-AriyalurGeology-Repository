@@ -5,19 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doescription for Mammites conciliatum (Stoliczka)</title>
 <style>
-        .grid {
-            display: grid;
-            border: 5px crimson; margin: auto;
-            height: 1050px; width: auto;
-            background-color: aquamarine;             
+    :root {
+          --heading-blue: #0047ab;
+          --heading-brown: #7a2f00;
+          --btn-border: #8a8a8a;
+          --btn-hover: goldenrod;
         }
 
-        .title-container {
+        .topbar {
+          max-width: 1280px;
+          margin: 0 auto 8px;
+          padding: 8px 10px;
+          border: 2px solid #c47a44;
+          border-radius: 14px;
+          background: linear-gradient(180deg, #fff8ef 0%, #ffe9d4 100%);
+        }
+
+        .topbar-row {
+          display: grid;
+          grid-template-columns: 40px 1fr 40px;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .arrow-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+        }
+
+        .arrow-img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .topbar-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          min-width: 0;
+        }
+
+        .topbar-title {
+          margin: 0;
+          color: var(--heading-blue);
+          font-size: clamp(0.95rem, 2.3vw, 1.4rem);
+          line-height: 1.2;
+          font-weight: 900;
+        }
+
+        .topbar-subtitle {
+          margin: 2px 0 0;
+          color: var(--heading-brown);
+          font-size: clamp(0.78rem, 1.9vw, 1.2rem);
+          line-height: 1.2;
+          font-weight: 800;
+        }
+
+        .topbar-actions {
+          margin-top: 8px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: nowrap;
+        }
+
+        .topbar-actions a {
+          text-decoration: none;
+          flex: 0 1 auto;
+        }
+
+        .nav-btn,
+        .footer-btn {
+          min-height: 34px;
+          height: 34px;
+          border-radius: 999px;
+          border: 1px solid var(--btn-border);
+          background: #ffffff;
+          color: #1f2d3d;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          min-width: 150px;
+        }
+
+        .nav-btn:hover,
+        .footer-btn:hover {
+          background: var(--btn-hover);
+          color: #fff;
+          border-color: var(--btn-hover);
+          transform:scale(1.1);
+          transition-duration: 0.3s;
+        }
+
+       .title-container {
             display: flex;
             align-items: center;         
             border: 1px;
             margin: auto;  
-            column-gap: 20px;           
+            column-gap: 20px; 
+            /* row-gap: 10px;           */
         } 
 
         .fixed-div {
@@ -33,12 +128,14 @@
             border: solid brown;  border-radius: 20px;
             margin: 10px; padding: 5px;
             text-align: center; background-color: lightyellow;
-             
+            max-width: 1300px; margin: auto; 
+            /* gap: 20px; Adjust the gap as needed; */
+            padding: 10px; /* Add padding to the container */
         }
 
          button {
-            color:  black;
-            height: 60px; width: 300px;
+            color: solid black;
+            height: 40px; max-width: 240px;
             border-radius: 20px;
             display: inline-block;            
         }
@@ -46,26 +143,28 @@
         #button:hover {
             background-color: goldenrod;
             height: 60px;
-            color: white;
+            color: white;            
         }
 
         .button-container {
-            display: inline-flex;
-            gap: 60px;
-            align-self: center;
-            justify-content: center;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center; 
+            margin-top: 10px;          
         }
 
-        browse-button {
-            color: solid blue;
-            height: 60px; width: 300px;
+        browse-button {            
+            height: 60px; width: 210px;
             border-radius: 20px;
-            display: inline-block;  
-         }
+            display: inline-block; 
+        }
 
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
+             transform: scale(1.25);
+             transition-duration: 0.2s;
         }
 
         /* Name of Fossil specimen */
@@ -94,10 +193,12 @@
 
         #box1 {
            background-color:beige;
+           /* gap: 20px; Adjust the gap as needed */
         }
 
         #box2 {
             background-color: bisque;
+            /* padding: 10px; Add padding to the container */
         }
 
         #box3 {
@@ -120,36 +221,49 @@
         img:hover {
             transform: scale(1.8);
             transition-duration: 2s;
-            }      
+            }  
   
     </style>
 </head>
 <body>
-    <div class="grid">
-        <div class="title-container" style="display: flex;">
-            <input type="image" id="image" src="Arrow Left Very Small Amber.jpg" alt="Submit" width="90px" height="60px">
-            <a href="DescPeronicerasDravidicum(Kossmat).html">
-                <button id="button"> Click To Go Back to Previous Specimen</button></a> 
+    <header class="topbar">
+    <div class="topbar-row">
+      <a class="arrow-link" href="DescPeronicerasDravidicum(Kossmat).html" aria-label="To Previous Item in Gallery">
+        <img class="arrow-img" src="Arrow Left Very Small Amber.jpg" alt="Left Arrow" />
+      </a>
 
-            <h3>Geology of Ariyalur Web Site<br> Browse Specimens in Gallery</h3>  
+      <div class="topbar-center">
+        <p class="topbar-title">Geology of Ariyalur Website</p>
+        <p class="topbar-subtitle">Browse Gallery Specimens</p>
+      </div>
 
-            <a href="AriyalurFossilsGallery.html">
-                <button id="button"> Click Here To Go to Gallery as No more Items</button></a> 
-            <input type="image" src="Arrow Right Very Small Amber.jpg" alt="Submit" width="90px" height="60px" >    
-        </div>
+      <a class="arrow-link" href="AriyalurGeologyPage.html" aria-label="End of Gallery, Back to Home Page">
+        <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
+      </a>
+    </div>
 
-        <div class="item" id="box1">
+    <div class="topbar-actions">
+      <a href="DescPeronicerasDravidicum(Kossmat).html">
+        <button type="button" class="nav-btn">To Previous Item in Gallery</button>
+      </a>
+      <a href="AriyalurGeologyPage.html">
+        <button type="button" class="nav-btn">End of Gallery, to Home Page</button>
+      </a>
+    </div>
+  </header>  
+ 
+        <div class="item" id="box1" style="margin-bottom: 5px;">
             <h2>Mammites conciliatum (Stoliczka)</h2>
         </div>
         
-        <div class="fixed-div" id="box2">            
+        <div class="item" id="box2"style="margin-bottom: 5px;">            
             <h4> For Enlarged View place cursor over the images</h4>
         
             <img height="200" src="Mammites conciliatum (Stoliczka).jpg">
-            <img height="200" src="Mammites cocciliatum Scientific Classification.jpg">            
+            <img height="150" src="Mammites cocciliatum Scientific Classification.jpg">            
         </div>
 
-        <div class="item" id="box3" style="font-size: 20px;"><h3>Description</h3>
+        <div class="item" id="box3" style="font-size: 20px; margin-bottom: 5px;"><h3>Description</h3>
             Name: Ammonite <br>
             Genus: Mammites <br>
             Species: conciliatum <br>
@@ -183,31 +297,27 @@
                 including a coiled shell (conch). <br>
                 Ribs and potentially tubercles (knobs or spines) on the shell surface. <br>
                 A specific suture pattern (the lines where internal walls meet the outer shell), which is used by paleontologists for identification. 
-                <p>       
-
-                <hr style="height: 4px; background-color: maroon;">      
-                
+                <p>
+                <hr style="height: 4px; background-color: maroon;">  
+                                                                               
                 Ref: 01 Field Trip Guide - SR010 post-Congress Field Trip by Dr B. Gowtham and Dr K. Ayyasami<br>
                 Ref: 02 https://pure.port.ac.uk/ws/files/15710720/A_lower_Coniacian_ammonite.pdf
             </article>
         </div>
 
-        <div class="item" id="box4">For more information refer to links given above </div>
+        <div class="item" id="box4" style="margin-bottom: 5px;">For more information refer to links given above </div>
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button"> 
-                    Click To Go Back to Gallery Page </button></a>             
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
+                  Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 18px;"   id="browse-button" >
-                    Back to Main  Menu</button></a>         
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
+                    Back to Main Menu</button></a>         
         </div>
     </div>   
-
 </body>
 </html>
-
-
