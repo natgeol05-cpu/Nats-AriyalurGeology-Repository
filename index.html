@@ -43,15 +43,15 @@
         }
 
         .nav {
-            margin-top: 15px;
+            margin-top: 0px;
         }
 
         .nav a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 5px;
             font-weight: bold;
-            padding: 10px 15px;
+            padding: 5px 5px;
             transition: background-color 0.3s;
         }
 
@@ -195,7 +195,7 @@
 
         .img-icons {
             display: flex;
-            margin: 45px;
+            margin: 5px;
             /* gap: 10px; */
             width: 120px;
             height: auto;
@@ -223,6 +223,25 @@
         button:focus-visible {
             background: #dbe8ff;
             outline: none;
+        }
+
+        .exitBtn {
+            position:relative: 20px;
+            margin-left: 240px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px; font-weight: bold;
+            z-index: 1000;
+            max-width: 620px;
+            border-radius: 60px;
+            font-size: 18px;
+            text-align: center;
         }
 
         /* Footer */
@@ -341,7 +360,7 @@
         </nav>
     </div>
 
-    <!-- <main> -->
+    <main>
         <!-- <section class="section" id="about" aria-labelledby="about-heading"> -->
     <div class="section" id="about">
         <div class="icons" >
@@ -476,9 +495,10 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <p>&copy; 2026 Natesan Ramaswami. All rights reserved.</p>
-    </footer>
-</body>
+    <div> <footer class="footer" style="margin-top: 10px; text-align: center; font-size: 14px; color: white;">
+            <p>&copy; 2026 Natesan Ramaswami. All rights reserved.</p></footer>
+    </div>
 
+    <a id="quick-exit" class="exitBtn" href="https://google.com">Quick E x i t</a>
+</body>
 </html>
