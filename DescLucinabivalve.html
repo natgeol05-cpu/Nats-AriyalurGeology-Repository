@@ -149,7 +149,7 @@
         .button-container {
             display: inline-flex;
             margin-top: 10px;
-            gap: 10px;
+            gap: 20px;
             align-items: center;
             justify-content: center;
         }
@@ -180,7 +180,23 @@
             font-size: 26px;      
         }
 
-       #box1 {
+        /* Top most line for Browsing */
+        h3 {
+            color: chocolate; 
+            margin-top: 0; margin-bottom: 0;
+            text-align: center;  
+            font-size: 28px; 
+        }
+
+        /* For Enlarged View place cursor over the images */
+        h4 {
+            color: rgb(49, 3, 80); margin-top: 0;
+            margin-bottom: 0;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        #box1 {
            background-color:lightsteelblue;             
         }
 
@@ -229,10 +245,10 @@
 
     <div class="topbar-actions">
       <a href="DescRastellum.html">
-        <button type="button" class="nav-btn">Back to Main Menu</button>
+        <button type="button" class="nav-btn">To Previous Item in Gallery</button>
       </a>
       <a href="DescTrigonoarca abrupta.html">
-        <button type="button" class="nav-btn">Go to Next Item in Gallery</button>
+        <button type="button" class="nav-btn">To Next Item in Gallery</button>
       </a>
     </div>
   </header>
@@ -243,7 +259,7 @@
             <h2> Lucina - bivalve</h2>
     </div>
 
-        <h4> For Enlarged View place cursor over the images</h4>
+        <h4> For Enlarged View place cursor over the images or Touch it</h4>
 
         <div class="fixed-div" id="box2">
             <img height="200" src="Lucina-(Bivalve) Watermarked.jpg">
@@ -284,14 +300,18 @@
 
         <div class="button-container" style="display: flex; justify-content: center; align-items: center;">
             <a href="FeedBackGoogleSheetData.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 14px;"  id="browse-button">
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"  id="browse-button">
                     Give Your Feedback</button></a> 
             <a href="AriyalurFossilsGallery.html">
-                <button style= "color: blue; font-weight: bolder; font-size: 14px;"   id="browse-button"> 
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button"> 
                   Back to Gallery Page </button></a>             
             <a href="AriyalurGeologyPage.html">  
-                <button style= "color: blue; font-weight: bolder; font-size: 14px;"   id="browse-button" >
+                <button style= "color: blue; font-weight: bolder; font-size: 16px;"   id="browse-button" >
                     Back to Main  Menu</button></a>         
+        </div>
+
+        <div> <footer class="footer" style="margin-top: 10px; text-align: center; font-size: 14px; color: blue;">
+            <p>&copy; 2026 Natesan Ramaswami. All rights reserved.</p></footer>
         </div>       
 </body>
 </html>
