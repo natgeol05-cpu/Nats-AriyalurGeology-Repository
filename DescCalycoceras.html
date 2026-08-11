@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Description for Fossil Calycoceras</title>
 <style>
+
      :root {
           --heading-blue: #0047ab;
           --heading-brown: #7a2f00;
@@ -175,9 +176,18 @@
         #browse-button:hover {
              background-color: goldenrod;
              color: white;
-             transform: scale(1.25);
+             transform: scale(1.45);
              transition-duration: 0.2s;
         }
+
+        #buttonToEnlargedView:hover {
+            background-color: goldenrod;
+             color: Blue;
+             transform: scale(1.4);
+             transition-duration: 0.2s;
+             font-size: 14px;
+        }
+
 
        /* Name of Fossil specimen */
         h2 {
@@ -215,7 +225,7 @@
 
         #box3 {
             background-color: #DDF6D2;
-        }
+        }  
 
         #box5 {
            background-color: #FB9E3A;           
@@ -225,25 +235,24 @@
             text-align: center;
             column-gap: 40px;
             }
-       
+             
         img {
             padding: 10px;
             display: inline-flex;
             }
 
         img:hover {
-            transform: scale(1.4);
+            transform: scale(1.5);
             transition-duration: 1.5s;
             }
 
         video:hover {
-            transform: scale(1.3);
+            transform: scale(1.5);
             transition-duration: 2s;
             }       
     
     </style>
 </head>
-
 <body>
 
   <header class="topbar">
@@ -344,16 +353,16 @@
 
     <!-- <h4> For Enlarged View place cursor over the images</h4> -->
 
-    <div class="item" id="box7" style="font-size: 19; color: blue;  margin-bottom: 5px;">
+    <div class="item" id="box7" style="text-align: center; margin-bottom: 5px;">
         The world's largest ammonite, a Parapuzosia seppenradensis, was discovered in Seppenrade, Germany, in 1895.<br>
         The Museum of Natural History in Münster, Germany, is home to the world’s largest known ammonite fossil—<br> 
         a colossal specimen of Parapuzosia seppenradensis measuring an astonishing 5.9 feet (1.8 meters) in diameter.<p>
         •Species: It belongs to the species Parapuzosia seppenradensis. 
         </p> 
-        <img height="263" src="Worlds Largest Ammonites in German Museum.jpg">
+        <img height="263" src="Worlds Largest Ammonites in German Museum.JPG">
 
-        <a style="margin-left: 120px;" href="BriefOnLargestAmmonites.html">
-            <button id="button">Information about largest Ammonites</button></a> 
+        <a style="margin-left: 10px;" href="BriefOnLargestAmmonites.html" style="text-decoration: none; text-align: center; display: flex; margin-top: 210px;">
+            <button id="buttonToEnlargedView">Information about largest Ammonites</button></a> 
     </div>        
   
     <div class="item" id="box4" style="margin-bottom: 5px;">For more information refer to links given above </div><p>
