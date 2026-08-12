@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Description for Fossil Cyclolites orbiculus - corals</title>
 <style>
+
         :root {
           --heading-blue: #0047ab;
           --heading-brown: #7a2f00;
@@ -106,12 +107,19 @@
           transition-duration: 0.3s;
         }
 
+
         h2 {
           color: blue;
           text-align: center;
           margin-bottom: 0px;
         }        
-        
+        .grid {
+            display: grid;
+            border: 5px crimson; margin: auto;
+            height: 1050px; width: auto;
+            background-color: aquamarine;             
+        }
+
         .title-container {
             display: flex;
             align-items: center;         
@@ -134,6 +142,18 @@
             margin: 10px; padding: 5px;
             text-align: center; background-color: lightyellow;
             max-width: 1300px; margin: auto;
+        }
+
+        .itemSpl {                      
+            border: solid brown;  border-radius: 20px;
+            margin: 10px; padding: 5px;
+            text-align: center; background-color: lightyellow;
+            max-width: 1300px; margin: auto;
+        }
+
+        .itemSpl: hover {
+          transform: scale(1.01);
+          transition: transform 0.3s ease;
         }
 
         button {
@@ -167,6 +187,7 @@
              transform: scale(1.10);
              transition-duration: 0.2s;
         }
+
 
        /* Name of Fossil specimen */
         h2 {
@@ -209,7 +230,7 @@
         }
 
         img:hover {
-            transform: scale(1.4);
+            transform: scale(1.6);
             transition-duration: 2s;
             }
         
@@ -231,7 +252,6 @@
         <p class="topbar-title">Geology of Ariyalur Website</p>
         <p class="topbar-subtitle">Browse Gallery Specimens</p>
       </div>
-
   
       <a class="arrow-link" href="DescIchthyosaurianVertebra.html" aria-label="To Next Item in Menu">
         <img class="arrow-img" src="Arrow Right Very Small Amber.jpg" alt="Right Arrow" />
@@ -247,7 +267,6 @@
       </a>
     </div>
   </header>
-
 
         <div class="item" id="box1" style="margin-bottom: 5px;">
             <h2> Cyclolites orbiculus - corals.</h2>
@@ -296,19 +315,18 @@
                 field trip in March 2025, lead by Dr B.Gowtham. And identification done by Dr Ayyasami.
                 <br>
 
-                <hr style="height: 4px; background-color: maroon;">  
+                <hr style="height: 4px; background-color: maroon; margin-bottom: 0px;">  
 
-                <p style="font-size: 16px; text-align: left; margin: 0px;">
-                Ref: https://en.wikipedia.org/wiki/Cycloseris_cyclolites </p>
+                Ref: https://en.wikipedia.org/wiki/Cycloseris_cyclolites
             </article>
         </div>
 
         <div class="item" style="align-items: center; margin-bottom: 5px;"">
             <img height="200" src="Cycloites  genus cycloseris. Cretaceous. Morocco.jpg">
-            <img height="125" src="About genus Cyclolites in Morocco.jpg" > 
+            <img height="130" src="About genus Cyclolites in Morocco.jpg" > 
         </div>
 
-        <div class="item" id="box4">For more information go online </div>
+        <div class="itemSpl" id="box4">For more information go online </div>
 
         <div class="button-container">
             <a href="FeedBackGoogleSheetData.html">
