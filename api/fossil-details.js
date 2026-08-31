@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     scientific_name,
     formation,
     locality,
-    // location,
+    location,
     age,
     period,
     classification,
