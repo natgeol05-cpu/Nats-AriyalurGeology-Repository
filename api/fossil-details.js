@@ -38,6 +38,60 @@ export default async function handler(req, res) {
     }
   }
 
+//JavaScript
+document.getElementById('fossil-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const submitBtn = document.getElementById('submit-btn');
+  const errorEl = document.getElementById('error-message'); // Ensure this matches your form error element ID
+  
+  if (errorEl) errorEl.style.display = 'none';
+  if (submitBtn) submitBtn.disabled = true;
+
+  // Construct JSON payload from form fields
+  const payload = {
+    fossil_name: document.getElementById('fossil_name')?.value,
+    genus_species: document.getElementById('genus_species')?.value,
+    formation: document.getElementById('formation')?.value,
+    locality: document.getElementById('locality')?.value,
+    age: document.getElementById('age')?.value,
+    classification: document.getElementById('classification')?.value,
+    field_number: document.getElementById('field_number')?.value,
+    description: document.getElementById('description')?.value,
+    collector_name: document.getElementById('collector_name')?.value,
+    collector_email: document.getElementById('collector_email')?.value,
+    image_urls: [] // Attach uploaded image URLs if available
+  };
+
+  try {
+    const response = await fetch('/api/fossil-details', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || `Server error (${response.status})`);
+    }
+
+    alert(data.message || 'Submission successful!');
+    e.target.reset();
+
+  } catch (err) {
+    console.error('Submission failed:', err);
+    if (errorEl) {
+      errorEl.style.display = 'block';
+      errorEl.textContent = err.message || 'The submission server is currently unreachable. Please try again later.';
+    }
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+});
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST or GET.' });
   }
