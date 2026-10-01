@@ -410,54 +410,9 @@
                     image_urls:      uploadedUrls,
                 };
 
-                document.getElementById('fossil-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const submitBtn = document.getElementById('submit-btn');
-  const errorEl = document.getElementById('error-message');
-  
-  if (errorEl) errorEl.style.display = 'none';
-  if (submitBtn) submitBtn.disabled = true;
-
-  // Convert selected file attachments to Base64 strings
-  const imageInput = document.querySelector('input[type="file"]');
-  const imageUrls = [];
-
-  if (imageInput && imageInput.files.length > 0) {
-    for (const file of imageInput.files) {
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (err) => reject(err);
-      });
-      imageUrls.push(base64);
-    }
-  }
-
-  // Construct JSON payload using active form field IDs
-  const payload = {
-    fossil_name: document.getElementById('fossil_name')?.value,
-    genus_species: document.getElementById('genus_species')?.value,
-    formation: document.getElementById('formation')?.value,
-    locality: document.getElementById('locality')?.value,
-    age: document.getElementById('age')?.value,
-    classification: document.getElementById('classification')?.value,
-    field_number: document.getElementById('field_number')?.value,
-    description: document.getElementById('description')?.value,
-    collector_name: document.getElementById('collector_name')?.value,
-    collector_email: document.getElementById('collector_email')?.value,
-    image_urls: imageUrls
-  };
-
-  try {
-    const response = await fetch('/api/fossil-details', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await response.json();
+                
+   
+                const data = await response.json();
 
     if (!response.ok) {
       throw new Error(data.error || `Server returned status ${response.status}`);
